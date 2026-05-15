@@ -1,0 +1,10 @@
+prose-check: research/head-to-head-comparison.md
+
+[bold-colon-opener] 12 hit(s):
+70:**Verdict**: Ralph is the fastest to start. GSD is reasonable. BMAD demands significant upfront investment in documentation and configuration before you see any
+85:**Key finding**: All three frameworks are token-heavy compared to manual Claude Code usage. Ralph is the most predictable (fixed cost per iteration). BMAD's mul
+87:**The uncomfortable truth**: For simple tasks (bug fixes, small features), all three frameworks introduce overhead that exceeds their value. The break-even poin
+102:**Failure case study (BMAD)**: A user spent 9+ hours with BMAD on an authentication feature. All agents marked the story complete, but the feature was non-funct
+104:**GSD's advantage**: The Plan Checker agent creates a loop-until-pass gate before any code is written. This catches specification misunderstandings before they 
+
+total flagged lines: 12

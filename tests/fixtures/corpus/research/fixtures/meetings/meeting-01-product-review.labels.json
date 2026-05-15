@@ -1,0 +1,15 @@
+{
+  "action_items": [
+    "Priya finalizes the onboarding-step-three spec by Wednesday end of day",
+    "Priya sketches the export empty state and preparing-file state by Friday",
+    "Jordan writes the export approach one-pager (bolt-on vs refactor-first) and circulates Thursday",
+    "Jordan sets up a 30-minute SwiftData scoping call with iOS leads on Thursday morning",
+    "Marcus sends the pricing experiment deck to the growth team on Monday",
+    "Marcus delivers the pricing readout at Wednesday's leadership sync"
+  ],
+  "decisions": [
+    "Adopt the deferred-payment-method variant for the onboarding redesign",
+    "Tentatively scope export for Q2; final approach decided next week before sprint planning"
+  ],
+  "notes": "30-day retention is flat at 34%. Activation drop-off is at step three (payment method). 22% of paid users would use export monthly per survey."
+}

@@ -1,0 +1,17 @@
+prose-check: research/transcription-pain-points-2026-05.md
+
+[em-dash] 113 hit(s):
+1:# Transcription pain points from Reddit, HN, GitHub, App Store — May 2026
+4:**Purpose:** Primary-source inventory of *transcription-quality* failures users report. Fills the Reddit gap noted in `user-pain-points-and-desires-2026.md` and
+8:- [`user-pain-points-and-desires-2026.md`](./user-pain-points-and-desires-2026.md) — product-level complaints (pricing, support, UX). This doc focuses on the *t
+9:- [`competitor-deep-diff-2026-05.md`](./competitor-deep-diff-2026-05.md) — canonical 8-tool matrix.
+10:- [`whisper-bench-2026-04-18.md`](./whisper-bench-2026-04-18.md) — quantitative WER (incl. 1 RU sample).
+
+[ascii-arrow] 23 hit(s):
+131:### 1.6 Acoustic-accuracy substitutions ("apartments → ports")
+140:- "constant" → "during close" (phoneme-similar mush)
+141:- "restart" → "pretty start" (re→ pretty: classic Parakeet error mode where the prefix gets re-tokenized)
+142:- "apartments" → "ports" (long word → short-word collapse — Parakeet drops middle phonemes under uncertainty)
+161:Code paths surfaced in the issue: `Empty API response → returns "<no content>"`; `Any LLM error → returns "Error: {description}"`. This is the kind of bug that 
+
+total flagged lines: 136

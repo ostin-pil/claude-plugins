@@ -1,0 +1,10 @@
+prose-check: research/cli-reference.md
+
+[hard-wrap] 11 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+4:scripting patterns, worktree mode, session management, interactive shortcuts, permission
+5:modes, piping, environment variables, and configuration commands.
+251:a future release. Authentication must come from `ANTHROPIC_API_KEY` or `apiKeyHelper`.
+265:starting with `git diff`. The space before `*` matters -- without it, `git diff*` would
+340:to worktrees created with `-w`, subagent worktrees, and parallel sessions in the desktop app.
+
+total flagged lines: 11

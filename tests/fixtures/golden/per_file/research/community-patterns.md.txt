@@ -1,0 +1,10 @@
+prose-check: research/community-patterns.md
+
+[hard-wrap] 29 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+4:and team adoption approaches drawn from community experience and official guidance.
+11:published his full workflow publicly in early 2026, and it has become a reference
+20:  personally prefers full checkouts; most of the Claude Code team prefers
+32:right, then switches to **auto-accept mode** so Claude can execute the entire
+33:implementation without back-and-forth. The key insight: steering time on the plan
+
+total flagged lines: 29

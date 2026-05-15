@@ -1,0 +1,193 @@
+"""Core scanner. Detection logic is a verbatim port of Untype/Bounce's
+bin/check-prose.sh; only the structure changed (analyze() returns data,
+formatting moved to formatters.py) so the same findings can drive text,
+JSON, and the MCP/bulk surfaces without behavioral drift.
+
+The v1 ruleset is hard-coded here to match the source scanner exactly. P1
+introduces a config layer that injects enabled categories / thresholds; the
+seams (DEFAULT_PATTERNS, threshold lookups) are kept obvious for that.
+"""
+
+from __future__ import annotations
+
+import re
+from dataclasses import dataclass, field
+
+# (name, compiled pattern, threshold, is_emdash)
+PATTERNS = [
+    ("em-dash", re.compile(r"—"), 1, True),
+    ("ascii-arrow", re.compile(r"→"), 1, False),
+    ("not-X-but-Y", re.compile(r"\bIt'?s not\b.*\b(it'?s|but|—) (it'?s|rather)\b", re.I), 1, False),
+    ("no-X-no-Y-just-Z", re.compile(r"^No [A-Z][^.]*\. No [A-Z][^.]*\. Just ", re.M), 1, False),
+    ("this-isnt-about-X", re.compile(r"\bThis isn'?t about\b", re.I), 1, False),
+    ("not-only-but", re.compile(r"\bNot only\b.*\bbut\b", re.I), 1, False),
+    ("bold-colon-opener", re.compile(r"^\*\*[^*]+\*\*\s*[—:]\s+\S", re.M), 5, False),
+]
+
+HARD_WRAP_THRESHOLD = 2
+
+# Lines that aren't prose continuations: anything matching these starts a new
+# block, so a following line isn't a hard-wrap continuation of it. Allow
+# leading whitespace so nested list items still count as list, not prose.
+_NON_PROSE_PREFIX = re.compile(r"^\s*(?:#{1,6}\s|[-*+]\s|\d+\.\s|>|\||```|<)")
+
+PRAGMA_RE = re.compile(r"<!--\s*prose-check:\s*skip\s+([\w\-,\s]+)-->", re.I)
+
+
+def find_hard_wraps(content: str, min_len: int = 50, max_len: int = 95) -> list[tuple[int, str]]:
+    """Detect hard-wrapped paragraphs.
+
+    Markdown renderers handle word-wrap; hard breaks inside a paragraph
+    show up as unnaturally short consecutive prose lines. Flags the
+    second line of any pair where both are in the [50, 95] char range
+    and both look like prose (not headers, lists, tables, code, etc.).
+    """
+    lines = content.split("\n")
+    hits = []
+    prev_was_short_prose = False
+    in_fence = False
+    for i, line in enumerate(lines, start=1):
+        if line.startswith("```"):
+            in_fence = not in_fence
+            prev_was_short_prose = False
+            continue
+        if in_fence:
+            prev_was_short_prose = False
+            continue
+        stripped = line.strip()
+        is_prose = (
+            bool(stripped)
+            and not _NON_PROSE_PREFIX.match(line)
+            and min_len <= len(line) <= max_len
+        )
+        if is_prose and prev_was_short_prose:
+            hits.append((i, line))
+        prev_was_short_prose = is_prose
+    return hits
+
+
+def parse_pragma(content: str) -> set[str]:
+    """Return set of category names disabled by a top-of-file pragma.
+
+    Looks at the first 5 non-empty lines for:
+      <!-- prose-check: skip <cat>[, <cat>]* -->
+    Use category names from PATTERNS (e.g. "bold-colon-opener", "em-dash")
+    or "all" to disable every check.
+    """
+    head = [line for line in content.splitlines()[:10] if line.strip()][:5]
+    for line in head:
+        m = PRAGMA_RE.search(line)
+        if m:
+            cats = {c.strip().lower() for c in m.group(1).replace(",", " ").split() if c.strip()}
+            return cats
+    return set()
+
+
+def cyrillic_skip(content: str) -> bool:
+    """Return True if Cyrillic chars exceed 30% of alpha chars."""
+    alpha = sum(1 for c in content if c.isascii() and c.isalpha())
+    cyr = sum(1 for c in content if "Ѐ" <= c <= "ӿ")
+    total = alpha + cyr
+    return total > 0 and (cyr * 100 // total) > 30
+
+
+def strip_fenced_code(content: str) -> str:
+    """Replace lines inside ``` fences with blank lines (preserves line numbers)."""
+    out = []
+    in_fence = False
+    for line in content.splitlines():
+        if line.lstrip().startswith("```"):
+            in_fence = not in_fence
+            out.append("")
+            continue
+        out.append("" if in_fence else line)
+    return "\n".join(out)
+
+
+def find_hits(content: str, pattern: re.Pattern) -> list[tuple[int, str]]:
+    """Return list of (line_number, line_text) for pattern matches."""
+    hits = []
+    if pattern.flags & re.M:
+        # Multiline-anchored patterns: search whole content, report matched line.
+        for m in pattern.finditer(content):
+            line_no = content.count("\n", 0, m.start()) + 1
+            line_text = content.splitlines()[line_no - 1] if line_no <= content.count("\n") + 1 else ""
+            hits.append((line_no, line_text))
+    else:
+        for i, line in enumerate(content.splitlines(), start=1):
+            if pattern.search(line):
+                hits.append((i, line))
+    return hits
+
+
+@dataclass
+class CategoryResult:
+    name: str
+    hits: list[tuple[int, str]]
+    threshold: int
+    # None means reported; otherwise "cyrillic", "pragma", or "below-threshold"
+    suppressed_by: str | None
+
+    @property
+    def reported(self) -> bool:
+        return self.suppressed_by is None
+
+
+@dataclass
+class Analysis:
+    label: str
+    skip_emdash: bool
+    disabled: set[str]
+    categories: list[CategoryResult] = field(default_factory=list)
+
+    @property
+    def reported_categories(self) -> list[CategoryResult]:
+        return [c for c in self.categories if c.reported]
+
+    @property
+    def total_hits(self) -> int:
+        return sum(len(c.hits) for c in self.reported_categories)
+
+
+def analyze(content: str, label: str = "stdin") -> Analysis:
+    """Run every category against content and return structured results.
+
+    Mirrors check-prose.sh main() exactly: pragma + Cyrillic detection on the
+    raw content, then code fences stripped before pattern and hard-wrap scans.
+    The suppression precedence (Cyrillic em-dash skip, then pragma, then
+    threshold) is preserved so reported_categories matches the source scanner.
+    """
+    skip_emdash = cyrillic_skip(content)
+    disabled = parse_pragma(content)
+    scanned = strip_fenced_code(content)
+
+    categories: list[CategoryResult] = []
+    for name, pat, threshold, is_emdash in PATTERNS:
+        hits = find_hits(scanned, pat)
+        if is_emdash and skip_emdash:
+            suppressed = "cyrillic"
+        elif "all" in disabled or name.lower() in disabled:
+            suppressed = "pragma"
+        elif len(hits) < threshold:
+            suppressed = "below-threshold"
+        else:
+            suppressed = None
+        categories.append(CategoryResult(name, hits, threshold, suppressed))
+
+    wrap_hits = find_hard_wraps(scanned)
+    if "all" in disabled or "hard-wrap" in disabled:
+        wrap_suppressed = "pragma"
+    elif len(wrap_hits) < HARD_WRAP_THRESHOLD:
+        wrap_suppressed = "below-threshold"
+    else:
+        wrap_suppressed = None
+    categories.append(
+        CategoryResult("hard-wrap", wrap_hits, HARD_WRAP_THRESHOLD, wrap_suppressed)
+    )
+
+    return Analysis(
+        label=label,
+        skip_emdash=skip_emdash,
+        disabled=disabled,
+        categories=categories,
+    )

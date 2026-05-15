@@ -1,0 +1,10 @@
+prose-check: research/claude-md-rules.md
+
+[bold-colon-opener] 14 hit(s):
+276:**Problem**: File grows to 500+ lines. Important rules get lost in noise. Claude ignores half of it.
+278:**Fix**: Ruthlessly prune. Split into `.claude/rules/` files with path scoping. Use `@import` for detailed content. If Claude already does something correctly w
+282:**Problem**: Writing rules that try to override Claude's built-in behaviors or system prompt instructions. For example, telling Claude to "always respond in a s
+284:**Fix**: Focus on project-specific context that Claude cannot know. Do not try to change fundamental model behavior through CLAUDE.md.
+288:**Problem**: Critical rules like "always run linting after file edits" placed in CLAUDE.md. CLAUDE.md is advisory (approximately 80% compliance). Claude may ski
+
+total flagged lines: 14

@@ -1,0 +1,17 @@
+prose-check: knowledge/archive/phase3-thread-reading-integration-spec-2026-04-22.md
+
+[em-dash] 24 hit(s):
+1:# Phase 3 — thread-reading integration spec
+19:3. Overlay chip shows `Messages • Ostin • +5 messages` — the `+N messages` half is new, indicates the thread preview is in use.
+103:#### `MailThreadReader` (v2 — spec'd but not built in v1)
+106:- Each visible message in the viewer exposes `message.from.0`, `message.from.1`, … Read sender per index. Sender is always "them" in Mail — nobody uses Mail to 
+111:Mail v2 will need confirmation that threaded-conversation mode yields `message.from.1`, `.2`, etc. — the feasibility doc flagged this as untested.
+
+[ascii-arrow] 6 hit(s):
+21:5. One-tap on the chip cycles `app-only` → `+thread` → `off` for this recording only. Persistent setting lives in Settings.
+107:- Body: descend into `_MAIL_MESSAGE_BODY` → `AXWebArea`, concat child `AXStaticText` values
+194:One-tap on the chip cycles: `app+thread` → `app-only` → `off` → `app+thread`. Persistent toggle is still in Settings; the chip override is per-recording only (s
+226:- `MessagesThreadReader.readThread` needs a real AX tree → integration-only. Best tested by running the app against a canned Messages thread and eyeballing the 
+265:Steps 2–7 and 9 landed across the 2026-04-22 → 2026-04-24 sessions. Step 8 is partial (the `+N` chip renders; the per-recording cycle was deferred since the Set
+
+total flagged lines: 30

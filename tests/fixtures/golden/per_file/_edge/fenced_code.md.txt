@@ -1,0 +1,9 @@
+prose-check: _edge/fenced_code.md
+
+[em-dash] 1 hit(s):
+3:This paragraph outside the fence has an em dash — it should be flagged.
+
+[ascii-arrow] 1 hit(s):
+11:After the fence, another arrow → here should be flagged.
+
+total flagged lines: 2

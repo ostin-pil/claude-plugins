@@ -1,0 +1,14 @@
+prose-check: research/style-adaptation-competitors.md
+
+[em-dash] 19 hit(s):
+4:**Purpose:** Synthesize how competitor macOS dictation tools implement the "style adaptation" step — the post-transcription stage that adjusts tone and format t
+16:Different competitors reach this step through different mechanisms — automatic app detection, user-defined modes, or manual selection — with significant variati
+22:### Wispr Flow — Automatic, opaque
+30:*Pain point:* The opacity created trust issues — users couldn't tell why output changed, and the screenshot-based context capture triggered a privacy backlash i
+32:### Superwhisper — Manual modes, user-defined
+
+[ascii-arrow] 2 hit(s):
+12:> transcription → filler removal → punctuation → **style adaptation**
+24:- Automatically shifts tone: Slack → casual/short, Gmail → semi-formal with greeting/sign-off
+
+total flagged lines: 21

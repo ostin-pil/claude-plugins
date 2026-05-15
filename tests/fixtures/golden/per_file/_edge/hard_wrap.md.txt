@@ -1,0 +1,9 @@
+prose-check: _edge/hard_wrap.md
+
+[hard-wrap] 4 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+4:that each sit comfortably inside the fifty to ninety-five character
+5:band the scanner uses to detect manual line breaks inside what
+6:should be one soft-wrapped paragraph for the markdown renderer.
+9:so the pair trips the hard-wrap heuristic on its second member.
+
+total flagged lines: 4

@@ -1,0 +1,7 @@
+prose-check: _edge/pragma_some.md
+  (pragma disables: bold-colon-opener, em-dash)
+
+[ascii-arrow] 1 hit(s):
+12:But this arrow → MUST still be flagged, because the pragma only
+
+total flagged lines: 1

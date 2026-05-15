@@ -1,0 +1,10 @@
+prose-check: research/cloud-llm-provider-research.md
+
+[em-dash] 11 hit(s):
+437:| **Ollama** | HTTP API (URLSession) | Install Ollama app + pull model | Low — just HTTP calls | ~5-10ms (localhost) | Yes | Easiest path, external dependency |
+438:| **llama.cpp (server)** | HTTP API (URLSession) | None (bundle binary) | Medium — bundle binary, manage process | ~5-10ms (localhost) | Yes | Bundle-able, well
+439:| **llama.cpp (library)** | Direct C API via SPM | None | High — C bridge, manage memory | <1ms | Yes | Best performance, most work |
+440:| **MLX Swift** | Swift API via SPM | None | Medium — learn MLX API | <1ms | Yes | Most Apple-native, good Swift bindings |
+441:| **Apple Foundation Models** | Swift API (OS framework) | macOS 26+ | Very Low — highest-level API | <1ms | Yes | Future option — macOS 26 required |
+
+total flagged lines: 11

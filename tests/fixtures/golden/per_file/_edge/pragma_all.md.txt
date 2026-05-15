@@ -1,0 +1,4 @@
+prose-check: _edge/pragma_all.md
+  (pragma disables: all)
+
+total flagged lines: 0

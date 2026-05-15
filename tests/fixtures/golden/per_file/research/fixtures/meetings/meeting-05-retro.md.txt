@@ -1,0 +1,10 @@
+prose-check: research/fixtures/meetings/meeting-05-retro.md
+
+[em-dash] 7 hit(s):
+1:# Sprint Retrospective — Sprint 46
+7:Wei: Welcome to the sprint 46 retro. Standard format — what went well, what didn't, what to change. Felix kicks off.
+27:Sara: Another thing that didn't go well — the standup ran long every day. I think it's because we have too many unrelated workstreams reporting in serial. Maybe
+29:Theo: I'd push back on splitting. We benefit from the cross-team awareness. But maybe we tighten the format — strict two minutes per person, no discussion in th
+35:Imani: One more — the test environment was unstable for three days mid-sprint. I lost about half a day debugging tests that turned out to be infrastructure prob
+
+total flagged lines: 7

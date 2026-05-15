@@ -1,0 +1,17 @@
+prose-check: research/apple-fm-benchmark.md
+
+[em-dash] 13 hit(s):
+1:# Apple Foundation Models — summary-quality benchmark
+11:and §4.3) gates two parked pivots — A3 (privacy-first meeting notes) and
+12:V3 (mobile voice-revision) — on whether Apple FM is good enough that the
+21:### Caveat — baseline is gpt-4o-mini, not full gpt-4o
+26:key — pass-through pricing is identical). mini is weaker than full 4o,
+
+[hard-wrap] 41 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+4:Models against a cloud baseline (`openrouter:openai/gpt-4o-mini`) on
+5:action-item extraction across a hand-labeled meeting corpus. The result
+11:and §4.3) gates two parked pivots — A3 (privacy-first meeting notes) and
+12:V3 (mobile voice-revision) — on whether Apple FM is good enough that the
+13:"everything stays on your Mac" claim is technically defensible. The named
+
+total flagged lines: 54

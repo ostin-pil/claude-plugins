@@ -1,0 +1,15 @@
+{
+  "action_items": [
+    "Ben kicks off the unmoderated IA study Monday with five participants",
+    "Ben shares the IA study highlights as a single-page document Thursday afternoon",
+    "Quentin holds engineering handoff until the IA study results land",
+    "Quentin finalizes loading-state annotations, dark-mode pass, and deep-link route list in the spec",
+    "Quentin runs a design-token gap audit and sends the list to Mariam by Wednesday",
+    "Quentin brings the analytics opt-out default question to next week's design crit"
+  ],
+  "decisions": [
+    "Collapse 14 top-level settings entries into five groups: Account, Notifications, Privacy, Appearance, Advanced",
+    "Place 'export data' under Privacy in the new IA"
+  ],
+  "notes": "Top three search terms in research: delete account, notification frequency, export data. Region change and 2FA enrollment are the slow toggles needing loading states. Analytics opt-out default still open between research (default-off) and legal (default-on)."
+}

@@ -1,0 +1,16 @@
+{
+  "action_items": [
+    "Lena delivers a probability-weighted forecast on the three late-stage deals (Brightline plus two others) by Friday next week",
+    "Lena sends Sara the updated customer logo list by Monday morning",
+    "Wei produces a one-pager on cost-reduction initiatives with dollar impact for each by end of next week",
+    "Sara writes the two-paragraph analytics-dashboard story arc and sends it Tuesday",
+    "Sara incorporates the new logos into the deck the same day Lena sends them",
+    "Dev refreshes the runway model with best, base, and worst-case scenarios by Wednesday next week",
+    "Dev sets up a 30-minute pre-meet with the lead investor next week"
+  ],
+  "decisions": [
+    "Three board messages: on track to hit revenue plan, unit economics improving, product velocity above plan with strong adoption",
+    "Use the analytics dashboard as the product-velocity showcase in the deck"
+  ],
+  "notes": "Q2 is at 94% of plan with one month to go. Three late-stage deals total ~$790K ARR. Gross margin moved from 64% to 71% over three quarters. Cash runway is fourteen months at current burn."
+}

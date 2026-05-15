@@ -1,0 +1,15 @@
+prose-check: research/whisper-next-steps.md
+
+[em-dash] 17 hit(s):
+1:# STT Work — Next Steps Guide
+9:## A. Auto-manageable — next session can do these without new input
+17:| A3 | ~~Add `elevenlabs:<model>` provider to `tools/stt-bench/stt_compare.py` (proprietary endpoint shape, not OpenAI-compatible)~~ — landed in `be21efe`. Awai
+21:| A7 | ~~Wire Groq `whisper-large-v3-turbo` into the app as the first cloud final-pass engine, behind a Settings toggle~~ — landed in `86ab7ea` (Settings stub) 
+24:| A10 | Prototype the provider-menu UI in Settings (read-only for now, shows available engines with install/signup prompts) | 1 day | First UI surface of the fl
+
+[ascii-arrow] 3 hit(s):
+16:| A2 | Re-run the full bench with the fixed corpus → update `whisper-bench-2026-04-18.md` with trustworthy numbers | 15 min | Closes the loop on A1. |
+21:| A7 | ~~Wire Groq `whisper-large-v3-turbo` into the app as the first cloud final-pass engine, behind a Settings toggle~~ — landed in `86ab7ea` (Settings stub) 
+22:| A8 | Swift bindings for whisper.cpp (`WhisperCppKit` SPM package or hand-rolled C bridge) → add a `WhisperCppService` implementing `TranscriptionProvider` | 1
+
+total flagged lines: 20

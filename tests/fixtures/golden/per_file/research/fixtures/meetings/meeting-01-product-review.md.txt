@@ -1,0 +1,13 @@
+prose-check: research/fixtures/meetings/meeting-01-product-review.md
+
+[em-dash] 8 hit(s):
+1:# Product Review — Q2 Planning
+9:Marcus: Sure. The 30-day retention chart is in the deck — slide four. We're sitting at 34% on the new free tier, which is roughly flat versus last quarter. The 
+13:Priya: We have two variants. The first defers the payment-method ask until the user hits a paywall trigger. The second keeps the ask in step three but adds a "s
+21:Sara: Perfect. Next item — the export feature request. We've had it in the backlog for two quarters. Marcus, do we have data on how many users would use it?
+25:Jordan: We've been wanting to refactor the data layer anyway. If we tackle export, we should fold the refactor into the same workstream. I'll write up a one-pag
+
+[not-X-but-Y] 1 hit(s):
+23:Marcus: Pulled the survey responses last week. About 22% of paid users said they'd use export at least monthly. It's not the biggest ask but it's the second-mos
+
+total flagged lines: 9

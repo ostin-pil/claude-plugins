@@ -1,0 +1,10 @@
+prose-check: research/fixtures/meetings/meeting-07-client-kickoff.md
+
+[em-dash] 6 hit(s):
+1:# Project Kickoff — Hartwell Freight Onboarding
+9:Greg: We want our four largest customers — accounting for 60% of our shipment volume — onto your platform by end of next quarter. That's the outcome. The pressu
+21:Naomi: Greg, on Sentinel specifically — they need real-time visibility within sixty days. That's tight. The TMS integration alone takes about five weeks. What's
+25:Eli: Fifteen minutes is achievable with TMS-only data. We don't need the WMS or the customer portal in place to deliver that. So we can carve out a phase 0 just
+35:Otis: Naomi, before we cut the spec — I want to make sure security review is built in. Anything that touches customer data needs a 30-day security review window
+
+total flagged lines: 6

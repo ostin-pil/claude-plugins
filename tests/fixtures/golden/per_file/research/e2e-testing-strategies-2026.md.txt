@@ -1,0 +1,17 @@
+prose-check: research/e2e-testing-strategies-2026.md
+
+[em-dash] 46 hit(s):
+1:# E2E testing strategies for Untype — survey of macOS-native OSS dictation apps
+13:- `Untype/State/AppState.swift` — the `@Observable` state machine that drives all UI (165 LOC).
+14:- `Untype/App/RecordingCoordinator.swift` — mic capture → STT dispatch (309 LOC; the largest untested hotspot).
+15:- `Untype/Processing/ProcessingCoordinator.swift` — STT output → polishing → insertion (via `UntypeCore`).
+16:- `Untype/App/AppRouterBuilder.swift` — wires the registries into a live router (58 LOC).
+
+[ascii-arrow] 7 hit(s):
+14:- `Untype/App/RecordingCoordinator.swift` — mic capture → STT dispatch (309 LOC; the largest untested hotspot).
+15:- `Untype/Processing/ProcessingCoordinator.swift` — STT output → polishing → insertion (via `UntypeCore`).
+66:- **`DictationFlow/DictationFlowStateMachineTests.swift`** — `DictationFlowStateMachine` is tested as a pure event → `[effect]` function. Events like `.startReq
+95:3. **State machine as pure `(state, event) → effects`** (macparakeet): a `DictationFlowStateMachine` that returns an effect list is vastly more testable than a 
+103:- **No one runs XCUITest flows in CI** across the whole recording → transcribe → insert pipeline. The one XCUITest file in pindrop and VoiceInk both launch the 
+
+total flagged lines: 53

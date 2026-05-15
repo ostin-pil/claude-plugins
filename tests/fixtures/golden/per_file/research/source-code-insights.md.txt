@@ -1,0 +1,10 @@
+prose-check: research/source-code-insights.md
+
+[hard-wrap] 44 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+4:are implemented, safety is enforced, and context is managed. Based on analysis of the
+5:live system prompt, tool definitions visible in-session, and public documentation.
+14:instruction fragments** conditionally assembled based on the user's configuration, OS,
+15:shell, enabled MCP servers, and active tools. The assembled prompt is identical for all
+16:users on the same Claude Code version, which enables **shared prompt caching** across
+
+total flagged lines: 44

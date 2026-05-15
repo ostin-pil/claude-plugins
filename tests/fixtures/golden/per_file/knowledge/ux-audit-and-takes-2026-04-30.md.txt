@@ -1,0 +1,4 @@
+prose-check: knowledge/ux-audit-and-takes-2026-04-30.md
+  (pragma disables: bold-colon-opener)
+
+total flagged lines: 0

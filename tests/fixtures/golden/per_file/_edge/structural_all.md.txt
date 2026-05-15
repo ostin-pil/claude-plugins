@@ -1,0 +1,22 @@
+prose-check: _edge/structural_all.md
+
+[em-dash] 1 hit(s):
+13:A clause with an em dash — like this one — should trip the scanner.
+
+[ascii-arrow] 1 hit(s):
+11:The arrow flow is input → transform → output.
+
+[this-isnt-about-X] 1 hit(s):
+5:This isn't about speed. It's about correctness.
+
+[not-only-but] 1 hit(s):
+7:Not only does it parse, but it also validates.
+
+[bold-colon-opener] 5 hit(s):
+15:**First**: a bold-colon opener line.
+16:**Second**: another bold-colon opener line.
+17:**Third**: a third one.
+18:**Fourth**: a fourth one.
+19:**Fifth**: a fifth one, which crosses the threshold of five.
+
+total flagged lines: 9

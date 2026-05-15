@@ -1,0 +1,10 @@
+prose-check: research/fixtures/meetings/meeting-02-sales-discovery.md
+
+[em-dash] 9 hit(s):
+1:# Discovery Call — Brightline Logistics
+9:Ravi: Sure. We run about 1,200 deliveries a day across four hubs. Right now dispatch is split between two systems — the legacy TMS we've had since 2018 and a ho
+15:Tom: That's a real constraint. For a first phase we'd want to do read-only sync from your TMS, run our dispatch optimizer, and write the manifest back through y
+23:Ravi: Lena, on commercial terms — we've talked to two other vendors. Both came in with annual contracts. What does your pricing look like?
+25:Lena: We do annual or two-year. Two-year gets you a 12% discount and locks in the per-driver rate. For a fleet your size we're typically looking at the mid-tier
+
+total flagged lines: 9

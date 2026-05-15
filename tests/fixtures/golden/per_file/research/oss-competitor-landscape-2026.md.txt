@@ -1,0 +1,14 @@
+prose-check: research/oss-competitor-landscape-2026.md
+
+[em-dash] 54 hit(s):
+1:# macOS-native open-source voice-to-text landscape — April 2026
+4:**Scope:** macOS-native Swift open-source dictation apps and the two leading Swift audio libraries they build on. Commercial apps are surveyed separately in [`c
+10:- [Beingpax/VoiceInk](https://github.com/Beingpax/VoiceInk) — 4,681 ⭐
+11:- [altic-dev/FluidVoice](https://github.com/altic-dev/FluidVoice) — 1,984 ⭐
+12:- [watzon/pindrop](https://github.com/watzon/pindrop) — 469 ⭐
+
+[ascii-arrow] 2 hit(s):
+109:**Testing:** deepest OSS coverage by far. ~40 test files split across CLI tests and app tests. Audio tests use a `MockAudioProcessor` actor. Database tests use 
+192:2. **Refactor `AppState` toward macparakeet's `(state, event) → [effect]` style before adding more UI state.** `Untype/State/AppState.swift` is 165 LOC and will
+
+total flagged lines: 56

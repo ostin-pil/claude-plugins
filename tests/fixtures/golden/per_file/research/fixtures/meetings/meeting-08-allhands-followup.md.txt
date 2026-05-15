@@ -1,0 +1,10 @@
+prose-check: research/fixtures/meetings/meeting-08-allhands-followup.md
+
+[em-dash] 8 hit(s):
+1:# All-Hands Follow-up — Engineering Org
+13:Owen: It's the senior reliability engineer role. We're at the offer stage — the candidate is interviewing here next week. Is reliability "critical"?
+19:Yusuf: My open req is also affected — the senior backend role we just decided to hire on. We discussed Casey Liu yesterday in the debrief.
+31:Owen: Same question for platform — same answer?
+41:Mei: On the new performance review framework — what's the engineering pilot look like? Are we doing the full pilot or a subset?
+
+total flagged lines: 8

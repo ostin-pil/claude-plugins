@@ -1,0 +1,15 @@
+{
+  "action_items": [
+    "Ana drafts the 90-day plan for the senior backend role by Wednesday",
+    "Yusuf writes the hiring committee recommendation and submits it this afternoon",
+    "Lin schedules a 30-minute call between Casey and Yusuf for tomorrow afternoon",
+    "Lin sets up an architecture chat between Casey and the platform team on Thursday",
+    "Lin updates the candidate kickoff email template to remove the take-home reference this week",
+    "Offer extended to Casey by Friday"
+  ],
+  "decisions": [
+    "Hire Casey Liu for the senior backend engineer role",
+    "Flag dead-letter handling and zero-downtime migration patterns as 90-day growth areas, not deal-breakers"
+  ],
+  "notes": "Casey has a competing offer from a payments company with a Tuesday deadline. Comp is comparable; deciding factor is team and scope. Strengths: system design clarity, data modeling, idiomatic Go and proactive testing."
+}

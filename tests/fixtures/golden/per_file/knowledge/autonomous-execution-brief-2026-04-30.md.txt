@@ -1,0 +1,3 @@
+prose-check: knowledge/autonomous-execution-brief-2026-04-30.md
+
+total flagged lines: 0

@@ -1,0 +1,13 @@
+prose-check: research/seo-keyword-spine-2026-05.md
+
+[em-dash] 57 hit(s):
+1:# SEO keyword spine and content map — May 2026
+12:- Search-intent and competition signals are *qualitative best-guess* tags from the surveyed competitor pages. They are NOT volume estimates — those would requir
+20:| H1 | `wispr flow alternative` | Comparison / alternative-seeking | Highest commercial-intent query in the category. Already captured by Voibe, machow2, Whispe
+21:| H2 | `local dictation mac` (and `private dictation mac`, `offline dictation mac`) | Solution-aware | Captures privacy-conscious users who already know they wa
+30:### Cluster 1 — Problem-aware (user knows the pain, not the category)
+
+[ascii-arrow] 1 hit(s):
+157:2. **Week -1:** publish 1–2 build-in-public posts from the cluster that matches the launch angle (privacy pivot → Draft 5; speed pivot → Draft 4).
+
+total flagged lines: 58
