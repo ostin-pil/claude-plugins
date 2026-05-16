@@ -12,6 +12,10 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .config import Config
 
 # (name, compiled pattern, threshold, is_emdash)
 PATTERNS = [
@@ -149,22 +153,33 @@ class Analysis:
         return sum(len(c.hits) for c in self.reported_categories)
 
 
-def analyze(content: str, label: str = "stdin") -> Analysis:
+def analyze(content: str, label: str = "stdin", config: "Config | None" = None) -> Analysis:
     """Run every category against content and return structured results.
 
     Mirrors check-prose.sh main() exactly: pragma + Cyrillic detection on the
     raw content, then code fences stripped before pattern and hard-wrap scans.
-    The suppression precedence (Cyrillic em-dash skip, then pragma, then
-    threshold) is preserved so reported_categories matches the source scanner.
+    Suppression precedence is config-disabled, then Cyrillic em-dash skip,
+    then pragma, then threshold. With the default config (every category
+    enabled, source thresholds, Cyrillic exemption on) this is byte-for-byte
+    the original scanner; the P0 regression gate enforces that.
     """
-    skip_emdash = cyrillic_skip(content)
+    if config is None:
+        from .config import default_config
+
+        config = default_config()
+
+    cyrillic = cyrillic_skip(content)
+    skip_emdash = cyrillic and config.cyrillic_em_dash_exempt
     disabled = parse_pragma(content)
     scanned = strip_fenced_code(content)
 
     categories: list[CategoryResult] = []
-    for name, pat, threshold, is_emdash in PATTERNS:
+    for name, pat, builtin_threshold, is_emdash in PATTERNS:
+        threshold = config.threshold_for(name, builtin_threshold)
         hits = find_hits(scanned, pat)
-        if is_emdash and skip_emdash:
+        if name not in config.enabled:
+            suppressed = "config"
+        elif is_emdash and skip_emdash:
             suppressed = "cyrillic"
         elif "all" in disabled or name.lower() in disabled:
             suppressed = "pragma"
@@ -174,15 +189,18 @@ def analyze(content: str, label: str = "stdin") -> Analysis:
             suppressed = None
         categories.append(CategoryResult(name, hits, threshold, suppressed))
 
+    wrap_threshold = config.threshold_for("hard-wrap", HARD_WRAP_THRESHOLD)
     wrap_hits = find_hard_wraps(scanned)
-    if "all" in disabled or "hard-wrap" in disabled:
+    if "hard-wrap" not in config.enabled:
+        wrap_suppressed = "config"
+    elif "all" in disabled or "hard-wrap" in disabled:
         wrap_suppressed = "pragma"
-    elif len(wrap_hits) < HARD_WRAP_THRESHOLD:
+    elif len(wrap_hits) < wrap_threshold:
         wrap_suppressed = "below-threshold"
     else:
         wrap_suppressed = None
     categories.append(
-        CategoryResult("hard-wrap", wrap_hits, HARD_WRAP_THRESHOLD, wrap_suppressed)
+        CategoryResult("hard-wrap", wrap_hits, wrap_threshold, wrap_suppressed)
     )
 
     return Analysis(
