@@ -24,6 +24,10 @@ Execution decisions pinned here:
 
 Ported the one category Untype gained after the P0 snapshot (commit `d0a1cb7`): `ai-attribution`, catching the harness-default "Generated with Claude Code" footer, a bare 🤖 line, and Co-Authored-By trailers. It is a universal AI-tell, so it lives in the shared default. The regression golden was re-baselined against the current source scanner (now eight structural categories plus hard-wrap), keeping the gate's invariant "default config equals the source." The non-regex self-referential-status rule the source added alongside it stays advisory, like the banlist. Corpus is now 105 documents.
 
+### P2 + P4: Claude Code plugin and MCP server
+
+One plugin covers both surfaces. The repo doubles as a personal single-plugin marketplace (`.claude-plugin/marketplace.json` pointing at `./plugin`); installing it makes the `prose-check` skill, the `/prose-check` command, and the MCP server available in every project without per-repo copying. The skill and command resolve the `prose-lint` CLI from PATH then a local checkout. The MCP server (`prose_lint/server.py`, FastMCP) exposes read-only `scan_text` and `scan_files` over the in-process engine; it is credential-free, so Notion or Google Docs linting is done by composition (Claude fetches with the connected MCP, pipes text to `scan_text`). `fastmcp` is an optional extra, launched by the plugin via `uv run --with fastmcp`, so the core stays zero-dependency. Tool bodies are tested as plain functions in the dep-free suite (134 tests); an in-memory FastMCP client smoke verifies the wiring under uv.
+
 ### Planned
 
-P1b Bounce migration (user-gated), P2 Claude Code plugin, P3 reusable CI action, P4 thin MCP server, P5 mechanized banlist (the v2 positioning flip).
+P3 reusable CI action, P1b Bounce migration (fallback-chain shim, staged for a Bounce session), P5 mechanized banlist (the v2 positioning flip).

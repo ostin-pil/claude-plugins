@@ -56,6 +56,21 @@ Use `skip all` to silence every check. This is meant for structured-data files (
 
 The em dash is ordinary punctuation in Russian, not a machine-text tell. When Cyrillic exceeds 30% of the alphabetic characters, the em-dash check is skipped for that file. Every other check still applies.
 
+## Use it in every project (Claude Code plugin)
+
+The repo is its own single-plugin marketplace. Add it once and the `prose-check` skill, the `/prose-check` command, and the MCP server are available in any project, no per-repo file copying:
+
+```
+claude marketplace add prose-lint ~/Projects/prose-lint
+/plugin install prose-lint@prose-lint
+```
+
+The skill and command resolve `prose-lint` from `PATH` first, then a local checkout, so they work whether or not the CLI is installed globally.
+
+## MCP server
+
+A thin server exposes two read-only tools over the same engine: `scan_text(text, label?)` and `scan_files(paths)`. It is credential-free by design. To lint a Notion page or Google Doc, Claude fetches the content with the MCP you already have connected and pipes the text to `scan_text`; this server holds no Notion or Drive auth. The plugin launches it via `uv run --with fastmcp`, so `fastmcp` is an optional extra rather than a core dependency.
+
 ## Status
 
-P0 is done: the standalone engine and the byte-for-byte regression gate. Later phases add the per-project config layer, a Claude Code plugin, a reusable CI action, and a thin MCP server. See CHANGELOG.md for the phase log.
+Done: the standalone engine and byte-for-byte regression gate, the per-project config layer, the Claude Code plugin (skill, command, marketplace), and the MCP server. A drift guard fails the suite if the upstream Untype scanner gains a category prose-lint has not ported. Remaining: the reusable CI action, the Bounce migration to consume prose-lint (staged for a Bounce session), and the v2 mechanized banlist. See CHANGELOG.md for the phase log.

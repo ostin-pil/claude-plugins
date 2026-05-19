@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "prose-lint",
+  "description": "Personal marketplace hosting the prose-lint plugin. The repo is its own single-plugin marketplace; the plugin lives in ./plugin.",
+  "owner": {
+    "name": "Costa"
+  },
+  "plugins": [
+    {
+      "name": "prose-lint",
+      "description": "Structural-tells linter for AI-flavored prose, available in every project. Bundles the prose-check skill, a /prose-check command, and a thin MCP server (scan_text / scan_files).",
+      "category": "development",
+      "source": "./plugin"
+    }
+  ]
+}

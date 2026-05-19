@@ -1,0 +1,20 @@
+{
+  "name": "prose-lint",
+  "version": "0.1.0",
+  "description": "Structural-tells linter for AI-flavored prose: scan files, PR bodies, or piped text (Notion/Docs) for em dashes, arrows, not-X-but-Y, bold-colon openers, AI-attribution boilerplate, hard-wraps.",
+  "author": {
+    "name": "Costa"
+  },
+  "keywords": ["prose", "linter", "markdown", "ai-tells", "writing"],
+  "mcpServers": {
+    "prose-lint": {
+      "type": "stdio",
+      "command": "uv",
+      "args": [
+        "run", "--with", "fastmcp", "--directory",
+        "/Users/costa/Projects/prose-lint",
+        "python", "-m", "prose_lint.server"
+      ]
+    }
+  }
+}

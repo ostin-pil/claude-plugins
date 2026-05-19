@@ -44,9 +44,10 @@ def format_text(analysis: Analysis) -> str:
     return "\n".join(out)
 
 
-def format_json(analysis: Analysis) -> str:
-    """Structured findings for machine consumers (CLI --json, MCP server)."""
-    payload = {
+def to_payload(analysis: Analysis) -> dict:
+    """Structured findings as a dict. Shared by the CLI --json output and the
+    MCP server so both speak the identical contract."""
+    return {
         "tool": "prose-lint",
         "version": __version__,
         "label": analysis.label,
@@ -65,4 +66,8 @@ def format_json(analysis: Analysis) -> str:
             for c in analysis.categories
         ],
     }
-    return json.dumps(payload, ensure_ascii=False, indent=2)
+
+
+def format_json(analysis: Analysis) -> str:
+    """Structured findings for machine consumers (CLI --json, MCP server)."""
+    return json.dumps(to_payload(analysis), ensure_ascii=False, indent=2)
