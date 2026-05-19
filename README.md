@@ -75,6 +75,19 @@ Caveat, read before installing: the bundled MCP server is launched by an absolut
 
 A thin server exposes two read-only tools over the same engine: `scan_text(text, label?)` and `scan_files(paths)`. It is credential-free by design. To lint a Notion page or Google Doc, Claude fetches the content with the MCP you already have connected and pipes the text to `scan_text`; this server holds no Notion or Drive auth. The plugin launches it via `uv run --with fastmcp`, so `fastmcp` is an optional extra rather than a core dependency.
 
+## CI gate (reusable action)
+
+Any repo gets the gate as one stanza. Drop `examples/prose.yml` into `.github/workflows/`:
+
+```yaml
+- uses: actions/checkout@v5
+  with:
+    fetch-depth: 0
+- uses: <owner>/prose-lint@v1
+```
+
+The action sets up Python 3.11, installs prose-lint from its own checkout (no PyPI), scans the PR's changed markdown, and scans the PR title and body. What counts as in-scope is the consumer repo's `.prose-lint.toml`, not anything hardcoded in the action. It is warn-only by default (findings in the Actions log, no PR comment); set `strict: "true"` to fail the build on a hit. Inputs: `strict`, `scan-pr-body`, `python-version`, `config`. prose-lint dogfoods this action on itself via `uses: ./` in its own `.github/workflows/prose.yml`.
+
 ## Status
 
 Done: the standalone engine and byte-for-byte regression gate, the per-project config layer, the Claude Code plugin (skill, command, marketplace), and the MCP server. A drift guard fails the suite if the upstream Untype scanner gains a category prose-lint has not ported. Remaining: the reusable CI action, the Bounce migration to consume prose-lint (staged for a Bounce session), and the v2 mechanized banlist. See CHANGELOG.md for the phase log.

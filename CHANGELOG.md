@@ -28,6 +28,10 @@ Ported the one category Untype gained after the P0 snapshot (commit `d0a1cb7`): 
 
 One plugin covers both surfaces. The repo doubles as a personal single-plugin marketplace (`.claude-plugin/marketplace.json` pointing at `./plugin`); installing it makes the `prose-check` skill, the `/prose-check` command, and the MCP server available in every project without per-repo copying. The skill and command resolve the `prose-lint` CLI from PATH then a local checkout. The MCP server (`prose_lint/server.py`, FastMCP) exposes read-only `scan_text` and `scan_files` over the in-process engine; it is credential-free, so Notion or Google Docs linting is done by composition (Claude fetches with the connected MCP, pipes text to `scan_text`). `fastmcp` is an optional extra, launched by the plugin via `uv run --with fastmcp`, so the core stays zero-dependency. Tool bodies are tested as plain functions in the dep-free suite (134 tests); an in-memory FastMCP client smoke verifies the wiring under uv.
 
+### P3: reusable CI action
+
+`action.yml` is a composite GitHub Action: set up Python 3.11, install prose-lint from its own checkout (`github.action_path`, no PyPI), scan the PR's changed non-deleted markdown, and scan the PR title+body. Scope is the consumer repo's `.prose-lint.toml`, not hardcoded paths (the one place the original Bounce workflow was project-specific). Warn-only by default (log only, no PR comment, preserving the Bounce decision); `strict: "true"` fails the build. `examples/prose.yml` is the one-stanza drop-in; prose-lint dogfoods the action on itself via `uses: ./`. `smoke_action.py` parses the manifests and runs the scan pipeline against a throwaway git repo, proving consumer-config scoping and the strict exit flow.
+
 ### Planned
 
-P3 reusable CI action, P1b Bounce migration (fallback-chain shim, staged for a Bounce session), P5 mechanized banlist (the v2 positioning flip).
+P1b Bounce migration (fallback-chain shim, staged for a Bounce session), P5 mechanized banlist (the v2 positioning flip).

@@ -1,0 +1,22 @@
+# Drop this into any repo at .github/workflows/prose.yml. The whole gate is
+# one `uses:` stanza; scope and rules come from that repo's .prose-lint.toml.
+# Replace <owner>/prose-lint@v1 with the published ref once prose-lint has a
+# remote (it is local-only in v0).
+name: prose
+on:
+  pull_request:
+jobs:
+  prose:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: <owner>/prose-lint@v1
+        # with:
+        #   strict: "true"          # fail the build on any hit
+        #   scan-pr-body: "false"   # skip the PR title+body scan
+        #   config: ".prose-lint.toml"
