@@ -29,7 +29,7 @@ sys.path.insert(0, str(REPO))
 from prose_lint.rules_default import ALL_CATEGORIES  # noqa: E402
 
 UPSTREAM = Path(
-    os.environ.get("UNTYPE_REPO", "/Users/costa/Projects/Bounce")
+    os.environ.get("UNTYPE_REPO", "/Users/costa/Projects/Untype")
 ) / "bin" / "check-prose.sh"
 
 # First tuple element of each PATTERNS entry: ("slug", re.compile(...

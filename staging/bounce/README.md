@@ -14,7 +14,7 @@ This directory is the P1b fallback-chain flip for Bounce, ready for you to land.
 ## How to land it (your steps)
 
 ```
-cd ~/Projects/Bounce
+cd ~/Projects/Untype
 git fetch origin
 git switch -c feature/session-<N>-prose-lint-shim origin/main
 sh ~/Projects/prose-lint/staging/bounce/apply.sh

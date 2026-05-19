@@ -17,10 +17,13 @@ import subprocess
 import sys
 from pathlib import Path
 
+import os
+
 REPO = Path(__file__).resolve().parent.parent
 CORPUS = REPO / "tests" / "fixtures" / "corpus"
 GOLDEN = REPO / "tests" / "fixtures" / "golden"
-LIVE = Path("/Users/costa/Projects/Bounce/bin")
+# Upstream source repo (Untype; was the "Bounce" folder, renamed 2026-05).
+LIVE = Path(os.environ.get("UNTYPE_REPO", "/Users/costa/Projects/Untype")) / "bin"
 SCANNER = LIVE / "check-prose.sh"
 BULK = LIVE / "check-prose-bulk.sh"
 

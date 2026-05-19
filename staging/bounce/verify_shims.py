@@ -24,7 +24,7 @@ import tempfile
 from pathlib import Path
 
 STAGE = Path(__file__).resolve().parent
-BOUNCE_BIN = Path(os.environ.get("UNTYPE_REPO", "/Users/costa/Projects/Bounce")) / "bin"
+BOUNCE_BIN = Path(os.environ.get("UNTYPE_REPO", "/Users/costa/Projects/Untype")) / "bin"
 
 SAMPLE = (
     "# Sample\n\nAn em dash — here is a structural tell.\n\n"

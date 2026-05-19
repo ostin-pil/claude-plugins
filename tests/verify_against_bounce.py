@@ -18,7 +18,7 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-BOUNCE = Path(os.environ.get("UNTYPE_REPO", "/Users/costa/Projects/Bounce"))
+BOUNCE = Path(os.environ.get("UNTYPE_REPO", "/Users/costa/Projects/Untype"))
 OLD = BOUNCE / "bin" / "check-prose-bulk.sh"
 NEW = REPO / "bin" / "prose-lint"
 
@@ -43,7 +43,7 @@ def main() -> int:
     if old.stdout == new.stdout and old.returncode == new.returncode:
         lines = old.stdout.splitlines()
         summary = next((l for l in lines if l.startswith("scanned ")), "")
-        print(f"IDENTICAL on live Bounce ({len(paths)} path args). {summary}")
+        print(f"IDENTICAL on live Untype ({len(paths)} path args). {summary}")
         return 0
 
     print("DIVERGED. unified diff (old vs new):", file=sys.stderr)
