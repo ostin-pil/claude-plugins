@@ -1,6 +1,6 @@
 """Drift guard against the upstream source scanner.
 
-While Untype/Bounce remains the canonical rule (until P1b makes prose-lint
+While Untype remains the canonical rule (until P1b makes prose-lint
 the source), its bin/check-prose.sh can gain a category and prose-lint
 silently falls behind. That already happened once: `ai-attribution` landed
 in Untype on 2026-05-18 and went unnoticed here for days.

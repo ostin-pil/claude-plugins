@@ -1,17 +1,17 @@
-"""Prove the fallback-chain shim before it is applied to Bounce.
+"""Prove the fallback-chain shim before it is applied to Untype.
 
-Builds a throwaway sandbox: the *current* Bounce bin scripts copied in as
+Builds a throwaway sandbox: the *current* Untype bin scripts copied in as
 the vendored *-impl fallbacks, plus the staged shims. Then asserts, on the
 same sample, that all three are byte-identical:
 
   - shim with prose-lint reachable (local checkout) -> the shared tool
   - shim with prose-lint NOT reachable               -> the vendored impl
-  - the original Bounce script run directly          -> the baseline
+  - the original Untype script run directly          -> the baseline
 
-If those three agree, flipping Bounce to the shim changes nothing the CI
-gate or the prose-check skill can observe. Nothing here touches Bounce.
+If those three agree, flipping Untype to the shim changes nothing the CI
+gate or the prose-check skill can observe. Nothing here touches Untype.
 
-    python3 staging/bounce/verify_shims.py
+    python3 staging/untype/verify_shims.py
 """
 
 from __future__ import annotations
@@ -24,7 +24,7 @@ import tempfile
 from pathlib import Path
 
 STAGE = Path(__file__).resolve().parent
-BOUNCE_BIN = Path(os.environ.get("UNTYPE_REPO", "/Users/costa/Projects/Untype")) / "bin"
+UNTYPE_BIN = Path(os.environ.get("UNTYPE_REPO", "/Users/costa/Projects/Untype")) / "bin"
 
 SAMPLE = (
     "# Sample\n\nAn em dash — here is a structural tell.\n\n"
@@ -36,10 +36,10 @@ SAMPLE = (
 def build_sandbox(tmp: Path) -> Path:
     bind = tmp / "bin"
     bind.mkdir(parents=True)
-    # Current Bounce scripts become the vendored fallbacks.
-    shutil.copy(BOUNCE_BIN / "check-prose.sh", bind / "check-prose-impl.py")
-    shutil.copy(BOUNCE_BIN / "check-prose-bulk.sh", bind / "check-prose-bulk-impl.py")
-    shutil.copy(BOUNCE_BIN / "unwrap-prose.py", bind / "unwrap-prose-impl.py")
+    # Current Untype scripts become the vendored fallbacks.
+    shutil.copy(UNTYPE_BIN / "check-prose.sh", bind / "check-prose-impl.py")
+    shutil.copy(UNTYPE_BIN / "check-prose-bulk.sh", bind / "check-prose-bulk-impl.py")
+    shutil.copy(UNTYPE_BIN / "unwrap-prose.py", bind / "unwrap-prose-impl.py")
     # The staged shims under the original names.
     for n in ("check-prose.sh", "check-prose-bulk.sh", "unwrap-prose.py"):
         shutil.copy(STAGE / "bin" / n, bind / n)
@@ -54,8 +54,8 @@ def run(cmd, *, env=None, stdin=None, cwd=None):
 
 
 def main() -> int:
-    if not (BOUNCE_BIN / "check-prose.sh").exists():
-        print(f"no Bounce bin at {BOUNCE_BIN}", file=sys.stderr)
+    if not (UNTYPE_BIN / "check-prose.sh").exists():
+        print(f"no Untype bin at {UNTYPE_BIN}", file=sys.stderr)
         return 2
 
     with tempfile.TemporaryDirectory() as d:
@@ -69,8 +69,8 @@ def main() -> int:
         py_dir = str(Path(sys.executable).parent)
         minimal_path = f"{py_dir}:/usr/bin:/bin"
 
-        # 1. Baseline: the original Bounce scanner, run directly.
-        baseline = run(["python3", str(BOUNCE_BIN / "check-prose.sh"),
+        # 1. Baseline: the original Untype scanner, run directly.
+        baseline = run(["python3", str(UNTYPE_BIN / "check-prose.sh"),
                         "--file", str(doc)])
 
         # 2. Shim, prose-lint NOT reachable (HOME with no checkout, no PATH
@@ -111,7 +111,7 @@ def main() -> int:
         u_sh = run([str(bind / "unwrap-prose.py"), "--stdin"], env=sh_env, stdin=SAMPLE)
         bulk_ok = b_fb.stdout == b_sh.stdout
         unwrap_ok = u_fb.stdout == u_sh.stdout == subprocess.run(
-            ["python3", str(BOUNCE_BIN / "unwrap-prose.py"), "--stdin"],
+            ["python3", str(UNTYPE_BIN / "unwrap-prose.py"), "--stdin"],
             capture_output=True, text=True, input=SAMPLE).stdout
         print(f"check-prose-bulk.sh: fallback==shared: {bulk_ok}")
         print(f"unwrap-prose.py: fallback==shared==original: {unwrap_ok}")

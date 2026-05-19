@@ -5,8 +5,8 @@ inert, and a self-contained drift test so the engine's categories and the
 default ruleset can't diverge without a checked-in change.
 
 The drift test is intentionally scoped to this repo's own artifacts. The
-plan's Bounce-rule parity check belongs to the (separate, not-yet-run) Bounce
-migration; this repo does not reach into the Bounce tree.
+plan's Untype-rule parity check belongs to the (separate, not-yet-run) Untype
+migration; this repo does not reach into the Untype tree.
 """
 
 from __future__ import annotations

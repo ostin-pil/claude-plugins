@@ -1,4 +1,4 @@
-"""Regenerate the golden corpus from the LIVE Untype/Bounce scanners.
+"""Regenerate the golden corpus from the LIVE Untype scanners.
 
 Golden = source-of-truth behavior. We capture the exact stdout of the
 original bin/check-prose.sh and bin/check-prose-bulk.sh so the regression
@@ -22,7 +22,7 @@ import os
 REPO = Path(__file__).resolve().parent.parent
 CORPUS = REPO / "tests" / "fixtures" / "corpus"
 GOLDEN = REPO / "tests" / "fixtures" / "golden"
-# Upstream source repo (Untype; was the "Bounce" folder, renamed 2026-05).
+# Upstream source repo (Untype; was the "Untype" folder, renamed 2026-05).
 LIVE = Path(os.environ.get("UNTYPE_REPO", "/Users/costa/Projects/Untype")) / "bin"
 SCANNER = LIVE / "check-prose.sh"
 BULK = LIVE / "check-prose-bulk.sh"

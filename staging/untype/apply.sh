@@ -1,15 +1,15 @@
 #!/bin/sh
-# Apply the prose-lint fallback-chain shim to the Bounce repo.
+# Apply the prose-lint fallback-chain shim to the Untype repo.
 #
-# Run this YOURSELF, from inside the Bounce repo, on a fresh feature branch
-# (Bounce's one-PR-per-session rule; .githooks/pre-commit refuses commits
+# Run this YOURSELF, from inside the Untype repo, on a fresh feature branch
+# (Untype's one-PR-per-session rule; .githooks/pre-commit refuses commits
 # on main). It only renames and copies files; it does not commit, push, or
 # touch .claude/. You commit, write the session log, and open the one PR.
 #
-# Usage (from the Bounce repo root):
+# Usage (from the Untype repo root):
 #   git fetch origin
 #   git switch -c feature/session-<N>-prose-lint-shim origin/main
-#   sh /Users/costa/Projects/prose-lint/staging/bounce/apply.sh
+#   sh /Users/costa/Projects/prose-lint/staging/untype/apply.sh
 #   # review `git status`, then commit + session log + PR per workflow.md
 #
 # Reverse it: `git checkout -- bin/ && git clean -f bin/` before committing,
@@ -20,7 +20,7 @@ set -eu
 STAGE="$(cd "$(dirname "$0")" && pwd)"
 
 if [ ! -d .git ] || [ ! -f bin/check-prose.sh ]; then
-  echo "error: run this from the Bounce repo root (bin/check-prose.sh not found)" >&2
+  echo "error: run this from the Untype repo root (bin/check-prose.sh not found)" >&2
   exit 1
 fi
 
@@ -53,4 +53,4 @@ echo
 echo "optional: cp $STAGE/prose-lint.toml .prose-lint.toml   (bulk-only scope; see file header)"
 echo
 echo "next (yours): commit, write sessions/<date>_session_<N>_prose-lint-shim.md,"
-echo "open one PR, let Bounce's prose CI gate run. Do not edit .claude/."
+echo "open one PR, let Untype's prose CI gate run. Do not edit .claude/."

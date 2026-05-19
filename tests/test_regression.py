@@ -1,7 +1,7 @@
 """P0 regression gate: the ported engine must reproduce the LIVE scanner's
 text output byte-for-byte across the frozen corpus.
 
-Golden files in tests/fixtures/golden/ were captured from Untype/Bounce's
+Golden files in tests/fixtures/golden/ were captured from Untype's
 bin/check-prose.sh and bin/check-prose-bulk.sh (see regen_golden.py). If a
 change here makes a test fail, the engine has drifted from source behavior.
 """

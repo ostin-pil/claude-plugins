@@ -1,4 +1,4 @@
-# OPTIONAL. Copy to the Bounce repo root as `.prose-lint.toml` only if you
+# OPTIONAL. Copy to the Untype repo root as `.prose-lint.toml` only if you
 # want `prose-lint bulk <dir>` (the scan-everything convenience) to skip
 # these paths. It is deliberately limited to [scope], which affects only
 # directory walks in `bulk`. It does NOT touch [structural], [language], or

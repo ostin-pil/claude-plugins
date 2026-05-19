@@ -1,4 +1,4 @@
-"""Join hard-wrapped paragraphs in markdown. Verbatim port of Untype/Bounce
+"""Join hard-wrapped paragraphs in markdown. Verbatim port of Untype
 bin/unwrap-prose.py; only the file/stdin plumbing moved to cli.py.
 
 Markdown renderers handle word-wrap. Hard line breaks inside a paragraph

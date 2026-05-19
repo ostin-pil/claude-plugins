@@ -6,7 +6,7 @@ banned-phrase list documented in a project's prose rule is advisory in v1
 (operator discipline), not mechanically enforced. Mechanized banlist
 enforcement is planned for v2; see CHANGELOG.
 
-Engine behavior is a faithful port of the Untype/Bounce scanner so a project
+Engine behavior is a faithful port of the Untype scanner so a project
 migrating to this tool sees identical findings.
 """
 

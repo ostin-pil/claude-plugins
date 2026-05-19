@@ -5,7 +5,7 @@
 
 ### P0: standalone repo and behavior-preserving engine
 
-Ported the Untype/Bounce scanner into a standalone Python package. Detection logic (`engine.py`, `unwrap.py`) is verbatim; only the structure changed so the same analysis drives text, JSON, and bulk surfaces. A frozen corpus of 104 documents (96 real Untype docs plus 8 crafted edge cases) and a regression suite assert the engine reproduces the original scanner's text output byte-for-byte. `--json` is a new additive contract with its own tests.
+Ported the Untype scanner into a standalone Python package. Detection logic (`engine.py`, `unwrap.py`) is verbatim; only the structure changed so the same analysis drives text, JSON, and bulk surfaces. A frozen corpus of 104 documents (96 real Untype docs plus 8 crafted edge cases) and a regression suite assert the engine reproduces the original scanner's text output byte-for-byte. `--json` is a new additive contract with its own tests.
 
 Execution decisions pinned here:
 
@@ -18,7 +18,7 @@ Execution decisions pinned here:
 
 ### P1: per-project config layer
 
-`rules_default.py` (canonical default as data) and `config.py`: `tomllib` discovery walking up from the scan target, deep-merge over the default, explicit `--config`. The engine takes an injected config; the default reproduces the source scanner exactly so every regression test stays unchanged. Bulk honors config scope. `[banlist]` is parsed and merged but inert in v1 with a stderr notice. The Bounce migration (P1b) is deliberately deferred to a separate, user-gated step.
+`rules_default.py` (canonical default as data) and `config.py`: `tomllib` discovery walking up from the scan target, deep-merge over the default, explicit `--config`. The engine takes an injected config; the default reproduces the source scanner exactly so every regression test stays unchanged. Bulk honors config scope. `[banlist]` is parsed and merged but inert in v1 with a stderr notice. The Untype migration (P1b) is deliberately deferred to a separate, user-gated step.
 
 ### Source sync: ai-attribution
 
@@ -30,11 +30,11 @@ One plugin covers both surfaces. The repo doubles as a personal single-plugin ma
 
 ### P3: reusable CI action
 
-`action.yml` is a composite GitHub Action: set up Python 3.11, install prose-lint from its own checkout (`github.action_path`, no PyPI), scan the PR's changed non-deleted markdown, and scan the PR title+body. Scope is the consumer repo's `.prose-lint.toml`, not hardcoded paths (the one place the original Bounce workflow was project-specific). Warn-only by default (log only, no PR comment, preserving the Bounce decision); `strict: "true"` fails the build. `examples/prose.yml` is the one-stanza drop-in; prose-lint dogfoods the action on itself via `uses: ./`. `smoke_action.py` parses the manifests and runs the scan pipeline against a throwaway git repo, proving consumer-config scoping and the strict exit flow.
+`action.yml` is a composite GitHub Action: set up Python 3.11, install prose-lint from its own checkout (`github.action_path`, no PyPI), scan the PR's changed non-deleted markdown, and scan the PR title+body. Scope is the consumer repo's `.prose-lint.toml`, not hardcoded paths (the one place the original Untype workflow was project-specific). Warn-only by default (log only, no PR comment, preserving the Untype decision); `strict: "true"` fails the build. `examples/prose.yml` is the one-stanza drop-in; prose-lint dogfoods the action on itself via `uses: ./`. `smoke_action.py` parses the manifests and runs the scan pipeline against a throwaway git repo, proving consumer-config scoping and the strict exit flow.
 
-### P1b: Bounce fallback-chain migration (staged)
+### P1b: Untype fallback-chain migration (staged)
 
-`staging/bounce/` holds the shims, `apply.sh`, an optional bulk-only `.prose-lint.toml`, and `verify_shims.py`. The shims resolve prose-lint (PATH, then local checkout) and fall back to the vendored original, so Bounce CI keeps working with no `prose.yml` change and no P3 coupling. `verify_shims.py` proves shim(shared) equals shim(fallback) equals original byte-for-byte for scan, bulk, and unwrap. Not applied to Bounce: the user runs `apply.sh` on a Bounce feature branch and opens the one PR; `.claude/` is untouched (the skill interface is preserved).
+`staging/untype/` holds the shims, `apply.sh`, an optional bulk-only `.prose-lint.toml`, and `verify_shims.py`. The shims resolve prose-lint (PATH, then local checkout) and fall back to the vendored original, so Untype CI keeps working with no `prose.yml` change and no P3 coupling. `verify_shims.py` proves shim(shared) equals shim(fallback) equals original byte-for-byte for scan, bulk, and unwrap. Not applied to Untype: the user runs `apply.sh` on an Untype feature branch and opens the one PR; `.claude/` is untouched (the skill interface is preserved).
 
 ### P5: mechanized banlist (opt-in)
 

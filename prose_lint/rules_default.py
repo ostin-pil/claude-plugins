@@ -1,7 +1,7 @@
 """The canonical default ruleset, as data.
 
 This is the single source of truth for v1 defaults. Applying it must
-reproduce the original Untype/Bounce scanner exactly, so the values here
+reproduce the original Untype scanner exactly, so the values here
 mirror engine.PATTERNS thresholds and the source's Cyrillic exemption. A
 project's .prose-lint.toml extends or relaxes this; it never has to restate
 the whole thing.
