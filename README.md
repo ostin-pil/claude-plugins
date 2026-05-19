@@ -61,11 +61,15 @@ The em dash is ordinary punctuation in Russian, not a machine-text tell. When Cy
 The repo is its own single-plugin marketplace. Add it once and the `prose-check` skill, the `/prose-check` command, and the MCP server are available in any project, no per-repo file copying:
 
 ```
-claude marketplace add prose-lint ~/Projects/prose-lint
-/plugin install prose-lint@prose-lint
+claude plugin marketplace add ~/Projects/prose-lint
+claude plugin install prose-lint@prose-lint
 ```
 
+The marketplace name comes from `.claude-plugin/marketplace.json`, so the `add` command takes only the path. The same operations work as `/plugin marketplace add` and `/plugin install` from inside a Claude Code session.
+
 The skill and command resolve `prose-lint` from `PATH` first, then a local checkout, so they work whether or not the CLI is installed globally.
+
+Caveat, read before installing: the bundled MCP server is launched by an absolute path to this checkout (`/Users/costa/Projects/prose-lint`) in `plugin/.claude-plugin/plugin.json`. That is the v0 local-only reality, the package is not yet published, and `${CLAUDE_PLUGIN_ROOT}` cannot reach the repo because the Python package lives outside `plugin/`. It works on this machine because the repo lives at that path. If you move or clone the repo elsewhere the MCP server stops starting (the skill and command keep working, since they resolve at runtime). When prose-lint is published, replace that command with the `uvx`/console-script form and the tie disappears.
 
 ## MCP server
 
