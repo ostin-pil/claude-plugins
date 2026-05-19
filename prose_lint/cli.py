@@ -63,7 +63,7 @@ def _cmd_scan(args: argparse.Namespace) -> int:
         print(format_json(analysis))
     else:
         print(format_text(analysis))
-    if args.strict and analysis.total_hits > 0:
+    if args.strict and analysis.strict_failed:
         return 1
     return 0
 

@@ -30,13 +30,17 @@ def format_text(analysis: Analysis) -> str:
         out.append(f"  (pragma disables: {', '.join(sorted(analysis.disabled))})")
 
     for cat in analysis.reported_categories:
+        # Only non-error categories carry a severity tag, so error-class
+        # (structural / hard-wrap / ai-attribution) output stays byte-for-byte
+        # identical to the source scanner; the P0 gate depends on that.
+        sev = "" if cat.severity == "error" else f" (severity: {cat.severity})"
         if cat.name == "hard-wrap":
             out.append(
                 f"\n[hard-wrap] {len(cat.hits)} hit(s) — paragraphs broken "
                 "across short lines; let the renderer wrap:"
             )
         else:
-            out.append(f"\n[{cat.name}] {len(cat.hits)} hit(s):")
+            out.append(f"\n[{cat.name}] {len(cat.hits)} hit(s){sev}:")
         for line_no, line in cat.hits[:_HITS_SHOWN]:
             out.append(f"{line_no}:{line.rstrip()[:160]}")
 
@@ -59,6 +63,7 @@ def to_payload(analysis: Analysis) -> dict:
                 "name": c.name,
                 "count": len(c.hits),
                 "threshold": c.threshold,
+                "severity": c.severity,
                 "suppressed_by": c.suppressed_by,
                 "reported": c.reported,
                 "hits": [{"line": ln, "text": txt} for ln, txt in c.hits],

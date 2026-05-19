@@ -32,8 +32,9 @@ RUSSIAN = (CORPUS / "_edge" / "russian_emdash.md").read_text(encoding="utf-8")
 def test_engine_categories_match_default_ruleset():
     engine_cats = {name for name, *_ in PATTERNS} | {"hard-wrap"}
     assert engine_cats == set(ALL_CATEGORIES)
-    # Pragma vocabulary must cover every category the engine can emit.
-    assert set(DEFAULT_RULESET["pragma"]["categories"]) == engine_cats
+    # Pragma vocabulary is the structural categories plus "banlist" (the
+    # opt-in v2 category, not a PATTERNS entry).
+    assert set(DEFAULT_RULESET["pragma"]["categories"]) == engine_cats | {"banlist"}
 
 
 def test_default_ruleset_thresholds_match_engine_builtins():
@@ -116,20 +117,26 @@ def test_no_config_file_yields_default(tmp_path):
     assert cfg.source == "default"
 
 
-# --- v2 banlist is parsed but inert ----------------------------------------
+# --- banlist is opt-in: inert unless enabled -------------------------------
 
-def test_banlist_is_parsed_but_inert(tmp_path, capsys):
+def test_banlist_inert_unless_enabled(tmp_path, capsys):
+    # A project adds words but does not enable the banlist: still inert,
+    # no stderr noise, no banlist category emitted.
     cfg = load_config(explicit=_toml(tmp_path, """
 [banlist]
-words = ["leverage", "seamless"]
+words = ["frobnicate"]
 """))
-    # Merged into config (additive over default's empty list)...
-    assert "leverage" in cfg.banlist["words"]
-    # ...and a notice was emitted...
-    assert "banlist enforcement is v2" in capsys.readouterr().err
-    # ...but it changes no findings in v1.
-    text = "We leverage a seamless pipeline.\n"
-    assert analyze(text, config=cfg).total_hits == 0
+    assert "frobnicate" in cfg.banlist_words      # merged additively
+    assert "leverage" in cfg.banlist_words         # default content present
+    assert cfg.banlist_enabled is False            # but off by default
+    assert capsys.readouterr().err == ""           # no v1-style notice
+    a = analyze("We leverage a seamless frobnicate.\n", config=cfg)
+    assert a.total_hits == 0
+    assert all(c.name != "banlist" for c in a.categories)
+
+
+def test_banlist_default_config_is_off():
+    assert default_config().banlist_enabled is False
 
 
 # --- explicit overrides discovery -------------------------------------------

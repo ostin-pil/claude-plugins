@@ -128,13 +128,49 @@ def find_hits(content: str, pattern: re.Pattern) -> list[tuple[int, str]]:
     return hits
 
 
+_INLINE_CODE = re.compile(r"`[^`]*`")
+_BLOCKQUOTE = re.compile(r"^\s*>")
+
+
+def _banlist_regexes(words: list[str], phrases: list[str]):
+    """Compile the word and phrase matchers. Words are whole-word and
+    case-insensitive; phrases are already regex fragments (placeholders
+    written as \\S+ in the ruleset)."""
+    word_re = None
+    if words:
+        word_re = re.compile(
+            r"\b(?:" + "|".join(re.escape(w) for w in words) + r")\b", re.I
+        )
+    phrase_re = re.compile("(?:" + "|".join(phrases) + ")", re.I) if phrases else None
+    return word_re, phrase_re
+
+
+def find_banlist_hits(content, word_re, phrase_re, context_suppress) -> list[tuple[int, str]]:
+    """Per-line banned word/phrase matches on the fenced-code-stripped
+    content. Inline code spans and blockquote lines are skipped when
+    context_suppress asks for it."""
+    drop_blockquote = "blockquote" in context_suppress
+    blank_code = "code-span" in context_suppress
+    hits = []
+    for i, line in enumerate(content.splitlines(), start=1):
+        if drop_blockquote and _BLOCKQUOTE.match(line):
+            continue
+        probe = _INLINE_CODE.sub(lambda m: " " * len(m.group()), line) if blank_code else line
+        if (word_re and word_re.search(probe)) or (phrase_re and phrase_re.search(probe)):
+            hits.append((i, line))
+    return hits
+
+
 @dataclass
 class CategoryResult:
     name: str
     hits: list[tuple[int, str]]
     threshold: int
-    # None means reported; otherwise "cyrillic", "pragma", or "below-threshold"
+    # None means reported; otherwise "cyrillic", "pragma", "config",
+    # or "below-threshold"
     suppressed_by: str | None
+    # "error" categories fail --strict; "warn" categories only report.
+    severity: str = "error"
 
     @property
     def reported(self) -> bool:
@@ -155,6 +191,14 @@ class Analysis:
     @property
     def total_hits(self) -> int:
         return sum(len(c.hits) for c in self.reported_categories)
+
+    @property
+    def strict_failed(self) -> bool:
+        """True if any reported error-severity category has hits. Warn
+        categories (the banlist by default) report but never fail --strict."""
+        return any(
+            c.severity == "error" and c.hits for c in self.reported_categories
+        )
 
 
 def analyze(content: str, label: str = "stdin", config: "Config | None" = None) -> Analysis:
@@ -206,6 +250,29 @@ def analyze(content: str, label: str = "stdin", config: "Config | None" = None) 
     categories.append(
         CategoryResult("hard-wrap", wrap_hits, wrap_threshold, wrap_suppressed)
     )
+
+    # Banlist is opt-in (config.banlist.enabled). When off it is not even a
+    # category, so default output stays byte-identical to the source scanner
+    # and the P0 regression gate is unaffected.
+    if config.banlist_enabled:
+        word_re, phrase_re = _banlist_regexes(
+            config.banlist_words, config.banlist_phrases
+        )
+        bl_hits = find_banlist_hits(
+            scanned, word_re, phrase_re, config.banlist_context_suppress
+        )
+        if "all" in disabled or "banlist" in disabled:
+            bl_suppressed = "pragma"
+        elif len(bl_hits) < 1:
+            bl_suppressed = "below-threshold"
+        else:
+            bl_suppressed = None
+        categories.append(
+            CategoryResult(
+                "banlist", bl_hits, 1, bl_suppressed,
+                severity=config.banlist_severity,
+            )
+        )
 
     return Analysis(
         label=label,

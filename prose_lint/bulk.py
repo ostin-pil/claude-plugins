@@ -70,6 +70,7 @@ def run_bulk(
         return 0
 
     results: list[tuple[Path, int]] = []
+    strict_fail = False
     for f in files:
         try:
             content = f.read_text(encoding="utf-8")
@@ -78,6 +79,7 @@ def run_bulk(
             continue
         analysis = analyze(content, label=str(f), config=config)
         total = analysis.total_hits
+        strict_fail = strict_fail or analysis.strict_failed
         results.append((f, total))
         if summary_only:
             continue
@@ -102,6 +104,6 @@ def run_bulk(
                 break
             print(f"  {t:6d}  {f}")
 
-    if strict and total_hits > 0:
+    if strict and strict_fail:
         return 1
     return 0

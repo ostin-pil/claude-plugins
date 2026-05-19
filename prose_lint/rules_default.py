@@ -50,16 +50,48 @@ DEFAULT_RULESET = {
     },
     "pragma": {
         # Names accepted in <!-- prose-check: skip ... -->. "all" is always
-        # honored by the engine regardless of this list.
-        "categories": list(ALL_CATEGORIES),
+        # honored by the engine regardless of this list. "banlist" is also
+        # accepted when the banlist is enabled.
+        "categories": list(ALL_CATEGORIES) + ["banlist"],
     },
-    # v2. Present so projects can stage overrides early; inert in v1 (the CLI
-    # prints a one-line notice if a project populates it).
+    # v2 mechanized banlist. The default content is shipped so opting in is
+    # one line (`[banlist] enabled = true`), but it is OFF by default: the
+    # word sense ("navigate" the verb vs the figurative tell) cannot be
+    # disambiguated mechanically, so it is advisory and false-positive-prone.
+    # Default severity is "warn" (reported, never fails --strict); a project
+    # can set "error" to enforce. Matching skips inline code spans and
+    # blockquote lines, and honors the skip-banlist pragma.
     "banlist": {
-        "words": [],
-        "words_remove": [],
-        "phrases": [],
+        "enabled": False,
         "severity": "warn",
         "context_suppress": ["code-span", "blockquote", "pragma"],
+        # Single tokens, matched whole-word and case-insensitively. The
+        # parenthetical sense from prose-style.md ("robust (as praise)") is
+        # not enforceable mechanically; that is the reason for warn + opt-in.
+        "words": [
+            "delve", "navigate", "underscore", "bolster", "foster",
+            "harness", "leverage", "unpack", "pivotal", "groundbreaking",
+            "cutting-edge", "transformative", "game-changing", "innovative",
+            "robust", "comprehensive", "seamless", "intricate", "nuanced",
+            "vibrant", "multifaceted", "holistic", "testament", "landscape",
+            "realm",
+        ],
+        "words_remove": [],
+        # Regex fragments, case-insensitive, matched per line after inline
+        # code is blanked. <...> placeholders are written as \S+ here.
+        "phrases": [
+            r"\bdive into\b",
+            r"\bshed light on\b",
+            r"\bpave the way\b",
+            r"In today's \S+ world",
+            r"\bIt's important to note\b",
+            r"\bWhen it comes to\b",
+            r"\bAt its core\b",
+            r"\bAt the end of the day\b",
+            r"\bLet's break it down\b",
+            r"\bThis is where \S+(?: \S+)? comes in\b",
+            r"\bplays a crucial role in\b",
+            r"\bcannot be overstated\b",
+        ],
     },
 }

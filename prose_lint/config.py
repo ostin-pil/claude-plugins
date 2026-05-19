@@ -17,7 +17,6 @@ Merge semantics, kept deliberately simple and predictable:
 
 from __future__ import annotations
 
-import sys
 import tomllib
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -47,9 +46,24 @@ class Config:
         return self.thresholds.get(name, builtin)
 
     @property
-    def banlist_populated(self) -> bool:
-        b = self.banlist or {}
-        return bool(b.get("words") or b.get("phrases"))
+    def banlist_enabled(self) -> bool:
+        return bool((self.banlist or {}).get("enabled"))
+
+    @property
+    def banlist_severity(self) -> str:
+        return (self.banlist or {}).get("severity", "warn")
+
+    @property
+    def banlist_words(self) -> list[str]:
+        return list((self.banlist or {}).get("words", []))
+
+    @property
+    def banlist_phrases(self) -> list[str]:
+        return list((self.banlist or {}).get("phrases", []))
+
+    @property
+    def banlist_context_suppress(self) -> list[str]:
+        return list((self.banlist or {}).get("context_suppress", []))
 
 
 def _deep_merge(base: dict, over: dict) -> dict:
@@ -70,13 +84,20 @@ def _to_config(ruleset: dict, source: str) -> Config:
     pragma = ruleset.get("pragma", {})
     banlist = dict(ruleset.get("banlist", {}))
 
-    # banlist.words is additive over the default, minus words_remove (v2).
-    default_words = DEFAULT_RULESET["banlist"]["words"]
-    words = list(dict.fromkeys(default_words + banlist.get("words", [])))
+    # banlist.words / .phrases are additive over the default, minus
+    # words_remove. enabled/severity/context_suppress fall back to default.
+    bl_default = DEFAULT_RULESET["banlist"]
+    words = list(dict.fromkeys(bl_default["words"] + banlist.get("words", [])))
     for w in banlist.get("words_remove", []):
         if w in words:
             words.remove(w)
     banlist["words"] = words
+    banlist["phrases"] = list(
+        dict.fromkeys(bl_default["phrases"] + banlist.get("phrases", []))
+    )
+    banlist.setdefault("enabled", bl_default["enabled"])
+    banlist.setdefault("severity", bl_default["severity"])
+    banlist.setdefault("context_suppress", list(bl_default["context_suppress"]))
 
     return Config(
         enabled=list(structural.get("enabled", DEFAULT_RULESET["structural"]["enabled"])),
@@ -124,11 +145,4 @@ def load_config(
     with open(path, "rb") as f:
         project = tomllib.load(f)
     merged = _deep_merge(DEFAULT_RULESET, project)
-    cfg = _to_config(merged, str(path))
-    if cfg.banlist_populated:
-        print(
-            f"prose-lint: note: {path} populates [banlist]; banlist "
-            "enforcement is v2 and is not applied in this version.",
-            file=sys.stderr,
-        )
-    return cfg
+    return _to_config(merged, str(path))

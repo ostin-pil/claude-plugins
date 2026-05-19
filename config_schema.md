@@ -39,21 +39,22 @@ Category slugs: `em-dash`, `ascii-arrow`, `not-X-but-Y`, `no-X-no-Y-just-Z`, `th
 |---|---|---|---|
 | `categories` | list | all nine categories | The vocabulary accepted in a `<!-- prose-check: skip ... -->` comment. `all` is always honored regardless of this list. |
 
-### `[banlist]` (v2, reserved)
+### `[banlist]` (mechanized, opt-in)
 
-Present so a project can stage overrides early. It is parsed and merged in v1 but enforces nothing; if you populate `words` or `phrases`, the CLI prints a one-line notice to stderr and the findings are unchanged. v2 turns this on with severity levels and context suppression.
+Off by default and shipped with content, so opting in is one line: `enabled = true`. It is off by default on purpose. A mechanical matcher cannot tell "navigate" the verb from the figurative tell, so it is false-positive-prone; that is also why the default severity is `warn` (reported, never fails `--strict`). A project that wants enforcement sets `severity = "error"`. Inflections are not matched (`leverage` is flagged, `leveraging` is not), keeping precision over recall.
 
-| Key | Type | Default | Meaning (v2) |
+| Key | Type | Default | Meaning |
 |---|---|---|---|
-| `words` | list | `[]` | Added to the default banned-word list. |
-| `words_remove` | list | `[]` | Removed from the effective banned-word list. |
-| `phrases` | list | `[]` | Added to the default banned-phrase list. |
-| `severity` | string | `"warn"` | `warn` or `error`. |
-| `context_suppress` | list | `["code-span","blockquote","pragma"]` | Contexts where a banned word is not flagged. |
+| `enabled` | bool | `false` | Turn the banlist on. Off means it is not even a category, so output is unchanged. |
+| `words` | list | the shipped default list | Added to the default words, matched whole-word and case-insensitively. |
+| `words_remove` | list | `[]` | Removed from the effective word list. |
+| `phrases` | list | the shipped default list | Added to the default phrase regexes (case-insensitive). |
+| `severity` | string | `"warn"` | `warn` reports only; `error` also fails `--strict`. |
+| `context_suppress` | list | `["code-span","blockquote","pragma"]` | `code-span` blanks inline `` `...` `` before matching; `blockquote` skips `>` lines; `pragma` honors `<!-- prose-check: skip banlist -->`. Fenced code is always exempt. |
 
 ## Merge rules
 
-Scalars and bools replace. Scope lists replace when the project states them, since a project declares its own scope rather than appending to the default. `structural.enabled` replaces when stated. `structural.thresholds` shallow-merges onto the default thresholds. `banlist.words` is the default plus `words` minus `words_remove`.
+Scalars and bools replace. Scope lists replace when the project states them, since a project declares its own scope rather than appending to the default. `structural.enabled` replaces when stated. `structural.thresholds` shallow-merges onto the default thresholds. `banlist.words` is the default plus `words` minus `words_remove`; `banlist.phrases` is the default plus `phrases`; `banlist.enabled`/`severity` replace.
 
 ## Example
 

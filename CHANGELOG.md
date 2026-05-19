@@ -32,6 +32,14 @@ One plugin covers both surfaces. The repo doubles as a personal single-plugin ma
 
 `action.yml` is a composite GitHub Action: set up Python 3.11, install prose-lint from its own checkout (`github.action_path`, no PyPI), scan the PR's changed non-deleted markdown, and scan the PR title+body. Scope is the consumer repo's `.prose-lint.toml`, not hardcoded paths (the one place the original Bounce workflow was project-specific). Warn-only by default (log only, no PR comment, preserving the Bounce decision); `strict: "true"` fails the build. `examples/prose.yml` is the one-stanza drop-in; prose-lint dogfoods the action on itself via `uses: ./`. `smoke_action.py` parses the manifests and runs the scan pipeline against a throwaway git repo, proving consumer-config scoping and the strict exit flow.
 
+### P1b: Bounce fallback-chain migration (staged)
+
+`staging/bounce/` holds the shims, `apply.sh`, an optional bulk-only `.prose-lint.toml`, and `verify_shims.py`. The shims resolve prose-lint (PATH, then local checkout) and fall back to the vendored original, so Bounce CI keeps working with no `prose.yml` change and no P3 coupling. `verify_shims.py` proves shim(shared) equals shim(fallback) equals original byte-for-byte for scan, bulk, and unwrap. Not applied to Bounce: the user runs `apply.sh` on a Bounce feature branch and opens the one PR; `.claude/` is untouched (the skill interface is preserved).
+
+### P5: mechanized banlist (opt-in)
+
+The banlist is implemented and ships with content (the prose-style.md word and phrase list), but it is off by default. Turn it on with `[banlist] enabled = true`. It is opt-in because a mechanical matcher cannot disambiguate word sense, so it is false-positive-prone; default severity is `warn` (reported, never fails `--strict`), and a project can set `error` to enforce. Matching is whole-word and case-insensitive (no inflections), skips inline code spans, blockquotes, fenced code, and a `skip banlist` pragma. Off by default means it is not even a category, so the structural byte-for-byte regression gate is unaffected (all 105 cases still pass). The naming stays honest: structural detectors are the source port; the banlist is the prose-lint-only layer.
+
 ### Planned
 
-P1b Bounce migration (fallback-chain shim, staged for a Bounce session), P5 mechanized banlist (the v2 positioning flip).
+Rename away from the provisional "ProseMint" repo name once a final name is chosen.
