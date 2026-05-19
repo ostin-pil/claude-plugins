@@ -86,7 +86,7 @@ Any repo gets the gate as one stanza. Drop `examples/prose.yml` into `.github/wo
 - uses: <owner>/prose-lint@v1
 ```
 
-The action sets up Python 3.11, installs prose-lint from its own checkout (no PyPI), scans the PR's changed markdown, and scans the PR title and body. What counts as in-scope is the consumer repo's `.prose-lint.toml`, not anything hardcoded in the action. It is warn-only by default (findings in the Actions log, no PR comment); set `strict: "true"` to fail the build on a hit. Inputs: `strict`, `scan-pr-body`, `python-version`, `config`. prose-lint dogfoods this action on itself via `uses: ./` in its own `.github/workflows/prose.yml`.
+This requires the repo pushed to a git remote first, since `<owner>/prose-lint@v1` is how GitHub fetches the action. Until prose-lint has a remote it is local-only: the sole working form is the dogfood `uses: ./` inside this repo. The action sets up Python 3.11, installs prose-lint from its own checkout (no PyPI), scans the PR's changed markdown, and scans the PR title and body. What counts as in-scope is the consumer repo's `.prose-lint.toml`, not anything hardcoded in the action. It is warn-only by default (findings in the Actions log, no PR comment); set `strict: "true"` to fail the build on a hit. Inputs: `strict`, `scan-pr-body`, `python-version`, `config`. prose-lint dogfoods this action on itself via `uses: ./` in its own `.github/workflows/prose.yml`.
 
 ## Status
 

@@ -36,8 +36,10 @@ def check_structure() -> None:
     assert "actions/setup-python" in steps_text
     assert 'pip install "${{ github.action_path }}"' in steps_text
 
-    # PyYAML (YAML 1.1) parses the `on:` key as boolean True; GitHub's own
-    # parser does not. Read it back under either key.
+    # Do not "simplify" to doc["on"]. PyYAML follows YAML 1.1, where the
+    # bare keyword `on` is the boolean True, so the workflow trigger key
+    # comes back as True, not "on". GitHub's parser does not do this; the
+    # workflow files are correct. Read the key back either way.
     def trigger(doc):
         return doc.get("on", doc.get(True))
 
