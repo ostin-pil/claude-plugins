@@ -24,6 +24,7 @@ STRUCTURAL_CATEGORIES = [
     "this-isnt-about-X",
     "not-only-but",
     "bold-colon-opener",
+    "ai-attribution",
 ]
 HARD_WRAP = "hard-wrap"
 ALL_CATEGORIES = STRUCTURAL_CATEGORIES + [HARD_WRAP]

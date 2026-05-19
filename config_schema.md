@@ -22,10 +22,10 @@ The v1 detectors.
 
 | Key | Type | Default | Meaning |
 |---|---|---|---|
-| `enabled` | list | all eight categories | Categories that run. Omitting a category from this list disables it (it reports as suppressed by config). |
+| `enabled` | list | all nine categories | Categories that run. Omitting a category from this list disables it (it reports as suppressed by config). |
 | `thresholds` | table | `bold-colon-opener = 5`, `hard-wrap = 2` | Minimum hits before a category is reported. Any category not listed uses the engine builtin of 1. |
 
-Category slugs: `em-dash`, `ascii-arrow`, `not-X-but-Y`, `no-X-no-Y-just-Z`, `this-isnt-about-X`, `not-only-but`, `bold-colon-opener`, `hard-wrap`.
+Category slugs: `em-dash`, `ascii-arrow`, `not-X-but-Y`, `no-X-no-Y-just-Z`, `this-isnt-about-X`, `not-only-but`, `bold-colon-opener`, `ai-attribution`, `hard-wrap`.
 
 ### `[language]`
 
@@ -37,7 +37,7 @@ Category slugs: `em-dash`, `ascii-arrow`, `not-X-but-Y`, `no-X-no-Y-just-Z`, `th
 
 | Key | Type | Default | Meaning |
 |---|---|---|---|
-| `categories` | list | all eight categories | The vocabulary accepted in a `<!-- prose-check: skip ... -->` comment. `all` is always honored regardless of this list. |
+| `categories` | list | all nine categories | The vocabulary accepted in a `<!-- prose-check: skip ... -->` comment. `all` is always honored regardless of this list. |
 
 ### `[banlist]` (v2, reserved)
 

@@ -1,3 +1,6 @@
 prose-check: reports/Status Report 2026-04-13.md
 
-total flagged lines: 0
+[ai-attribution] 1 hit(s):
+55:| Convention | `prefix(topic): title` commits documented; `commit-msg` hook strips Co-Authored-By |
+
+total flagged lines: 1

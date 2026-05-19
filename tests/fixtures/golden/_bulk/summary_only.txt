@@ -1,5 +1,5 @@
 ================================================================
-scanned 104 file(s); 49 with hits; 1427 total flagged lines
+scanned 105 file(s); 54 with hits; 1435 total flagged lines
 
 top offenders:
      136  tests/fixtures/corpus/research/transcription-pain-points-2026-05.md
@@ -48,6 +48,11 @@ top offenders:
        5  tests/fixtures/corpus/_edge/russian_emdash.md
        5  tests/fixtures/corpus/research/on-device-translation.md
        4  tests/fixtures/corpus/_edge/hard_wrap.md
+       3  tests/fixtures/corpus/_edge/ai_attribution.md
        2  tests/fixtures/corpus/_edge/fenced_code.md
        2  tests/fixtures/corpus/research/context-aware-cleanup.md
+       2  tests/fixtures/corpus/research/settings-reference.md
        1  tests/fixtures/corpus/_edge/pragma_some.md
+       1  tests/fixtures/corpus/knowledge/autonomous-execution-brief-2026-04-30.md
+       1  tests/fixtures/corpus/knowledge/follow-up-brief-2026-05-01.md
+       1  tests/fixtures/corpus/reports/Status Report 2026-04-13.md

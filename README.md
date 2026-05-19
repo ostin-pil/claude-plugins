@@ -1,14 +1,15 @@
+<!-- prose-check: skip ai-attribution -->
 # prose-lint
 
-A linter for the structural tells of AI-flavored prose. It scans markdown for em dashes, ASCII arrows, "it's not X, it's Y" and its sibling clichés, bold-colon openers used as a definition-list surrogate, and paragraphs that were hard-wrapped instead of left for the renderer to wrap.
+A linter for the structural tells of AI-flavored prose. It scans markdown for em dashes, ASCII arrows, "it's not X, it's Y" and its sibling clichés, bold-colon openers used as a definition-list surrogate, AI attribution boilerplate (the "Generated with Claude Code" footer, a bare 🤖 line, Co-Authored-By trailers), and paragraphs that were hard-wrapped instead of left for the renderer to wrap.
 
 This started inside one project (Untype) as `bin/check-prose.sh` plus a Claude Code skill and a CI gate. It worked, but it was trapped in that repo: using it elsewhere meant copying files and hand-editing scope. prose-lint is the extraction: one engine, several surfaces (CLI, Claude Code plugin, reusable CI action, MCP server), with a shared default ruleset that each project can tune.
 
 ## What v1 does and does not do
 
-v1 is honest about its scope. It mechanically detects the structural tells above. It does **not** enforce the banned-word and banned-phrase list that a project's prose rule documents (words like "delve", "leverage", "seamless"). That list stays advisory in v1, a discipline for the author, not a check the tool runs. Mechanized banlist enforcement with severity levels and context suppression is planned for v2; the config schema already reserves space for it so v2 lands without reworking projects. Until then, this is a structural-tells linter, and the name on the tin says so.
+v1 is honest about its scope. It mechanically detects the structural tells above. It does **not** enforce the banned-word and banned-phrase list that a project's prose rule documents (words like "delve", "leverage", "seamless"), nor the non-regex guidance against self-referential gate or CI-status narration ("prose-gate clean", "all tests green") in PR bodies. Those stay advisory in v1, a discipline for the author, not a check the tool runs. Mechanized banlist enforcement with severity levels and context suppression is planned for v2; the config schema already reserves space for it so v2 lands without reworking projects. Until then, this is a structural-tells linter, and the name on the tin says so.
 
-The detection logic is a faithful port of the original Untype scanner. A frozen corpus of 100+ real documents plus crafted edge cases pins the engine to the source behavior byte-for-byte; the regression suite fails if it ever drifts.
+The detection logic is a faithful port of the Untype scanner and tracks it as the source evolves: when the source gains a category, prose-lint ports it into the shared default and re-baselines. A frozen corpus of 100+ real documents plus crafted edge cases pins the engine to the current source behavior byte-for-byte; the regression suite fails if it ever drifts.
 
 ## Install
 

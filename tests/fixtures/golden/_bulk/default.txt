@@ -1,3 +1,12 @@
+prose-check: tests/fixtures/corpus/_edge/ai_attribution.md
+
+[ai-attribution] 3 hit(s):
+5:🤖 Generated with [Claude Code](https://claude.com/claude-code)
+7:Co-Authored-By: Claude <noreply@anthropic.com>
+9:A lowercase co-authored-by: trailer should also match (case-insensitive).
+
+total flagged lines: 3
+
 prose-check: tests/fixtures/corpus/_edge/bold_colon_below_threshold.md
 
 total flagged lines: 0
@@ -133,7 +142,10 @@ total flagged lines: 22
 
 prose-check: tests/fixtures/corpus/knowledge/autonomous-execution-brief-2026-04-30.md
 
-total flagged lines: 0
+[ai-attribution] 1 hit(s):
+310:- [ ] No `Co-Authored-By` trailer
+
+total flagged lines: 1
 
 prose-check: tests/fixtures/corpus/knowledge/branches-sor-verification-runbook-2026-04-30.md
 
@@ -174,7 +186,10 @@ total flagged lines: 0
 
 prose-check: tests/fixtures/corpus/knowledge/follow-up-brief-2026-05-01.md
 
-total flagged lines: 0
+[ai-attribution] 1 hit(s):
+176:- [ ] No `Co-Authored-By` trailer.
+
+total flagged lines: 1
 
 prose-check: tests/fixtures/corpus/knowledge/icp-v1.md
 
@@ -296,7 +311,10 @@ total flagged lines: 0
 
 prose-check: tests/fixtures/corpus/reports/Status Report 2026-04-13.md
 
-total flagged lines: 0
+[ai-attribution] 1 hit(s):
+55:| Convention | `prefix(topic): title` commits documented; `commit-msg` hook strips Co-Authored-By |
+
+total flagged lines: 1
 
 prose-check: tests/fixtures/corpus/reports/Status Report 2026-04-15 (plain).md
 
@@ -760,7 +778,11 @@ total flagged lines: 58
 
 prose-check: tests/fixtures/corpus/research/settings-reference.md
 
-total flagged lines: 0
+[ai-attribution] 2 hit(s):
+121:| `commit` | Git commit attribution text | Generated with Claude Code + Co-Authored-By trailer |
+122:| `pr` | Pull request description attribution | Generated with Claude Code |
+
+total flagged lines: 2
 
 prose-check: tests/fixtures/corpus/research/skills-system.md
 
@@ -932,7 +954,7 @@ prose-check: tests/fixtures/corpus/root/README.md
 total flagged lines: 0
 
 ================================================================
-scanned 104 file(s); 49 with hits; 1427 total flagged lines
+scanned 105 file(s); 54 with hits; 1435 total flagged lines
 
 top offenders:
      136  tests/fixtures/corpus/research/transcription-pain-points-2026-05.md
@@ -981,6 +1003,11 @@ top offenders:
        5  tests/fixtures/corpus/_edge/russian_emdash.md
        5  tests/fixtures/corpus/research/on-device-translation.md
        4  tests/fixtures/corpus/_edge/hard_wrap.md
+       3  tests/fixtures/corpus/_edge/ai_attribution.md
        2  tests/fixtures/corpus/_edge/fenced_code.md
        2  tests/fixtures/corpus/research/context-aware-cleanup.md
+       2  tests/fixtures/corpus/research/settings-reference.md
        1  tests/fixtures/corpus/_edge/pragma_some.md
+       1  tests/fixtures/corpus/knowledge/autonomous-execution-brief-2026-04-30.md
+       1  tests/fixtures/corpus/knowledge/follow-up-brief-2026-05-01.md
+       1  tests/fixtures/corpus/reports/Status Report 2026-04-13.md

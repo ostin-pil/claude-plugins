@@ -26,6 +26,10 @@ PATTERNS = [
     ("this-isnt-about-X", re.compile(r"\bThis isn'?t about\b", re.I), 1, False),
     ("not-only-but", re.compile(r"\bNot only\b.*\bbut\b", re.I), 1, False),
     ("bold-colon-opener", re.compile(r"^\*\*[^*]+\*\*\s*[—:]\s+\S", re.M), 5, False),
+    # Ported from Untype/Bounce d0a1cb7 (2026-05-18): the harness-default
+    # "Generated with Claude Code" / robot-emoji footer and Co-Authored-By
+    # trailers. A universal AI-tell, so it lives in the shared default.
+    ("ai-attribution", re.compile(r"🤖|Generated with \[?Claude Code|Co-Authored-By", re.I), 1, False),
 ]
 
 HARD_WRAP_THRESHOLD = 2
