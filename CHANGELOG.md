@@ -1,4 +1,4 @@
-<!-- prose-check: skip ai-attribution -->
+<!-- prose-check: skip ai-attribution, banlist -->
 # Changelog
 
 ## Unreleased

@@ -1,3 +1,4 @@
+<!-- prose-check: skip banlist -->
 # Configuration schema
 
 A project tunes prose-lint by dropping a `.prose-lint.toml` anywhere above the file or directory being scanned. Discovery walks up from the target, like git or eslint, and stops at the first file found. With no file, the canonical default applies, and the default reproduces the original Untype scanner exactly.

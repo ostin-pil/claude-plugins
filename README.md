@@ -1,4 +1,4 @@
-<!-- prose-check: skip ai-attribution -->
+<!-- prose-check: skip ai-attribution, banlist -->
 # prose-lint
 
 A linter for the structural tells of AI-flavored prose. It scans markdown for em dashes, ASCII arrows, "it's not X, it's Y" and its sibling clichés, bold-colon openers used as a definition-list surrogate, AI attribution boilerplate (the "Generated with Claude Code" footer, a bare 🤖 line, Co-Authored-By trailers), and paragraphs that were hard-wrapped instead of left for the renderer to wrap.

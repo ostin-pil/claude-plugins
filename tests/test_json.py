@@ -30,6 +30,12 @@ def test_json_is_valid_and_consistent():
     # Every category appears (including suppressed/below-threshold ones).
     names = {c["name"] for c in payload["categories"]}
     assert "hard-wrap" in names and "em-dash" in names
+    # severity is part of the contract (MCP + CLI consumers rely on it);
+    # structural categories are error-class.
+    for c in payload["categories"]:
+        assert c["severity"] in ("error", "warn")
+    em = next(c for c in payload["categories"] if c["name"] == "em-dash")
+    assert em["severity"] == "error"
 
 
 def test_json_carries_full_hits_not_truncated():
