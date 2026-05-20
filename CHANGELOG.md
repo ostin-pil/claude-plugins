@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+## 0.1.0 (2026-05-20)
+
+First PyPI release, under the final product name **prose-mint** (the provisional `prose-lint` was rejected by PyPI's name-similarity check against the unrelated `proselint`; the rename also retires the "ProseMint" provisional that was hanging over the GitHub repo). Adds a `prose-mint-mcp` console script (`prose_mint.server:main`) and switches the Claude Code plugin's MCP launch to `uvx --from "prose-mint[mcp]" prose-mint-mcp`, retiring the absolute-path-to-local-checkout form documented as the v0 "Caveat, read before installing" in the README. Consumers can now `pipx install prose-mint`, `uv tool install prose-mint`, and install the plugin without cloning the repo to a fixed path. The Python package directory renamed `prose_lint/` to `prose_mint/`; the config file convention is now `.prose-mint.toml` (consumers carrying `.prose-lint.toml` need a one-line rename to keep auto-discovery working). The GitHub repo stays at `ostin-pil/ProseMint` for now; the action ref `uses: ostin-pil/ProseMint@v1` works unchanged.
+
 ### P0: standalone repo and behavior-preserving engine
 
 Ported the Untype scanner into a standalone Python package. Detection logic (`engine.py`, `unwrap.py`) is verbatim; only the structure changed so the same analysis drives text, JSON, and bulk surfaces. A frozen corpus of 104 documents (96 real Untype docs plus 8 crafted edge cases) and a regression suite assert the engine reproduces the original scanner's text output byte-for-byte. `--json` is a new additive contract with its own tests.

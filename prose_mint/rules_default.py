@@ -3,7 +3,7 @@
 This is the single source of truth for v1 defaults. Applying it must
 reproduce the original Untype scanner exactly, so the values here
 mirror engine.PATTERNS thresholds and the source's Cyrillic exemption. A
-project's .prose-lint.toml extends or relaxes this; it never has to restate
+project's .prose-mint.toml extends or relaxes this; it never has to restate
 the whole thing.
 
 The regex patterns themselves stay in engine.py (they are code, not config).

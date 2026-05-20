@@ -29,7 +29,7 @@ def _check_python() -> None:
         need = ".".join(str(n) for n in REQUIRES_PYTHON)
         have = ".".join(str(n) for n in sys.version_info[:3])
         print(
-            f"prose-lint requires Python {need}+ (found {have}). "
+            f"prose-mint requires Python {need}+ (found {have}). "
             "The config layer uses stdlib tomllib (3.11+). "
             "Use a newer python3 or pin python3.11 in CI.",
             file=sys.stderr,
@@ -113,10 +113,10 @@ def _cmd_unwrap(args: argparse.Namespace) -> int:
 
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
-        prog="prose-lint",
+        prog="prose-mint",
         description="Structural-tells linter for AI-flavored prose (v1).",
     )
-    p.add_argument("--version", action="version", version=f"prose-lint {__version__}")
+    p.add_argument("--version", action="version", version=f"prose-mint {__version__}")
     sub = p.add_subparsers(dest="command", required=True)
 
     s = sub.add_parser("scan", help="Scan one file or stdin")
@@ -125,7 +125,7 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--label", default="", help="Label for the report header")
     s.add_argument("--strict", action="store_true", help="Exit non-zero on any hit")
     s.add_argument("--json", action="store_true", help="Emit structured JSON")
-    s.add_argument("--config", help="Path to a .prose-lint.toml (else auto-discovered)")
+    s.add_argument("--config", help="Path to a .prose-mint.toml (else auto-discovered)")
     s.set_defaults(func=_cmd_scan)
 
     b = sub.add_parser("bulk", help="Scan files/directories with a summary")
@@ -135,7 +135,7 @@ def build_parser() -> argparse.ArgumentParser:
     b.add_argument("--summary-only", action="store_true", help="Summary table only")
     b.add_argument("--ext", default=None, help="Comma-separated extensions (default: md or config)")
     b.add_argument("--exclude", action="append", default=[], help="Glob to exclude (repeatable)")
-    b.add_argument("--config", help="Path to a .prose-lint.toml (else auto-discovered)")
+    b.add_argument("--config", help="Path to a .prose-mint.toml (else auto-discovered)")
     b.set_defaults(func=_cmd_bulk)
 
     u = sub.add_parser("unwrap", help="Join hard-wrapped paragraphs")

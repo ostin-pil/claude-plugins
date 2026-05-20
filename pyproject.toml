@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "prose-lint"
+name = "prose-mint"
 version = "0.1.0"
 description = "Structural-tells linter for AI-flavored prose"
 readme = "README.md"
@@ -15,10 +15,11 @@ dependencies = []
 mcp = ["fastmcp>=3"]
 
 [project.scripts]
-prose-lint = "prose_lint.cli:main"
+prose-mint = "prose_mint.cli:main"
+prose-mint-mcp = "prose_mint.server:main"
 
 [tool.setuptools]
-packages = ["prose_lint"]
+packages = ["prose_mint"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -52,7 +52,7 @@ def to_payload(analysis: Analysis) -> dict:
     """Structured findings as a dict. Shared by the CLI --json output and the
     MCP server so both speak the identical contract."""
     return {
-        "tool": "prose-lint",
+        "tool": "prose-mint",
         "version": __version__,
         "label": analysis.label,
         "skip_emdash": analysis.skip_emdash,

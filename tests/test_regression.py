@@ -21,7 +21,7 @@ CORPUS = REPO / "tests" / "fixtures" / "corpus"
 GOLDEN = REPO / "tests" / "fixtures" / "golden"
 
 sys.path.insert(0, str(REPO))
-from prose_lint.cli import main as cli_main  # noqa: E402
+from prose_mint.cli import main as cli_main  # noqa: E402
 
 
 def _per_file_cases() -> list[tuple[str, Path, Path]]:
@@ -71,7 +71,7 @@ def test_scan_matches_live_scanner(label, src, golden):
 def test_bulk_matches_live_wrapper(key, args):
     expected = (GOLDEN / "_bulk" / f"{key}.txt").read_text(encoding="utf-8")
     res = subprocess.run(
-        [sys.executable, str(REPO / "bin" / "prose-lint"), "bulk", *args],
+        [sys.executable, str(REPO / "bin" / "prose-mint"), "bulk", *args],
         cwd=str(REPO),
         capture_output=True,
         text=True,
@@ -82,7 +82,7 @@ def test_bulk_matches_live_wrapper(key, args):
 
 def test_strict_exit_code_on_hits():
     res = subprocess.run(
-        [sys.executable, str(REPO / "bin" / "prose-lint"),
+        [sys.executable, str(REPO / "bin" / "prose-mint"),
          "scan", "--file", str(CORPUS / "_edge" / "structural_all.md"), "--strict"],
         capture_output=True, text=True,
     )
@@ -91,7 +91,7 @@ def test_strict_exit_code_on_hits():
 
 def test_strict_exit_code_clean():
     res = subprocess.run(
-        [sys.executable, str(REPO / "bin" / "prose-lint"),
+        [sys.executable, str(REPO / "bin" / "prose-mint"),
          "scan", "--file", str(CORPUS / "_edge" / "clean.md"), "--strict"],
         capture_output=True, text=True,
     )

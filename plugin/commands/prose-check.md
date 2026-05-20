@@ -1,14 +1,14 @@
 ---
-description: Scan a markdown file or PR body for structural AI-prose tells via prose-lint
+description: Scan a markdown file or PR body for structural AI-prose tells via prose-mint
 argument-hint: "[path | PR-number] (empty = current branch's PR)"
 allowed-tools: [Bash, Read]
 ---
 
-Run a prose-lint scan on `$ARGUMENTS`.
+Run a prose-mint scan on `$ARGUMENTS`.
 
-Resolve the tool in order: `prose-lint` on `PATH`, then
-`~/Projects/prose-lint/bin/prose-lint`. If neither exists, report that
-prose-lint is not installed and stop.
+Resolve the tool in order: `prose-mint` on `PATH`, then
+`~/Projects/prose-mint/bin/prose-mint`. If neither exists, report that
+prose-mint is not installed and stop.
 
 Dispatch on `$ARGUMENTS`:
 

@@ -1,6 +1,6 @@
 """Per-project configuration.
 
-A project drops a `.prose-lint.toml` anywhere above the file/dir being
+A project drops a `.prose-mint.toml` anywhere above the file/dir being
 scanned; discovery walks up from the target like git/eslint. The file
 extends or relaxes the canonical default in rules_default.py; the absence
 of a file (the common case, and every P0 regression case) yields the
@@ -23,7 +23,7 @@ from pathlib import Path
 
 from .rules_default import DEFAULT_RULESET
 
-CONFIG_FILENAME = ".prose-lint.toml"
+CONFIG_FILENAME = ".prose-mint.toml"
 
 # Engine builtin per-category threshold when neither the default ruleset nor a
 # project overrides it.
@@ -40,7 +40,7 @@ class Config:
     exclude: list[str]
     extensions: list[str]
     banlist: dict = field(default_factory=dict)
-    source: str = "default"  # path of the .prose-lint.toml, or "default"
+    source: str = "default"  # path of the .prose-mint.toml, or "default"
 
     def threshold_for(self, name: str, builtin: int = _BUILTIN_THRESHOLD) -> int:
         return self.thresholds.get(name, builtin)
@@ -119,7 +119,7 @@ def default_config() -> Config:
 
 
 def find_config_file(start: Path) -> Path | None:
-    """Walk up from `start` (a file or dir) looking for .prose-lint.toml."""
+    """Walk up from `start` (a file or dir) looking for .prose-mint.toml."""
     start = start.resolve()
     base = start if start.is_dir() else start.parent
     for d in [base, *base.parents]:

@@ -1,4 +1,4 @@
-# prose-lint dogfooding its own reusable action. Uses the local action
+# prose-mint dogfooding its own reusable action. Uses the local action
 # (uses: ./) so a change to action.yml is gated by action.yml on the same PR.
 name: prose
 on:

@@ -19,7 +19,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO))
 
-from prose_lint.server import build_server  # noqa: E402
+from prose_mint.server import build_server  # noqa: E402
 
 SAMPLE = "It's not X. An em dash — here. Arrow → there.\n"
 
@@ -34,7 +34,7 @@ async def run() -> int:
 
         r = await client.call_tool("scan_text", {"text": SAMPLE, "label": "smoke"})
         payload = r.data
-        assert payload["tool"] == "prose-lint"
+        assert payload["tool"] == "prose-mint"
         assert payload["label"] == "smoke"
         assert payload["total_hits"] > 0
         names = {c["name"] for c in payload["categories"]}

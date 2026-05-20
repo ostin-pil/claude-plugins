@@ -17,10 +17,10 @@ PLUGIN_JSON = PLUGIN_DIR / ".claude-plugin" / "plugin.json"
 
 def test_marketplace_manifest_valid_and_points_at_plugin():
     m = json.loads(MARKETPLACE.read_text(encoding="utf-8"))
-    assert m["name"] == "prose-lint"
+    assert m["name"] == "prose-mint"
     assert isinstance(m["plugins"], list) and len(m["plugins"]) == 1
     entry = m["plugins"][0]
-    assert entry["name"] == "prose-lint"
+    assert entry["name"] == "prose-mint"
     assert entry["source"] == "./plugin"
     # The local source path must resolve to a real plugin.
     assert (REPO / entry["source"][2:] / ".claude-plugin" / "plugin.json").is_file()
@@ -28,12 +28,13 @@ def test_marketplace_manifest_valid_and_points_at_plugin():
 
 def test_plugin_manifest_valid():
     p = json.loads(PLUGIN_JSON.read_text(encoding="utf-8"))
-    assert p["name"] == "prose-lint"
+    assert p["name"] == "prose-mint"
     assert "version" in p and "description" in p
-    mcp = p["mcpServers"]["prose-lint"]
+    mcp = p["mcpServers"]["prose-mint"]
     assert mcp["type"] == "stdio"
-    assert mcp["command"] == "uv"
-    assert "prose_lint.server" in mcp["args"]
+    assert mcp["command"] == "uvx"
+    assert "prose-mint[mcp]" in mcp["args"]
+    assert "prose-mint-mcp" in mcp["args"]
 
 
 def test_bundled_skill_and_command_present():

@@ -7,12 +7,12 @@ Two tools, both read-only and credential-free:
                             already have connected, then pipes the text
                             here. No Notion/Drive auth lives in this server.
   scan_files(paths)         scan a list of local files (e.g. a PR's changed
-                            paths), each with its discovered .prose-lint.toml.
+                            paths), each with its discovered .prose-mint.toml.
 
 The tool bodies are plain functions so the test suite exercises them with
 zero third-party dependencies. FastMCP is imported lazily in main(), so the
 core package stays import-clean without it; it is an optional extra
-(`pip install prose-lint[mcp]`, or `uv run --with fastmcp`).
+(`pip install prose-mint[mcp]`, or `uv run --with fastmcp`).
 """
 
 from __future__ import annotations
@@ -63,7 +63,7 @@ def scan_files_impl(paths: list[str], config_path: str | None = None) -> dict:
         if payload["total_hits"] > 0:
             with_hits += 1
     return {
-        "tool": "prose-lint",
+        "tool": "prose-mint",
         "files": files,
         "summary": {
             "scanned": len(paths),
@@ -79,7 +79,7 @@ def build_server():
     starting the stdio loop."""
     from fastmcp import FastMCP  # lazy: optional extra, not a core dep
 
-    mcp = FastMCP(name="prose-lint", instructions=INSTRUCTIONS)
+    mcp = FastMCP(name="prose-mint", instructions=INSTRUCTIONS)
 
     @mcp.tool(annotations={"readOnlyHint": True})
     def scan_text(text: str, label: str = "stdin", config_path: str | None = None) -> dict:
@@ -93,7 +93,7 @@ def build_server():
     @mcp.tool(annotations={"readOnlyHint": True})
     def scan_files(paths: list[str], config_path: str | None = None) -> dict:
         """Scan local markdown files (e.g. a PR's changed paths). Each file
-        uses its own discovered .prose-lint.toml unless config_path is set.
+        uses its own discovered .prose-mint.toml unless config_path is set.
         """
         return scan_files_impl(paths, config_path=config_path)
 

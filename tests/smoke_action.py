@@ -5,11 +5,11 @@ Kept out of the dep-free pytest suite (YAML parse needs a lib). Run via uv:
     uv run --with pyyaml python tests/smoke_action.py
 
 Part 1 parses action.yml and the example/own workflows and asserts the
-composite shape, inputs, and that the steps drive the prose-lint CLI.
+composite shape, inputs, and that the steps drive the prose-mint CLI.
 
 Part 2 reproduces the action's "scan changed markdown" step against a throw
 away git repo: a changed README with a tell and a sessions/ file the repo's
-.prose-lint.toml excludes. It asserts the consumer-config scoping flows
+.prose-mint.toml excludes. It asserts the consumer-config scoping flows
 through the pipeline and that --strict flips the exit code. This is the
 behavior a GitHub run would exercise, checked locally.
 """
@@ -22,7 +22,7 @@ import tempfile
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-PROSE_LINT = str(REPO / "bin" / "prose-lint")
+PROSE_LINT = str(REPO / "bin" / "prose-mint")
 
 
 def check_structure() -> None:
@@ -32,7 +32,7 @@ def check_structure() -> None:
     assert action["runs"]["using"] == "composite"
     assert set(action["inputs"]) == {"strict", "scan-pr-body", "python-version", "config"}
     steps_text = yaml.dump(action["runs"]["steps"])
-    assert "prose-lint bulk" in steps_text and "prose-lint scan --stdin" in steps_text
+    assert "prose-mint bulk" in steps_text and "prose-mint scan --stdin" in steps_text
     assert "actions/setup-python" in steps_text
     assert 'pip install "${{ github.action_path }}"' in steps_text
 
@@ -72,7 +72,7 @@ def check_pipeline() -> None:
         (repo / "README.md").write_text("# ok\n\nAn em dash — here is a tell.\n")
         (repo / "sessions").mkdir()
         (repo / "sessions" / "log.md").write_text("Another em dash — here.\n")
-        (repo / ".prose-lint.toml").write_text('[scope]\nexclude = ["sessions/*"]\n')
+        (repo / ".prose-mint.toml").write_text('[scope]\nexclude = ["sessions/*"]\n')
         _git(repo, "add", "-A")
         _git(repo, "commit", "-qm", "change")
 

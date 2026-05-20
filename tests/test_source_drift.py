@@ -1,17 +1,19 @@
 """Drift guard against the upstream source scanner.
 
-While Untype remains the canonical rule (until P1b makes prose-lint
-the source), its bin/check-prose.sh can gain a category and prose-lint
-silently falls behind. That already happened once: `ai-attribution` landed
-in Untype on 2026-05-18 and went unnoticed here for days.
+While Untype remains the canonical rule, its scanner can gain a category and
+prose-mint silently falls behind. That already happened once: `ai-attribution`
+landed in Untype on 2026-05-18 and went unnoticed here for days.
 
 This test parses the upstream scanner's category slugs and asserts they
-match prose-lint's. The scanner is the precise drift vector (the prose-style
+match prose-mint's. The scanner is the precise drift vector (the prose-style
 prose is illustrative, not an exhaustive machine list), so guarding against
 it is what would have caught d0a1cb7 the day it merged.
 
-It is skipped, not failed, when the Untype checkout is absent, so prose-lint
-CI on a machine without it stays green. On the dev machine it is a real gate.
+Untype's session 89 (PR #23) wired `bin/check-prose.sh` as a fallback-chain
+shim and moved the real scanner to `bin/check-prose-impl.py`; that's the
+file this test now reads. It is skipped when the Untype checkout (or the
+impl) is absent, so prose-mint CI on a machine without it stays green; on
+the dev machine it is a real gate.
 """
 
 from __future__ import annotations
@@ -26,11 +28,11 @@ import pytest
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO))
 
-from prose_lint.rules_default import ALL_CATEGORIES  # noqa: E402
+from prose_mint.rules_default import ALL_CATEGORIES  # noqa: E402
 
 UPSTREAM = Path(
     os.environ.get("UNTYPE_REPO", "/Users/costa/Projects/Untype")
-) / "bin" / "check-prose.sh"
+) / "bin" / "check-prose-impl.py"
 
 # First tuple element of each PATTERNS entry: ("slug", re.compile(...
 # Slugs include uppercase (not-X-but-Y, no-X-no-Y-just-Z, this-isnt-about-X).
@@ -57,6 +59,6 @@ def test_categories_match_upstream_scanner():
     extra = ours - upstream            # we have one the source dropped
     assert not missing and not extra, (
         f"drifted from {UPSTREAM}\n"
-        f"  add to prose-lint default: {sorted(missing) or 'none'}\n"
+        f"  add to prose-mint default: {sorted(missing) or 'none'}\n"
         f"  no longer in source:       {sorted(extra) or 'none'}"
     )

@@ -12,9 +12,9 @@ REPO = Path(__file__).resolve().parent.parent
 CORPUS = REPO / "tests" / "fixtures" / "corpus"
 sys.path.insert(0, str(REPO))
 
-from prose_lint.engine import analyze  # noqa: E402
-from prose_lint.formatters import to_payload  # noqa: E402
-from prose_lint.server import scan_files_impl, scan_text_impl  # noqa: E402
+from prose_mint.engine import analyze  # noqa: E402
+from prose_mint.formatters import to_payload  # noqa: E402
+from prose_mint.server import scan_files_impl, scan_text_impl  # noqa: E402
 
 STRUCTURAL = (CORPUS / "_edge" / "structural_all.md").read_text(encoding="utf-8")
 
@@ -22,7 +22,7 @@ STRUCTURAL = (CORPUS / "_edge" / "structural_all.md").read_text(encoding="utf-8"
 def test_scan_text_matches_engine_payload():
     out = scan_text_impl(STRUCTURAL, label="x")
     assert out == to_payload(analyze(STRUCTURAL, label="x"))
-    assert out["tool"] == "prose-lint"
+    assert out["tool"] == "prose-mint"
     assert out["total_hits"] > 0
 
 
@@ -32,7 +32,7 @@ def test_scan_text_clean():
 
 
 def test_scan_text_honors_explicit_config(tmp_path):
-    cfg = tmp_path / ".prose-lint.toml"
+    cfg = tmp_path / ".prose-mint.toml"
     cfg.write_text('[structural]\nenabled = []\n', encoding="utf-8")
     out = scan_text_impl(STRUCTURAL, config_path=str(cfg))
     assert out["total_hits"] == 0  # everything disabled
@@ -50,7 +50,7 @@ def test_scan_files_aggregates_and_reports_errors(tmp_path):
 
 
 def test_scan_files_discovers_per_file_config(tmp_path):
-    (tmp_path / ".prose-lint.toml").write_text(
+    (tmp_path / ".prose-mint.toml").write_text(
         '[structural]\nenabled = []\n', encoding="utf-8"
     )
     doc = tmp_path / "d.md"

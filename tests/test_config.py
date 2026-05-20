@@ -19,9 +19,9 @@ REPO = Path(__file__).resolve().parent.parent
 CORPUS = REPO / "tests" / "fixtures" / "corpus"
 sys.path.insert(0, str(REPO))
 
-from prose_lint.config import default_config, load_config  # noqa: E402
-from prose_lint.engine import PATTERNS, analyze  # noqa: E402
-from prose_lint.rules_default import ALL_CATEGORIES, DEFAULT_RULESET  # noqa: E402
+from prose_mint.config import default_config, load_config  # noqa: E402
+from prose_mint.engine import PATTERNS, analyze  # noqa: E402
+from prose_mint.rules_default import ALL_CATEGORIES, DEFAULT_RULESET  # noqa: E402
 
 STRUCTURAL = (CORPUS / "_edge" / "structural_all.md").read_text(encoding="utf-8")
 RUSSIAN = (CORPUS / "_edge" / "russian_emdash.md").read_text(encoding="utf-8")
@@ -48,7 +48,7 @@ def test_default_ruleset_thresholds_match_engine_builtins():
 # --- override: disable a category -------------------------------------------
 
 def _toml(tmp_path: Path, body: str) -> Path:
-    p = tmp_path / ".prose-lint.toml"
+    p = tmp_path / ".prose-mint.toml"
     p.write_text(body, encoding="utf-8")
     return p
 
@@ -96,7 +96,7 @@ cyrillic_em_dash_exempt = false
 # --- discovery --------------------------------------------------------------
 
 def test_discovery_walks_up_from_target(tmp_path):
-    (tmp_path / ".prose-lint.toml").write_text(
+    (tmp_path / ".prose-mint.toml").write_text(
         '[structural]\nenabled = []\n', encoding="utf-8"
     )
     nested = tmp_path / "a" / "b"
@@ -105,7 +105,7 @@ def test_discovery_walks_up_from_target(tmp_path):
     doc.write_text("An em dash — here.\n", encoding="utf-8")
 
     cfg = load_config(start_path=doc)
-    assert cfg.source.endswith(".prose-lint.toml")
+    assert cfg.source.endswith(".prose-mint.toml")
     a = analyze(doc.read_text(), config=cfg)
     assert a.total_hits == 0  # everything disabled by the discovered config
 
@@ -142,7 +142,7 @@ def test_banlist_default_config_is_off():
 # --- explicit overrides discovery -------------------------------------------
 
 def test_explicit_config_wins_over_discovery(tmp_path):
-    (tmp_path / ".prose-lint.toml").write_text(
+    (tmp_path / ".prose-mint.toml").write_text(
         '[structural]\nenabled = []\n', encoding="utf-8"
     )
     explicit = tmp_path / "custom.toml"
@@ -162,11 +162,11 @@ def test_bulk_respects_config_scope_exclude(tmp_path):
     skipd = tmp_path / "sessions"
     skipd.mkdir()
     (skipd / "log.md").write_text("Another em dash — here.\n", encoding="utf-8")
-    (tmp_path / ".prose-lint.toml").write_text(
+    (tmp_path / ".prose-mint.toml").write_text(
         '[scope]\nexclude = ["sessions/*"]\n', encoding="utf-8"
     )
     res = subprocess.run(
-        [sys.executable, str(REPO / "bin" / "prose-lint"), "bulk", "."],
+        [sys.executable, str(REPO / "bin" / "prose-mint"), "bulk", "."],
         cwd=str(tmp_path), capture_output=True, text=True,
     )
     assert "keep.md" in res.stdout

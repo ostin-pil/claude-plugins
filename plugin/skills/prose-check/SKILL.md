@@ -1,6 +1,6 @@
 ---
 name: prose-check
-description: This skill should be used when the user asks to "prose-check", "scan for AI tells", "check this doc/PR for AI-flavored writing", "run prose-lint", mentions em dashes / ASCII arrows / bold-colon openers / "not X but Y" / AI-attribution boilerplate as a writing problem, or wants a markdown file or pull-request body checked before committing or merging. Works in any project once the plugin is installed.
+description: This skill should be used when the user asks to "prose-check", "scan for AI tells", "check this doc/PR for AI-flavored writing", "run prose-mint", mentions em dashes / ASCII arrows / bold-colon openers / "not X but Y" / AI-attribution boilerplate as a writing problem, or wants a markdown file or pull-request body checked before committing or merging. Works in any project once the plugin is installed.
 argument-hint: "[path | PR-number] (empty = current branch's PR)"
 allowed-tools: [Bash, Read]
 version: 0.1.0
@@ -9,17 +9,17 @@ version: 0.1.0
 # prose-check
 
 Scan a markdown file or a pull-request body for structural AI-prose tells
-using the shared `prose-lint` tool. Read-only: surface findings, never edit
+using the shared `prose-mint` tool. Read-only: surface findings, never edit
 files or PR bodies, never "fix" silently.
 
 ## Resolve the tool
 
 Use the first that exists, in order:
 
-1. `prose-lint` on `PATH` (installed via `pipx`/`uv tool install`)
-2. `~/Projects/prose-lint/bin/prose-lint` (local checkout)
+1. `prose-mint` on `PATH` (installed via `pipx`/`uv tool install`)
+2. `~/Projects/prose-mint/bin/prose-mint` (local checkout)
 
-If neither resolves, report that prose-lint is not installed and stop. Do
+If neither resolves, report that prose-mint is not installed and stop. Do
 not fall back to guessing or hand-scanning.
 
 ## Run
@@ -34,7 +34,7 @@ Parse the argument:
   `gh pr view --json number,title,body`. If there is no PR, ask the user
   for a path or PR number rather than guessing.
 
-`prose-lint` auto-discovers the project's `.prose-lint.toml` by walking up
+`prose-mint` auto-discovers the project's `.prose-mint.toml` by walking up
 from the target, so per-project scope and thresholds apply automatically.
 
 ## Report

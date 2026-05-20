@@ -1,5 +1,5 @@
-name: "prose-lint"
-description: "Scan changed markdown and the PR body for structural AI-prose tells. Scope and rules come from the consumer repo's .prose-lint.toml."
+name: "prose-mint"
+description: "Scan changed markdown and the PR body for structural AI-prose tells. Scope and rules come from the consumer repo's .prose-mint.toml."
 author: "Costa"
 
 inputs:
@@ -16,7 +16,7 @@ inputs:
     required: false
     default: "3.11"
   config:
-    description: "Explicit .prose-lint.toml path. Default: auto-discovered by walking up from each file."
+    description: "Explicit .prose-mint.toml path. Default: auto-discovered by walking up from each file."
     required: false
     default: ""
 
@@ -28,10 +28,10 @@ runs:
       with:
         python-version: ${{ inputs.python-version }}
 
-    - name: Install prose-lint
+    - name: Install prose-mint
       shell: bash
       # The action repo is checked out at github.action_path; it *is* the
-      # prose-lint package, so install it from there. No PyPI needed.
+      # prose-mint package, so install it from there. No PyPI needed.
       run: pip install "${{ github.action_path }}"
 
     - name: Scan changed markdown
@@ -48,13 +48,13 @@ runs:
           BASE=$(git merge-base origin/HEAD HEAD 2>/dev/null || echo HEAD~1)
         fi
         # Changed, non-deleted markdown. Scope (include/exclude) is the
-        # consumer repo's .prose-lint.toml, not hardcoded here.
+        # consumer repo's .prose-mint.toml, not hardcoded here.
         mapfile -t CHANGED < <(git diff --name-only --diff-filter=d "$BASE"...HEAD \
           | grep -E '\.md$' || true)
         if [ "${#CHANGED[@]}" -eq 0 ]; then
           echo "(no markdown changed)"
         else
-          prose-lint bulk $CONFIG_FLAG $STRICT_FLAG "${CHANGED[@]}"
+          prose-mint bulk $CONFIG_FLAG $STRICT_FLAG "${CHANGED[@]}"
         fi
 
     - name: Scan PR body
@@ -72,4 +72,4 @@ runs:
         fi
         STRICT_FLAG=""; [ "$STRICT" = "true" ] && STRICT_FLAG="--strict"
         gh pr view "$PR" --json title,body -q '.title + "\n\n" + .body' \
-          | prose-lint scan --stdin --label "PR #$PR" $STRICT_FLAG
+          | prose-mint scan --stdin --label "PR #$PR" $STRICT_FLAG

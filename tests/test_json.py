@@ -12,8 +12,8 @@ REPO = Path(__file__).resolve().parent.parent
 CORPUS = REPO / "tests" / "fixtures" / "corpus"
 sys.path.insert(0, str(REPO))
 
-from prose_lint.engine import analyze  # noqa: E402
-from prose_lint.formatters import format_json  # noqa: E402
+from prose_mint.engine import analyze  # noqa: E402
+from prose_mint.formatters import format_json  # noqa: E402
 
 
 def test_json_is_valid_and_consistent():
@@ -21,7 +21,7 @@ def test_json_is_valid_and_consistent():
     a = analyze(content, label="_edge/structural_all.md")
     payload = json.loads(format_json(a))
 
-    assert payload["tool"] == "prose-lint"
+    assert payload["tool"] == "prose-mint"
     assert payload["label"] == "_edge/structural_all.md"
     assert payload["total_hits"] == a.total_hits
 

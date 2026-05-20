@@ -4,7 +4,7 @@ Golden = source-of-truth behavior. We capture the exact stdout of the
 original bin/check-prose.sh and bin/check-prose-bulk.sh so the regression
 test can assert the ported engine reproduces it byte-for-byte.
 
-Run from the prose-lint repo root:
+Run from the prose-mint repo root:
     python3 tests/regen_golden.py
 
 This is intentionally a manual, checked-in step (not a fixture factory the

@@ -1,4 +1,4 @@
-"""prose-lint: a structural-tells linter for AI-flavored prose.
+"""prose-mint: a structural-tells linter for AI-flavored prose.
 
 v1 detects structural tells only (em dashes, ASCII arrows, "not X but Y" and
 friends, bold-colon openers, hard-wrapped paragraphs). The banned-word and

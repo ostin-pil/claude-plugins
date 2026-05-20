@@ -16,12 +16,12 @@ import pytest
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO))
 
-from prose_lint.config import load_config  # noqa: E402
-from prose_lint.engine import analyze  # noqa: E402
+from prose_mint.config import load_config  # noqa: E402
+from prose_mint.engine import analyze  # noqa: E402
 
 
 def cfg(tmp_path, body: str = "[banlist]\nenabled = true\n"):
-    p = tmp_path / ".prose-lint.toml"
+    p = tmp_path / ".prose-mint.toml"
     p.write_text(body, encoding="utf-8")
     return load_config(explicit=p)
 
@@ -82,11 +82,11 @@ def test_pragma_skips_banlist(tmp_path):
 def test_severity_warn_does_not_fail_strict(tmp_path):
     doc = tmp_path / "d.md"
     doc.write_text("We leverage a seamless thing.\n", encoding="utf-8")
-    (tmp_path / ".prose-lint.toml").write_text(
+    (tmp_path / ".prose-mint.toml").write_text(
         "[banlist]\nenabled = true\n", encoding="utf-8"
     )
     r = subprocess.run(
-        [sys.executable, str(REPO / "bin" / "prose-lint"),
+        [sys.executable, str(REPO / "bin" / "prose-mint"),
          "scan", "--file", str(doc), "--strict"],
         capture_output=True, text=True,
     )
@@ -97,11 +97,11 @@ def test_severity_warn_does_not_fail_strict(tmp_path):
 def test_severity_error_fails_strict(tmp_path):
     doc = tmp_path / "d.md"
     doc.write_text("We leverage a seamless thing.\n", encoding="utf-8")
-    (tmp_path / ".prose-lint.toml").write_text(
+    (tmp_path / ".prose-mint.toml").write_text(
         '[banlist]\nenabled = true\nseverity = "error"\n', encoding="utf-8"
     )
     r = subprocess.run(
-        [sys.executable, str(REPO / "bin" / "prose-lint"),
+        [sys.executable, str(REPO / "bin" / "prose-mint"),
          "scan", "--file", str(doc), "--strict"],
         capture_output=True, text=True,
     )
@@ -113,7 +113,7 @@ def test_structural_strict_unchanged_with_banlist_off(tmp_path):
     doc = tmp_path / "d.md"
     doc.write_text("An em dash — here.\n", encoding="utf-8")
     r = subprocess.run(
-        [sys.executable, str(REPO / "bin" / "prose-lint"),
+        [sys.executable, str(REPO / "bin" / "prose-mint"),
          "scan", "--file", str(doc), "--strict"],
         capture_output=True, text=True,
     )
