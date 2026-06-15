@@ -1,0 +1,11 @@
+{
+  "name": "lifecycle-kit",
+  "description": "Session lifecycle and reporting skills driven by a per-project manifest: session-start, session-report, session-end, finalize-worktree, cleanup-worktrees, report.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Costa"
+  },
+  "homepage": "https://github.com/ostin-pil/claude-plugins#lifecycle-kit",
+  "repository": "https://github.com/ostin-pil/claude-plugins",
+  "keywords": ["sessions", "lifecycle", "workflow", "git", "pull-request", "reporting"]
+}

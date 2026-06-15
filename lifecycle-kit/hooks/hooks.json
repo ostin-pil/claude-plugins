@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/validate-manifest.sh",
+            "timeout": 15,
+            "statusMessage": "Checking lifecycle manifest..."
+          }
+        ]
+      }
+    ]
+  }
+}
