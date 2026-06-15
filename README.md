@@ -7,8 +7,8 @@ add, one CI, shared dev tooling, and atomic changes across plugins that overlap.
 
 | Plugin | Status | What it does |
 | --- | --- | --- |
-| [`lifecycle-kit`](./lifecycle-kit) | v0.1 (scaffolded) | Session lifecycle and reporting skills driven by a per-project manifest |
-| `prose-mint` | planned | Prose-quality scanner (currently a standalone checkout at `~/Projects/prose-lint`); migrating in is deliberate work because the `check-prose.sh` fallback chain resolves through that path |
+| [`lifecycle-kit`](./lifecycle-kit) | v0.1 | Session lifecycle and reporting skills driven by a per-project manifest |
+| [`prose-mint`](./prose-mint) | v0.1 (absorbed from `ostin-pil/ProseMint`, history preserved) | Structural-tells linter for AI-flavored prose; ships the `prose-check` skill, a `/prose-check` command, and an MCP server. The plugin is `prose-mint/plugin`; the Python tool and tests sit alongside it |
 
 ## Install (in a consuming project)
 
@@ -17,6 +17,7 @@ Add the marketplace once, then install any plugin from it.
 ```
 /plugin marketplace add ostin-pil/claude-plugins
 /plugin install lifecycle-kit@claude-plugins
+/plugin install prose-mint@claude-plugins
 ```
 
 The marketplace id is the `name` field in `.claude-plugin/marketplace.json`
@@ -35,14 +36,17 @@ lifecycle-kit/
   .claude-plugin/plugin.json
   skills/<six>/SKILL.md
   hooks/hooks.json + validate-manifest.sh
+  rules/workflow.md                 # bundled invariants (zero companion files)
   lifecycle-manifest.template.md
   examples/untype-manifest.md
   README.md
+prose-mint/                         # absorbed from ostin-pil/ProseMint (history preserved)
+  plugin/                           # the Claude Code plugin (skill, command, MCP)
+  prose_mint/ bin/ tests/ ...       # the Python tool
 ```
 
 ## Before publishing
 
-The marketplace and plugin manifests reference `ostin-pil/claude-plugins`; adjust
-the `url`, `homepage`, and `repository` fields if the GitHub owner or repo name
-differs. Pick and add a `license` (omitted for now). Then create the GitHub repo
-and push; consumers add it with `/plugin marketplace add <owner>/<repo>`.
+Pick and add a `license` (omitted for now). The absorbed `prose-mint` keeps its
+own `pyproject.toml` and `action.yml`; decide whether its CI/release runs from
+this monorepo or stays retired with the old `ostin-pil/ProseMint` repo.

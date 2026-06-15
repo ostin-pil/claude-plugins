@@ -1,4 +1,5 @@
 {
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "claude-plugins",
   "owner": {
     "name": "Costa"
@@ -8,14 +9,19 @@
       "name": "lifecycle-kit",
       "description": "Session lifecycle and reporting skills driven by a per-project manifest: session-start, session-report, session-end, finalize-worktree, cleanup-worktrees, report.",
       "version": "0.1.0",
-      "source": {
-        "source": "git-subdir",
-        "url": "ostin-pil/claude-plugins",
-        "path": "./lifecycle-kit"
-      },
+      "source": "./lifecycle-kit",
       "homepage": "https://github.com/ostin-pil/claude-plugins#lifecycle-kit",
       "category": "workflow",
       "keywords": ["sessions", "lifecycle", "workflow", "git", "reporting"]
+    },
+    {
+      "name": "prose-mint",
+      "description": "Structural-tells linter for AI-flavored prose: scan files, PR bodies, or piped text for em dashes, arrows, not-X-but-Y, bold-colon openers, AI-attribution boilerplate, hard-wraps. Bundles the prose-check skill, a /prose-check command, and an MCP server.",
+      "version": "0.1.0",
+      "source": "./prose-mint/plugin",
+      "homepage": "https://github.com/ostin-pil/claude-plugins#prose-mint",
+      "category": "development",
+      "keywords": ["prose", "linter", "markdown", "ai-tells", "writing"]
     }
   ]
 }
