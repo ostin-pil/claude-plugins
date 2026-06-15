@@ -47,13 +47,15 @@ A `SessionStart` hook (`hooks/validate-manifest.sh`) checks the manifest exists,
 has the required keys, and that the remote is configured when required. It warns;
 it never blocks the session.
 
-## Companion file you provide
+## Bundled rules (no companion file)
 
-`workflow_rule` (default `.claude/rules/workflow.md`) points at the lifecycle
-invariants the skills assume: one PR per session, never merge locally, one
-worktree per concurrent session. The kit references this doc but does not yet
-ship a generic copy; provide one in your project, or point the key at your own.
-Hardening this into a shipped default is a known follow-up.
+`workflow_rule` points at the lifecycle invariants the skills assume: one PR per
+session, never merge locally, one worktree per concurrent session,
+assert-then-reconcile, and the REST-not-`gh pr edit` rule. The kit ships a
+generic copy at `rules/workflow.md`, and the manifest template defaults
+`workflow_rule` to it (`${CLAUDE_PLUGIN_ROOT}/rules/workflow.md`), so a project
+adopts the kit with zero companion files. Point the key at your own path if you
+maintain a project-specific version.
 
 ## Install
 

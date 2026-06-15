@@ -78,6 +78,6 @@ research_dir: research               # scanned recursively by report
 reports_dir: reports                 # report output
 jargon_terms: []                     # project/platform terms to strip from plain-mode reports
 plan_doc: none                       # e.g. IMPLEMENTATION_PLAN.md
-workflow_rule: .claude/rules/workflow.md   # the lifecycle invariants doc (see kit README: companion file you provide)
+workflow_rule: ${CLAUDE_PLUGIN_ROOT}/rules/workflow.md   # the lifecycle invariants doc, bundled with the kit; point at your own project path to override
 scratch_paths: [.claude/settings.local.json]   # known untracked noise to ignore
 ```
