@@ -1,0 +1,17 @@
+prose-check: research/user-pain-points-and-desires-2026.md
+
+[em-dash] 112 hit(s):
+1:# User Pain Points & Desired Features — macOS Dictation Competitors
+4:**Purpose:** Layer user-voice evidence (complaints, feature requests, churn reasons) onto the structural competitive map in `research/competitive-landscape.md`,
+27:| 1 | **Post-trial reliability drop.** Works during free trial, accuracy and uptime fall after card is charged. One reviewer: "works great about 60% of the time
+28:| 2 | **Privacy / screenshot-capture scandal.** 2025 Reddit disclosure: Wispr captured screenshots of the focused window every few seconds and sent them to clou
+34:- **Offline / on-device mode.** "Best UI, but I don't want my voice in the cloud" — aggregated across [Resonant's Reddit roundup](https://www.onresonant.com/res
+
+[ascii-arrow] 7 hit(s):
+64:- Too tinker-y → users move to Wispr Flow or Willow / Voibe for "just works."
+65:- $249 lifetime too expensive → freeflow / VoiceInk / Whispering (Show HN threads).
+66:- Feature removed in update → afadingthought explicitly left over stripped customization.
+90:- **→ Wispr Flow for cross-platform.** Danny Smith + AlternativeTo reviewers cite Mac-only as reason to move.
+91:- **→ Superwhisper for richer prompting.** afadingthought landed on Superwhisper for multi-prompt workflows.
+
+total flagged lines: 119

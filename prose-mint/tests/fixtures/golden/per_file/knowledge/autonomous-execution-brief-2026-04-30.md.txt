@@ -1,0 +1,6 @@
+prose-check: knowledge/autonomous-execution-brief-2026-04-30.md
+
+[ai-attribution] 1 hit(s):
+310:- [ ] No `Co-Authored-By` trailer
+
+total flagged lines: 1

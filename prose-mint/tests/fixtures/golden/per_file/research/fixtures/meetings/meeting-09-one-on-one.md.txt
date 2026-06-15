@@ -1,0 +1,10 @@
+prose-check: research/fixtures/meetings/meeting-09-one-on-one.md
+
+[em-dash] 10 hit(s):
+1:# 1:1 — Wei (Manager) and Theo (Frontend Engineer)
+9:Theo: One thing — I've been thinking about the conversation we had last quarter about staff-track vs management-track. I'm leaning more strongly toward staff. I
+15:Wei: I talked to Felix this morning. Priya commits to Wednesday end of day. If she misses, we push the audit to the following week. I'll handle that scheduling 
+25:Theo: I want to be the technical lead on a multi-team initiative. The settings refresh is a candidate, but I'd want it to be cross-team — frontend, backend, des
+27:Wei: I think that's the right scope. I'll talk to Priya and Yusuf about expanding the settings refresh charter to include data-model changes — that pulls Ana in
+
+total flagged lines: 10

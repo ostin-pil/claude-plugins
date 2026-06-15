@@ -1,0 +1,8 @@
+prose-check: _edge/ai_attribution.md
+
+[ai-attribution] 3 hit(s):
+5:🤖 Generated with [Claude Code](https://claude.com/claude-code)
+7:Co-Authored-By: Claude <noreply@anthropic.com>
+9:A lowercase co-authored-by: trailer should also match (case-insensitive).
+
+total flagged lines: 3

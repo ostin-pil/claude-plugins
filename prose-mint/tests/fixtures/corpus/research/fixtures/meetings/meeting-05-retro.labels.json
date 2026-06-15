@@ -1,0 +1,16 @@
+{
+  "action_items": [
+    "Felix writes up the minimum-three-days post-handoff QA rule and adds it to the team handbook by end of next week",
+    "Wei serves as the standup timer for the next two weeks to enforce a two-minute-per-person hard cap",
+    "Wei opens a ticket with the platform team about the staging-database flakiness and tags it as recurring, today",
+    "Imani leads a 30-minute session Tuesday next week walking the team through smoke-test patterns that caught the calendar bug",
+    "Felix posts a retro summary to Slack tomorrow"
+  ],
+  "decisions": [
+    "Keep pair programming on anything that touches shared state",
+    "Keep the structured design-crit format (constraints, strengths, questions, suggestions)",
+    "Adopt a minimum-three-days post-handoff QA window as a team rule",
+    "Cap standup contributions at two minutes per person; revisit if drifting after two weeks"
+  ],
+  "notes": "Sprint 46 shipped the analytics dashboard on schedule. Calendar bug caught by smoke tests. Test environment was unstable for three days mid-sprint."
+}

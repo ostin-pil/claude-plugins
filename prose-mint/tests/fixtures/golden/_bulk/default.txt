@@ -1,0 +1,1013 @@
+prose-check: tests/fixtures/corpus/_edge/ai_attribution.md
+
+[ai-attribution] 3 hit(s):
+5:🤖 Generated with [Claude Code](https://claude.com/claude-code)
+7:Co-Authored-By: Claude <noreply@anthropic.com>
+9:A lowercase co-authored-by: trailer should also match (case-insensitive).
+
+total flagged lines: 3
+
+prose-check: tests/fixtures/corpus/_edge/bold_colon_below_threshold.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/_edge/clean.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/_edge/fenced_code.md
+
+[em-dash] 1 hit(s):
+3:This paragraph outside the fence has an em dash — it should be flagged.
+
+[ascii-arrow] 1 hit(s):
+11:After the fence, another arrow → here should be flagged.
+
+total flagged lines: 2
+
+prose-check: tests/fixtures/corpus/_edge/hard_wrap.md
+
+[hard-wrap] 4 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+4:that each sit comfortably inside the fifty to ninety-five character
+5:band the scanner uses to detect manual line breaks inside what
+6:should be one soft-wrapped paragraph for the markdown renderer.
+9:so the pair trips the hard-wrap heuristic on its second member.
+
+total flagged lines: 4
+
+prose-check: tests/fixtures/corpus/_edge/pragma_all.md
+  (pragma disables: all)
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/_edge/pragma_some.md
+  (pragma disables: bold-colon-opener, em-dash)
+
+[ascii-arrow] 1 hit(s):
+12:But this arrow → MUST still be flagged, because the pragma only
+
+total flagged lines: 1
+
+prose-check: tests/fixtures/corpus/_edge/russian_emdash.md
+  (Cyrillic > 30%, skipping em-dash check)
+
+[ascii-arrow] 1 hit(s):
+10:Но стрелка → всё равно должна помечаться, потому что отключается только
+
+[hard-wrap] 4 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+4:помечаться сканером, потому что доля кириллицы превышает тридцать
+5:процентов от всех буквенных символов в этом тексте.
+8:текста, поэтому проверка на тире для таких документов отключается.
+11:проверка на длинное тире, а остальные правила продолжают действовать.
+
+total flagged lines: 5
+
+prose-check: tests/fixtures/corpus/_edge/structural_all.md
+
+[em-dash] 1 hit(s):
+13:A clause with an em dash — like this one — should trip the scanner.
+
+[ascii-arrow] 1 hit(s):
+11:The arrow flow is input → transform → output.
+
+[this-isnt-about-X] 1 hit(s):
+5:This isn't about speed. It's about correctness.
+
+[not-only-but] 1 hit(s):
+7:Not only does it parse, but it also validates.
+
+[bold-colon-opener] 5 hit(s):
+15:**First**: a bold-colon opener line.
+16:**Second**: another bold-colon opener line.
+17:**Third**: a third one.
+18:**Fourth**: a fourth one.
+19:**Fifth**: a fifth one, which crosses the threshold of five.
+
+total flagged lines: 9
+
+prose-check: tests/fixtures/corpus/knowledge/animation-direction-2026-04-14.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/archive/phase3-ax-feasibility-2026-04-22.md
+
+[em-dash] 25 hit(s):
+1:# Phase 3 AX feasibility — Messages.app thread reading
+19:| Transcript container | descendant with `AXIdentifier == "TranscriptCollectionView"` | — |
+22:| Sender (mine vs theirs) | Description prefix of wrapper: `"Your iMessage, …"` vs `"<Contact Name>, …"`. Also disambiguable by horizontal position (x) since mi
+25:Tree size: 69 nodes at depth 15 in a 2-bubble thread — no IPC latency visible; the whole walk was sub-100ms perceived.
+27:## Run 2 (photo-only thread, 2026-04-22) — attachments resolved
+
+[ascii-arrow] 2 hit(s):
+56:| Body web area | `_MAIL_MESSAGE_BODY` → `AXWebArea` | traverse for per-paragraph `AXStaticText`, `AXHeading`, `AXLink` |
+82:The built probe binary lives at `.build/debug/UntypeAXProbe`. On this machine the first run returned `AXIsProcessTrusted() == true` without an explicit grant — 
+
+total flagged lines: 27
+
+prose-check: tests/fixtures/corpus/knowledge/archive/phase3-thread-reading-integration-spec-2026-04-22.md
+
+[em-dash] 24 hit(s):
+1:# Phase 3 — thread-reading integration spec
+19:3. Overlay chip shows `Messages • Ostin • +5 messages` — the `+N messages` half is new, indicates the thread preview is in use.
+103:#### `MailThreadReader` (v2 — spec'd but not built in v1)
+106:- Each visible message in the viewer exposes `message.from.0`, `message.from.1`, … Read sender per index. Sender is always "them" in Mail — nobody uses Mail to 
+111:Mail v2 will need confirmation that threaded-conversation mode yields `message.from.1`, `.2`, etc. — the feasibility doc flagged this as untested.
+
+[ascii-arrow] 6 hit(s):
+21:5. One-tap on the chip cycles `app-only` → `+thread` → `off` for this recording only. Persistent setting lives in Settings.
+107:- Body: descend into `_MAIL_MESSAGE_BODY` → `AXWebArea`, concat child `AXStaticText` values
+194:One-tap on the chip cycles: `app+thread` → `app-only` → `off` → `app+thread`. Persistent toggle is still in Settings; the chip override is per-recording only (s
+226:- `MessagesThreadReader.readThread` needs a real AX tree → integration-only. Best tested by running the app against a canned Messages thread and eyeballing the 
+265:Steps 2–7 and 9 landed across the 2026-04-22 → 2026-04-24 sessions. Step 8 is partial (the `+N` chip renders; the per-recording cycle was deferred since the Set
+
+total flagged lines: 30
+
+prose-check: tests/fixtures/corpus/knowledge/archive/project-status-2026-04-22.md
+
+[em-dash] 17 hit(s):
+1:# Untype — Project Status & Health Assessment
+7:## 1. Codebase Health — GOOD
+24:| `Sources/UntypeAXProbe/main.swift` | 367 | Tool/utility — lower priority |
+26:| `Untype/App/RecordingCoordinator.swift` | 300 | **Primary prod file — split before Phase 3** |
+55:- `SettingsStore` / `KeychainStore` — Keychain requires real entitlements; fine
+
+[ascii-arrow] 5 hit(s):
+37:- `RecordingCoordinator` → state mgmt + `TranscriberFactory` (seam partially extracted in session 46)
+38:- `AppContext` → `AppContextProfile` (enums/tone) + `AppContextDetector` (detection logic)
+39:- `CloudProviderConfig` → config structs + `ProviderConfigValidator`
+40:- `AppDelegate` → lifecycle + `AppObservers`
+113:- Speech Recognition: $30B (2026) → $56B (2030), 17% CAGR
+
+total flagged lines: 22
+
+prose-check: tests/fixtures/corpus/knowledge/autonomous-execution-brief-2026-04-30.md
+
+[ai-attribution] 1 hit(s):
+310:- [ ] No `Co-Authored-By` trailer
+
+total flagged lines: 1
+
+prose-check: tests/fixtures/corpus/knowledge/branches-sor-verification-runbook-2026-04-30.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/code-health-audit-2026-04-14.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/code-health-audit-2026-04-14_2.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/code-health-audit-2026-04-14_3.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/code-health-audit-2026-04-14_4.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/code-health-audit-2026-04-30.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/code-health-audit-2026-05-04.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/cutover-bug-tests-plan-2026-05-04.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/feature-triage-2026-05.md
+  (pragma disables: bold-colon-opener)
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/follow-up-brief-2026-05-01.md
+
+[ai-attribution] 1 hit(s):
+176:- [ ] No `Co-Authored-By` trailer.
+
+total flagged lines: 1
+
+prose-check: tests/fixtures/corpus/knowledge/icp-v1.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/inference-host-ubuntu-setup-2026-04-30.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/issues.md
+  (pragma disables: bold-colon-opener)
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/lean-canvas-v1.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/macos-dev.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/naming-research-2026-04-28.md
+  (pragma disables: bold-colon-opener)
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/open-decisions.md
+  (pragma disables: bold-colon-opener)
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/pivot-build-vs-extend.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/pivot-ideas-2026-04-30.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/profile-smoke-2026-05-12.md
+
+[em-dash] 34 hit(s):
+1:# T1.3 — Per-profile tone-shift smoke (Groq Llama 3.1 8B Instant)
+7:**Run via**: `swift run UntypeBench --corpus … --providers groq:llama-3.1-8b-instant --profile {chat|email|code|general}` — `--profile` added in `e4f738a` for e
+11:### Input 1 — emotional
+22:### Input 2 — email_request
+33:### Input 3 — technical_jargon
+
+[ascii-arrow] 6 hit(s):
+57:This is the **most serious** finding. If T1.1 (L1→L2 translation) ships on top of this, translated chat output will hallucinate even more aggressively because t
+76:### Failure mode 4 — chat profile shifted "can you" → "I can"
+94:1. **Stronger CRITICAL guard, repeated after the profile block.** The current ordering is: base prompt (with CRITICAL) → profile block. Reverse it: profile bloc
+96:2. **Worked examples per profile.** Replace the abstract tone strings with one input→output pair that anchors "this is what cleanup looks like for this destinat
+127:| **Llama 3.1 8B** | Can you send an email to Sarah letting her know that the quarterly report is attached and I would love to get her feedback by the end of da
+
+[bold-colon-opener] 5 hit(s):
+3:**Date**: 2026-05-12
+4:**Task**: `knowledge/feature-triage-2026-05.md:44` (T1.3)
+5:**Provider**: `groq:llama-3.1-8b-instant`
+6:**Source corpus**: `/tmp/profile-smoke-corpus.json` (3 samples)
+7:**Run via**: `swift run UntypeBench --corpus … --providers groq:llama-3.1-8b-instant --profile {chat|email|code|general}` — `--profile` added in `e4f738a` for e
+
+total flagged lines: 45
+
+prose-check: tests/fixtures/corpus/knowledge/prompt-design-v2-2026-05.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/s1-alternates-verification-2026-05-04.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/session-21-followups.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/signing-setup.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/ux-audit-2026-04-11.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/ux-audit-2026-04-12.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/ux-audit-2026-04-15.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/ux-audit-and-takes-2026-04-30.md
+  (pragma disables: bold-colon-opener)
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/ux-direction-2026-04-12.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/validation-metrics-v1.md
+  (pragma disables: bold-colon-opener)
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/whisperkit-intel.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/workflow-improvements-plan-2026-05-15.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/knowledge/workflow-modes-current-state.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/reports/Status Report 2026-04-13.md
+
+[ai-attribution] 1 hit(s):
+55:| Convention | `prefix(topic): title` commits documented; `commit-msg` hook strips Co-Authored-By |
+
+total flagged lines: 1
+
+prose-check: tests/fixtures/corpus/reports/Status Report 2026-04-15 (plain).md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/reports/Status Report 2026-04-15.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/research/apple-fm-benchmark.md
+
+[em-dash] 13 hit(s):
+1:# Apple Foundation Models — summary-quality benchmark
+11:and §4.3) gates two parked pivots — A3 (privacy-first meeting notes) and
+12:V3 (mobile voice-revision) — on whether Apple FM is good enough that the
+21:### Caveat — baseline is gpt-4o-mini, not full gpt-4o
+26:key — pass-through pricing is identical). mini is weaker than full 4o,
+
+[hard-wrap] 41 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+4:Models against a cloud baseline (`openrouter:openai/gpt-4o-mini`) on
+5:action-item extraction across a hand-labeled meeting corpus. The result
+11:and §4.3) gates two parked pivots — A3 (privacy-first meeting notes) and
+12:V3 (mobile voice-revision) — on whether Apple FM is good enough that the
+13:"everything stays on your Mac" claim is technically defensible. The named
+
+total flagged lines: 54
+
+prose-check: tests/fixtures/corpus/research/bmad-method.md
+
+[hard-wrap] 23 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+10:that transforms AI coding assistants into structured virtual development teams. Created by
+11:Steve Kaplan (GitHub: bmadcode), it provides specialized agent personas, deterministic
+12:workflows, and document management patterns to make AI-assisted development repeatable and
+16:distinct expert roles (PM, Architect, Developer, etc.) with scoped responsibilities,
+17:constrained context, and explicit handoff points. Each role produces artifacts that feed
+
+total flagged lines: 23
+
+prose-check: tests/fixtures/corpus/research/claude-code-workflows.md
+
+[em-dash] 37 hit(s):
+11:The simplest autonomous workflow — a bash loop that repeatedly feeds Claude Code the same prompt:
+26:- The loop is the hero, not the model — persistent iteration beats clever prompting
+27:- Every task needs **automated verification** (tests, lint, build) — without pass/fail signals, the loop can't self-correct
+33:- **Ryan Carson's snarktank/ralph** — PRD-driven with `prd.json`, `progress.txt`, `AGENTS.md`
+34:- **Cole Medin's quickstart** — [ralph-loop-quickstart](https://github.com/coleam00/ralph-loop-quickstart)
+
+total flagged lines: 37
+
+prose-check: tests/fixtures/corpus/research/claude-md-rules.md
+
+[bold-colon-opener] 14 hit(s):
+276:**Problem**: File grows to 500+ lines. Important rules get lost in noise. Claude ignores half of it.
+278:**Fix**: Ruthlessly prune. Split into `.claude/rules/` files with path scoping. Use `@import` for detailed content. If Claude already does something correctly w
+282:**Problem**: Writing rules that try to override Claude's built-in behaviors or system prompt instructions. For example, telling Claude to "always respond in a s
+284:**Fix**: Focus on project-specific context that Claude cannot know. Do not try to change fundamental model behavior through CLAUDE.md.
+288:**Problem**: Critical rules like "always run linting after file edits" placed in CLAUDE.md. CLAUDE.md is advisory (approximately 80% compliance). Claude may ski
+
+total flagged lines: 14
+
+prose-check: tests/fixtures/corpus/research/cli-reference.md
+
+[hard-wrap] 11 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+4:scripting patterns, worktree mode, session management, interactive shortcuts, permission
+5:modes, piping, environment variables, and configuration commands.
+251:a future release. Authentication must come from `ANTHROPIC_API_KEY` or `apiKeyHelper`.
+265:starting with `git diff`. The space before `*` matters -- without it, `git diff*` would
+340:to worktrees created with `-w`, subagent worktrees, and parallel sessions in the desktop app.
+
+total flagged lines: 11
+
+prose-check: tests/fixtures/corpus/research/cloud-llm-provider-research.md
+
+[em-dash] 11 hit(s):
+437:| **Ollama** | HTTP API (URLSession) | Install Ollama app + pull model | Low — just HTTP calls | ~5-10ms (localhost) | Yes | Easiest path, external dependency |
+438:| **llama.cpp (server)** | HTTP API (URLSession) | None (bundle binary) | Medium — bundle binary, manage process | ~5-10ms (localhost) | Yes | Bundle-able, well
+439:| **llama.cpp (library)** | Direct C API via SPM | None | High — C bridge, manage memory | <1ms | Yes | Best performance, most work |
+440:| **MLX Swift** | Swift API via SPM | None | Medium — learn MLX API | <1ms | Yes | Most Apple-native, good Swift bindings |
+441:| **Apple Foundation Models** | Swift API (OS framework) | macOS 26+ | Very Low — highest-level API | <1ms | Yes | Future option — macOS 26 required |
+
+total flagged lines: 11
+
+prose-check: tests/fixtures/corpus/research/cloud-llm-provider.md
+
+[em-dash] 11 hit(s):
+33:3. Preserve meaning and tone — this is NOT rewriting, it's cleanup
+34:4. Keep it fast — this runs on every message, latency is critical
+46:- Claude (Anthropic) — Haiku 4.5, Sonnet 4.6
+47:- GPT (OpenAI) — GPT-4o-mini, GPT-4o
+48:- Gemini (Google) — Flash 2.0, Pro 2.5
+
+[hard-wrap] 11 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+6:the app transcribes (on-device via Apple Speech), then an LLM cleans/structures
+7:the text, and the result is pasted into the active app (Slack, email, etc.).
+17:already supports an optional `cloudProvider` with fallback strategies
+18:(cloud-primary-local-fallback, local-primary-cloud-fallback).
+21:LLMResponse carries: requestId, outputText, providerName, modelName, latencyMs.
+
+total flagged lines: 22
+
+prose-check: tests/fixtures/corpus/research/community-patterns.md
+
+[hard-wrap] 29 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+4:and team adoption approaches drawn from community experience and official guidance.
+11:published his full workflow publicly in early 2026, and it has become a reference
+20:  personally prefers full checkouts; most of the Claude Code team prefers
+32:right, then switches to **auto-accept mode** so Claude can execute the entire
+33:implementation without back-and-forth. The key insight: steering time on the plan
+
+total flagged lines: 29
+
+prose-check: tests/fixtures/corpus/research/competitive-landscape.md
+
+[em-dash] 16 hit(s):
+355:| Wispr Flow Pro | $15 | $144 | — |
+357:| MacWhisper Pro | — | $15 (MAS) / $29 (Gumroad) | ~$80 |
+358:| Aqua Voice | ~$8.33 | $100 | — |
+359:| Pipit | subscription tiers | — | — |
+383:| Willow | Seed | 2025 | $4.5M | n/d | Box Group / YC / Burst Capital | iOS-first voice keyboard (not macOS) — launched Nov 2025, 50% MoM user growth, enterpris
+
+total flagged lines: 16
+
+prose-check: tests/fixtures/corpus/research/competitor-deep-diff-2026-05.md
+
+[em-dash] 44 hit(s):
+1:# Competitor deep-diff: voice-to-text for macOS — May 2026
+4:**Scope:** A focused 8-row coverage matrix across the macOS dictation / voice-to-text category, with one positioning delta per competitor relative to Untype. Ex
+6:- [`competitive-landscape.md`](./competitive-landscape.md) — broader commercial map (Wispr, Superwhisper, MacWhisper, AudioPen, Otter, Notta, plus the April 202
+7:- [`head-to-head-comparison.md`](./head-to-head-comparison.md) — the previous head-to-head against Wispr / Superwhisper
+8:- [`distribution-monetization.md`](./distribution-monetization.md) — distribution and pricing baseline
+
+[ascii-arrow] 1 hit(s):
+89:- **Active monthly:** VoiceInk (v1.74 → v1.70 over Feb–Apr 2026), FluidVoice (v1.5.12 → v1.5.10 in March), macparakeet (v0.5.6 → v0.5.2 across April).
+
+[hard-wrap] 4 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+36:[^g2]: Granola landing — `https://www.granola.ai/`
+37:[^wh1]: Whispo README — `https://github.com/egoist/whispo`
+40:[^s2]: Superwhisper modes docs — `https://superwhisper.com/docs/modes/modes`
+46:[^f1]: FluidVoice README — `https://github.com/altic-dev/FluidVoice/blob/main/README.md`
+
+total flagged lines: 49
+
+prose-check: tests/fixtures/corpus/research/competitor-test-drive-2026-05.md
+
+[em-dash] 100 hit(s):
+1:# Competitor test-drive kit — dictation scripts (EN + RU)
+4:**Purpose:** Hands-on qualitative evaluation of competing voice-to-text tools using a fixed corpus of 12 passages — 8 contextual + 4 edge-case probes — across E
+7:- [`competitor-deep-diff-2026-05.md`](./competitor-deep-diff-2026-05.md) — 8-row coverage matrix and positioning deltas
+8:- [`competitive-landscape.md`](./competitive-landscape.md) — broader commercial map + emerging tools
+9:- [`oss-competitor-landscape-2026.md`](./oss-competitor-landscape-2026.md) — OSS-only deep profiles
+
+[ascii-arrow] 8 hit(s):
+42:- [ ] macOS Dictation: language switcher includes both English and Russian (System Settings → Keyboard → Dictation → Edit)
+52:- **Install:** `https://wisprflow.ai/` (signup → direct download)
+72:- **Install:** Built-in. Enable in System Settings → Keyboard → Dictation. Add Russian as second language.
+83:| 7 | MacWhisper | `brew install --cask macwhisper` | Transcription-focused (file → text) but real-time mode is a useful counterpoint to dictation-first tools |
+177:  - Self-correction "John → Sarah": does the polish layer remove the strikethrough, or does it leave both names?
+
+total flagged lines: 108
+
+prose-check: tests/fixtures/corpus/research/context-aware-cleanup.md
+
+[hard-wrap] 2 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+208:**Cons:** No browser-based app detection, no sub-context within apps.
+235:**Cons:** Window title formats change across app versions; needs maintenance.
+
+total flagged lines: 2
+
+prose-check: tests/fixtures/corpus/research/distribution-monetization.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/research/e2e-testing-strategies-2026.md
+
+[em-dash] 46 hit(s):
+1:# E2E testing strategies for Untype — survey of macOS-native OSS dictation apps
+13:- `Untype/State/AppState.swift` — the `@Observable` state machine that drives all UI (165 LOC).
+14:- `Untype/App/RecordingCoordinator.swift` — mic capture → STT dispatch (309 LOC; the largest untested hotspot).
+15:- `Untype/Processing/ProcessingCoordinator.swift` — STT output → polishing → insertion (via `UntypeCore`).
+16:- `Untype/App/AppRouterBuilder.swift` — wires the registries into a live router (58 LOC).
+
+[ascii-arrow] 7 hit(s):
+14:- `Untype/App/RecordingCoordinator.swift` — mic capture → STT dispatch (309 LOC; the largest untested hotspot).
+15:- `Untype/Processing/ProcessingCoordinator.swift` — STT output → polishing → insertion (via `UntypeCore`).
+66:- **`DictationFlow/DictationFlowStateMachineTests.swift`** — `DictationFlowStateMachine` is tested as a pure event → `[effect]` function. Events like `.startReq
+95:3. **State machine as pure `(state, event) → effects`** (macparakeet): a `DictationFlowStateMachine` that returns an effect list is vastly more testable than a 
+103:- **No one runs XCUITest flows in CI** across the whole recording → transcribe → insert pipeline. The one XCUITest file in pindrop and VoiceInk both launch the 
+
+total flagged lines: 53
+
+prose-check: tests/fixtures/corpus/research/fixtures/meetings/README.md
+
+[em-dash] 7 hit(s):
+10:- `meeting-NN-<slug>.md` — synthetic transcript, ~500–1000 words, in
+12:- `meeting-NN-<slug>.labels.json` — ground-truth labels:
+13:  - `action_items` — concrete, ownable items the model is expected to extract.
+16:  - `decisions` — explicit decisions stated in the meeting.
+17:  - `notes` — free-form context that wouldn't be scored as an action item
+
+[hard-wrap] 7 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+4:the Apple FM summary-quality benchmark in `Sources/UntypeBench/FMBenchmark.swift`.
+21:design review, retro, hiring debrief, client kickoff, all-hands follow-up,
+27:clear, ownable action items so the ground-truth labels are unambiguous.
+28:Each action item in `labels.json` was hand-extracted from the transcript
+32:plus character-level Levenshtein similarity (≥ 0.8) to match model output
+
+total flagged lines: 14
+
+prose-check: tests/fixtures/corpus/research/fixtures/meetings/meeting-01-product-review.md
+
+[em-dash] 8 hit(s):
+1:# Product Review — Q2 Planning
+9:Marcus: Sure. The 30-day retention chart is in the deck — slide four. We're sitting at 34% on the new free tier, which is roughly flat versus last quarter. The 
+13:Priya: We have two variants. The first defers the payment-method ask until the user hits a paywall trigger. The second keeps the ask in step three but adds a "s
+21:Sara: Perfect. Next item — the export feature request. We've had it in the backlog for two quarters. Marcus, do we have data on how many users would use it?
+25:Jordan: We've been wanting to refactor the data layer anyway. If we tackle export, we should fold the refactor into the same workstream. I'll write up a one-pag
+
+[not-X-but-Y] 1 hit(s):
+23:Marcus: Pulled the survey responses last week. About 22% of paid users said they'd use export at least monthly. It's not the biggest ask but it's the second-mos
+
+total flagged lines: 9
+
+prose-check: tests/fixtures/corpus/research/fixtures/meetings/meeting-02-sales-discovery.md
+
+[em-dash] 9 hit(s):
+1:# Discovery Call — Brightline Logistics
+9:Ravi: Sure. We run about 1,200 deliveries a day across four hubs. Right now dispatch is split between two systems — the legacy TMS we've had since 2018 and a ho
+15:Tom: That's a real constraint. For a first phase we'd want to do read-only sync from your TMS, run our dispatch optimizer, and write the manifest back through y
+23:Ravi: Lena, on commercial terms — we've talked to two other vendors. Both came in with annual contracts. What does your pricing look like?
+25:Lena: We do annual or two-year. Two-year gets you a 12% discount and locks in the per-driver rate. For a fleet your size we're typically looking at the mid-tier
+
+total flagged lines: 9
+
+prose-check: tests/fixtures/corpus/research/fixtures/meetings/meeting-03-sprint-planning.md
+
+[em-dash] 8 hit(s):
+1:# Sprint Planning — Sprint 47
+9:Wei: We need at least one slot for the database migration prep. We can't keep deferring it — the connection pool is starting to throttle on Tuesday peaks.
+13:Theo: I have the Figma file with the latest revisions. There's one open question about the empty-state copy — Priya is finalizing it tomorrow. I can start the l
+23:Felix: Sprint goal — let me restate it. Ship the permissions screen behind a flag, fix bugs 4421 and 4438, prep the database migration, and trim the regression 
+25:Wei: Ana is at full capacity. Theo is at full minus a half-day for the Friday all-hands. Imani is at 80% — she has the QA-onsite on Thursday next week.
+
+total flagged lines: 8
+
+prose-check: tests/fixtures/corpus/research/fixtures/meetings/meeting-04-design-review.md
+
+[em-dash] 8 hit(s):
+1:# Design Review — Settings Refresh
+13:Quentin: The proposal handles two of those — delete account moves to the bottom of Account, and notification frequency is the first item in Notifications. Expor
+17:Mariam: From engineering, the only hard constraint is that some of the toggles trigger backend calls that take a few seconds — region change, two-factor enrollm
+21:Ben: I'd like to do one more round of testing with the new IA before engineering builds it. We can do an unmoderated study, five participants, single task — fin
+31:Mariam: One more from engineering — I'd like the spec to include the deep-link routes. Right now Settings is reachable by pressing the gear icon, but support ha
+
+total flagged lines: 8
+
+prose-check: tests/fixtures/corpus/research/fixtures/meetings/meeting-05-retro.md
+
+[em-dash] 7 hit(s):
+1:# Sprint Retrospective — Sprint 46
+7:Wei: Welcome to the sprint 46 retro. Standard format — what went well, what didn't, what to change. Felix kicks off.
+27:Sara: Another thing that didn't go well — the standup ran long every day. I think it's because we have too many unrelated workstreams reporting in serial. Maybe
+29:Theo: I'd push back on splitting. We benefit from the cross-team awareness. But maybe we tighten the format — strict two minutes per person, no discussion in th
+35:Imani: One more — the test environment was unstable for three days mid-sprint. I lost about half a day debugging tests that turned out to be infrastructure prob
+
+total flagged lines: 7
+
+prose-check: tests/fixtures/corpus/research/fixtures/meetings/meeting-06-hiring-debrief.md
+
+[em-dash] 8 hit(s):
+1:# Hiring Debrief — Senior Backend Engineer, Final Round
+7:Yusuf: We just finished the loop with Casey Liu for the senior backend role. Ana, you ran the system design — kick us off.
+9:Ana: System design was strong. The prompt was a multi-region message queue with at-least-once delivery. Casey moved through it methodically — clarifying questio
+11:Mariam: My round was the data-modeling exercise. Casey's modeling was clean. They asked good questions about cardinality before committing to schemas. Strong on
+19:Mariam: For the migration question, similar answer — gap, not deal-breaker. I'd hire and pair them with someone who's done a few painful migrations.
+
+total flagged lines: 8
+
+prose-check: tests/fixtures/corpus/research/fixtures/meetings/meeting-07-client-kickoff.md
+
+[em-dash] 6 hit(s):
+1:# Project Kickoff — Hartwell Freight Onboarding
+9:Greg: We want our four largest customers — accounting for 60% of our shipment volume — onto your platform by end of next quarter. That's the outcome. The pressu
+21:Naomi: Greg, on Sentinel specifically — they need real-time visibility within sixty days. That's tight. The TMS integration alone takes about five weeks. What's
+25:Eli: Fifteen minutes is achievable with TMS-only data. We don't need the WMS or the customer portal in place to deliver that. So we can carve out a phase 0 just
+35:Otis: Naomi, before we cut the spec — I want to make sure security review is built in. Anything that touches customer data needs a 30-day security review window
+
+total flagged lines: 6
+
+prose-check: tests/fixtures/corpus/research/fixtures/meetings/meeting-08-allhands-followup.md
+
+[em-dash] 8 hit(s):
+1:# All-Hands Follow-up — Engineering Org
+13:Owen: It's the senior reliability engineer role. We're at the offer stage — the candidate is interviewing here next week. Is reliability "critical"?
+19:Yusuf: My open req is also affected — the senior backend role we just decided to hire on. We discussed Casey Liu yesterday in the debrief.
+31:Owen: Same question for platform — same answer?
+41:Mei: On the new performance review framework — what's the engineering pilot look like? Are we doing the full pilot or a subset?
+
+total flagged lines: 8
+
+prose-check: tests/fixtures/corpus/research/fixtures/meetings/meeting-09-one-on-one.md
+
+[em-dash] 10 hit(s):
+1:# 1:1 — Wei (Manager) and Theo (Frontend Engineer)
+9:Theo: One thing — I've been thinking about the conversation we had last quarter about staff-track vs management-track. I'm leaning more strongly toward staff. I
+15:Wei: I talked to Felix this morning. Priya commits to Wednesday end of day. If she misses, we push the audit to the following week. I'll handle that scheduling 
+25:Theo: I want to be the technical lead on a multi-team initiative. The settings refresh is a candidate, but I'd want it to be cross-team — frontend, backend, des
+27:Wei: I think that's the right scope. I'll talk to Priya and Yusuf about expanding the settings refresh charter to include data-model changes — that pulls Ana in
+
+total flagged lines: 10
+
+prose-check: tests/fixtures/corpus/research/fixtures/meetings/meeting-10-board-prep.md
+
+[em-dash] 9 hit(s):
+1:# Board Prep — Q2 Update
+9:Dev: Top of the list — we want to land that we're on track to hit revenue plan despite the macroeconomic headwinds. Q2 is at 94% of plan with one month to go.
+13:Lena: We have three deals in late-stage negotiation that close the gap. Brightline Logistics is the largest — $480K ARR, contract under review. Two others worth
+19:Dev: Second message — we want to communicate that the unit economics are improving. Gross margin moved from 64% to 71% over the last three quarters. That's stro
+21:Wei: That's mostly the infra optimization work the platform team did in Q1 and Q2. We can quantify it. I'll put together a one-pager on the cost-reduction initi
+
+total flagged lines: 9
+
+prose-check: tests/fixtures/corpus/research/gsd-workflow.md
+
+[bold-colon-opener] 13 hit(s):
+358:**Lock file tracking**: A lock file tracks the current unit. If the session dies, the next
+361:**Parallel orchestrator state**: Multi-worker sessions persist state to disk with PID
+365:**Stuck detection**: A sliding-window detector identifies repeated dispatch patterns. On
+368:**Timeout supervision**:
+415:**Creates**: `PROJECT.md`, `REQUIREMENTS.md`, `ROADMAP.md`, `STATE.md`, `.planning/research/`
+
+[hard-wrap] 50 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+10:Claude Code created by Lex Christopherson (GitHub: glittercowboy), a house music
+11:producer in Costa Rica operating under the TACHES organization. First committed in
+12:December 2025, it has grown to 50K+ GitHub stars and 1,700+ commits across 47+ releases
+13:as of April 2026. It supports 12 runtimes (Claude Code, Gemini, Codex, Cursor, Windsurf,
+14:Copilot, Cline, Kilo, Augment, Trae, Antigravity, OpenCode).
+
+total flagged lines: 63
+
+prose-check: tests/fixtures/corpus/research/head-to-head-comparison.md
+
+[bold-colon-opener] 12 hit(s):
+70:**Verdict**: Ralph is the fastest to start. GSD is reasonable. BMAD demands significant upfront investment in documentation and configuration before you see any
+85:**Key finding**: All three frameworks are token-heavy compared to manual Claude Code usage. Ralph is the most predictable (fixed cost per iteration). BMAD's mul
+87:**The uncomfortable truth**: For simple tasks (bug fixes, small features), all three frameworks introduce overhead that exceeds their value. The break-even poin
+102:**Failure case study (BMAD)**: A user spent 9+ hours with BMAD on an authentication feature. All agents marked the story complete, but the feature was non-funct
+104:**GSD's advantage**: The Plan Checker agent creates a loop-until-pass gate before any code is written. This catches specification misunderstandings before they 
+
+total flagged lines: 12
+
+prose-check: tests/fixtures/corpus/research/hooks-system.md
+
+[bold-colon-opener] 16 hit(s):
+78:**SessionStart**: `source` (startup|resume|clear|compact), `model`, optional `agent_type`
+80:**UserPromptSubmit**: `prompt` (the user's text)
+82:**PreToolUse**: `tool_name`, `tool_input`, `tool_use_id`
+84:**PermissionRequest**: `tool_name`, `tool_input`, optional `permission_suggestions[]`
+86:**PostToolUse**: `tool_name`, `tool_input`, `tool_response`, `tool_use_id`
+
+[hard-wrap] 20 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+10:They provide **deterministic** control -- certain actions always happen, rather than
+11:relying on the LLM to choose to run them. Four hook types exist: shell commands, HTTP
+12:endpoints, single-turn LLM prompts, and multi-turn agent subagents.
+159:(`~/.zshrc` or `~/.bashrc`). If your profile has unconditional `echo` statements,
+160:they pollute stdout and break JSON parsing. Guard them:
+
+total flagged lines: 36
+
+prose-check: tests/fixtures/corpus/research/market-research-outcome-2026-05-ru.md
+  (Cyrillic > 30%, skipping em-dash check)
+
+[ascii-arrow] 26 hit(s):
+15:- Конкуренция уже скучилась вокруг "voice keyboard в общем". Дифференциация Untype — не в STT и не в LLM-cleanup, а в **L1→L2-композиции + transparent routing +
+26:| Speech-to-text API | $4.66B → $25.28B (2034) | 2025 | ~20.7% | API STT (Big Tech + standalone) | Низкая — инфра-слой |
+27:| ASR (внутри conversational AI) | $2.47B → $9.32B (2030) | 2024 | ~24.8% | ASR в conv-AI стеке | Низкая — IVR/enterprise |
+28:| AI meeting assistants | $3.47B → $21.48B (2033) | 2025 | ~25.8% | Otter / Granola / Fireflies | **Не цель** (явный non-target) |
+29:| Cloud dictation | $8.86B → $22.23B (2034) | 2026 | ~12.2% | Облачная диктовка (broad) | **Ближайший аналог**, но healthcare-heavy |
+
+total flagged lines: 26
+
+prose-check: tests/fixtures/corpus/research/market-sizing-2026-05.md
+
+[em-dash] 17 hit(s):
+1:# Market sizing — directional TAM table (2026-05)
+4:**Status**: Directional only. Synthesised from public summaries of paid market-research reports (Fortune Business Insights, Grand View Research, Precedence Rese
+19:| Speech-to-text API | $4.66B → $25.28B by 2034 | 2025 | ~20.7% | API revenue (Big Tech + standalone STT vendors) | Low — infra layer, not product layer |
+21:| ASR (within conversational AI) | $2.47B → $9.32B by 2030 | 2024 | ~24.8% | ASR as part of broader conversational-AI stack | Low — enterprise/IVR-weighted |
+22:| Transcription market (broad) | $25.18B → $37.59B by 2032 | 2025 | ~5.9% | Includes human transcription services + software | Low — bulked by services, not sof
+
+[ascii-arrow] 12 hit(s):
+19:| Speech-to-text API | $4.66B → $25.28B by 2034 | 2025 | ~20.7% | API revenue (Big Tech + standalone STT vendors) | Low — infra layer, not product layer |
+20:| Speech-to-text API (alt) | $3.8B → $8.57B by 2030 | 2024 | ~14.1% | Same category, more conservative definition | Same as above; range = $3.8B–$4.66B |
+21:| ASR (within conversational AI) | $2.47B → $9.32B by 2030 | 2024 | ~24.8% | ASR as part of broader conversational-AI stack | Low — enterprise/IVR-weighted |
+22:| Transcription market (broad) | $25.18B → $37.59B by 2032 | 2025 | ~5.9% | Includes human transcription services + software | Low — bulked by services, not sof
+23:| AI meeting assistants | $3.47B → $21.48B by 2033 | 2025 | ~25.8% | Otter / Fireflies / Granola category | None — explicit non-target (see `competitive-landsca
+
+[bold-colon-opener] 5 hit(s):
+3:**Date**: 2026-05-08
+4:**Status**: Directional only. Synthesised from public summaries of paid market-research reports (Fortune Business Insights, Grand View Research, Precedence Rese
+5:**Source**: lifted from a co-founder market doc 2026-05-08; repo previously had no TAM data.
+43:**Untype's actual addressable market is the intersection of**:
+83:**Caveat**: paid-report summaries published online are typically marketing for the underlying report. Numbers may be inflated to make the report sound consequen
+
+total flagged lines: 34
+
+prose-check: tests/fixtures/corpus/research/mcp-servers.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/research/multi-agent-patterns.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/research/on-device-translation.md
+
+[bold-colon-opener] 5 hit(s):
+3:**Date**: 2026-04-10
+4:**Target**: Untype Tier 2 feature -- optional translation after voice cleanup
+5:**Use case**: Speak in language A, insert cleaned text in language B
+6:**Priority pairs**: EN<->RU, EN<->ZH
+7:**Constraints**: macOS 14+, Apple Silicon, native Swift, minimal RAM overhead
+
+total flagged lines: 5
+
+prose-check: tests/fixtures/corpus/research/oss-competitor-landscape-2026.md
+
+[em-dash] 54 hit(s):
+1:# macOS-native open-source voice-to-text landscape — April 2026
+4:**Scope:** macOS-native Swift open-source dictation apps and the two leading Swift audio libraries they build on. Commercial apps are surveyed separately in [`c
+10:- [Beingpax/VoiceInk](https://github.com/Beingpax/VoiceInk) — 4,681 ⭐
+11:- [altic-dev/FluidVoice](https://github.com/altic-dev/FluidVoice) — 1,984 ⭐
+12:- [watzon/pindrop](https://github.com/watzon/pindrop) — 469 ⭐
+
+[ascii-arrow] 2 hit(s):
+109:**Testing:** deepest OSS coverage by far. ~40 test files split across CLI tests and app tests. Audio tests use a `MockAudioProcessor` actor. Database tests use 
+192:2. **Refactor `AppState` toward macparakeet's `(state, event) → [effect]` style before adding more UI state.** `Untype/State/AppState.swift` is 165 LOC and will
+
+total flagged lines: 56
+
+prose-check: tests/fixtures/corpus/research/prompt-optimization.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/research/ralph-loop.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/research/seo-keyword-spine-2026-05.md
+
+[em-dash] 57 hit(s):
+1:# SEO keyword spine and content map — May 2026
+12:- Search-intent and competition signals are *qualitative best-guess* tags from the surveyed competitor pages. They are NOT volume estimates — those would requir
+20:| H1 | `wispr flow alternative` | Comparison / alternative-seeking | Highest commercial-intent query in the category. Already captured by Voibe, machow2, Whispe
+21:| H2 | `local dictation mac` (and `private dictation mac`, `offline dictation mac`) | Solution-aware | Captures privacy-conscious users who already know they wa
+30:### Cluster 1 — Problem-aware (user knows the pain, not the category)
+
+[ascii-arrow] 1 hit(s):
+157:2. **Week -1:** publish 1–2 build-in-public posts from the cluster that matches the launch angle (privacy pivot → Draft 5; speed pivot → Draft 4).
+
+total flagged lines: 58
+
+prose-check: tests/fixtures/corpus/research/settings-reference.md
+
+[ai-attribution] 2 hit(s):
+121:| `commit` | Git commit attribution text | Generated with Claude Code + Co-Authored-By trailer |
+122:| `pr` | Pull request description attribution | Generated with Claude Code |
+
+total flagged lines: 2
+
+prose-check: tests/fixtures/corpus/research/skills-system.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/research/source-code-insights.md
+
+[hard-wrap] 44 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+4:are implemented, safety is enforced, and context is managed. Based on analysis of the
+5:live system prompt, tool definitions visible in-session, and public documentation.
+14:instruction fragments** conditionally assembled based on the user's configuration, OS,
+15:shell, enabled MCP servers, and active tools. The assembled prompt is identical for all
+16:users on the same Claude Code version, which enables **shared prompt caching** across
+
+total flagged lines: 44
+
+prose-check: tests/fixtures/corpus/research/stt-quality-apple-speech.md
+
+[em-dash] 29 hit(s):
+1:# STT Quality — Tuning SFSpeechRecognizer for Untype
+20:   manually. Flip it unconditionally — Untype's deployment target is
+29:   call. Separate spike — scoped below.
+36:   its custom-LM compatibility. Not worth it — WhisperKit is a better
+41:## SFSpeechRecognitionRequest — quality knobs
+
+[ascii-arrow] 2 hit(s):
+78:**Build → ship → runtime:**
+97:- `clientIdentifier` is the cache key. Bump it (`...v1` → `...v2`) whenever training data changes, otherwise prepared files aren't rebuilt.
+
+[hard-wrap] 11 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+5:quality bottleneck in Untype, upstream of any LLM cleanup. This note
+6:enumerates every quality-affecting knob on `SFSpeechRecognizer` /
+7:`SFSpeechAudioBufferRecognitionRequest` on macOS, notes which ones
+11:speech recognition", and the `dotnet/macios` Speech bindings (authoritative
+20:   manually. Flip it unconditionally — Untype's deployment target is
+
+total flagged lines: 42
+
+prose-check: tests/fixtures/corpus/research/style-adaptation-competitors.md
+
+[em-dash] 19 hit(s):
+4:**Purpose:** Synthesize how competitor macOS dictation tools implement the "style adaptation" step — the post-transcription stage that adjusts tone and format t
+16:Different competitors reach this step through different mechanisms — automatic app detection, user-defined modes, or manual selection — with significant variati
+22:### Wispr Flow — Automatic, opaque
+30:*Pain point:* The opacity created trust issues — users couldn't tell why output changed, and the screenshot-based context capture triggered a privacy backlash i
+32:### Superwhisper — Manual modes, user-defined
+
+[ascii-arrow] 2 hit(s):
+12:> transcription → filler removal → punctuation → **style adaptation**
+24:- Automatically shifts tone: Slack → casual/short, Gmail → semi-formal with greeting/sign-off
+
+total flagged lines: 21
+
+prose-check: tests/fixtures/corpus/research/text-insertion-compatibility.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/research/transcription-pain-points-2026-05.md
+
+[em-dash] 113 hit(s):
+1:# Transcription pain points from Reddit, HN, GitHub, App Store — May 2026
+4:**Purpose:** Primary-source inventory of *transcription-quality* failures users report. Fills the Reddit gap noted in `user-pain-points-and-desires-2026.md` and
+8:- [`user-pain-points-and-desires-2026.md`](./user-pain-points-and-desires-2026.md) — product-level complaints (pricing, support, UX). This doc focuses on the *t
+9:- [`competitor-deep-diff-2026-05.md`](./competitor-deep-diff-2026-05.md) — canonical 8-tool matrix.
+10:- [`whisper-bench-2026-04-18.md`](./whisper-bench-2026-04-18.md) — quantitative WER (incl. 1 RU sample).
+
+[ascii-arrow] 23 hit(s):
+131:### 1.6 Acoustic-accuracy substitutions ("apartments → ports")
+140:- "constant" → "during close" (phoneme-similar mush)
+141:- "restart" → "pretty start" (re→ pretty: classic Parakeet error mode where the prefix gets re-tokenized)
+142:- "apartments" → "ports" (long word → short-word collapse — Parakeet drops middle phonemes under uncertainty)
+161:Code paths surfaced in the issue: `Empty API response → returns "<no content>"`; `Any LLM error → returns "Error: {description}"`. This is the kind of bug that 
+
+total flagged lines: 136
+
+prose-check: tests/fixtures/corpus/research/user-pain-points-and-desires-2026.md
+
+[em-dash] 112 hit(s):
+1:# User Pain Points & Desired Features — macOS Dictation Competitors
+4:**Purpose:** Layer user-voice evidence (complaints, feature requests, churn reasons) onto the structural competitive map in `research/competitive-landscape.md`,
+27:| 1 | **Post-trial reliability drop.** Works during free trial, accuracy and uptime fall after card is charged. One reviewer: "works great about 60% of the time
+28:| 2 | **Privacy / screenshot-capture scandal.** 2025 Reddit disclosure: Wispr captured screenshots of the focused window every few seconds and sent them to clou
+34:- **Offline / on-device mode.** "Best UI, but I don't want my voice in the cloud" — aggregated across [Resonant's Reddit roundup](https://www.onresonant.com/res
+
+[ascii-arrow] 7 hit(s):
+64:- Too tinker-y → users move to Wispr Flow or Willow / Voibe for "just works."
+65:- $249 lifetime too expensive → freeflow / VoiceInk / Whispering (Show HN threads).
+66:- Feature removed in update → afadingthought explicitly left over stripped customization.
+90:- **→ Wispr Flow for cross-platform.** Danny Smith + AlternativeTo reviewers cite Mac-only as reason to move.
+91:- **→ Superwhisper for richer prompting.** afadingthought landed on Superwhisper for multi-prompt workflows.
+
+total flagged lines: 119
+
+prose-check: tests/fixtures/corpus/research/voice-activity-detection.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/research/whisper-bench-2026-04-18.md
+
+[em-dash] 34 hit(s):
+1:# STT Benchmark Analysis — 2026-04-18 / -04-19 / -04-20
+3:**Corpus**: `bench/audio-corpus.json`, 7 samples, 149 s total audio (6 EN, 1 RU). Hand-verified 2026-04-20 — prior two un-verified references (carmack, joker) e
+8:- `anthropic/claude-opus-4` via OpenRouter — HTTP 404 `"No endpoints found that support input audio"` across all samples. OpenRouter does not expose an audio-in
+9:- OpenAI `gpt-4o-audio-preview` deliberately dropped (~$14/$55 per 1M in/out tokens — same "premium-plan-only" argument as Opus).
+13:> **Follow-up 2026-04-20.** Added Gemini 2.5 Pro row from `benchmarks/2026-04-20_gemini-claude-opus-audio/`. Voxtral Small re-investigated after the initial "co
+
+[ascii-arrow] 2 hit(s):
+43:Initial bench showed Voxtral Small producing a 97 % WER on `wwdc_swiftui_perf_en`: two rounds at temperature=0 returned two *different* plausible-sounding Swift
+92:| Claude Opus 4 chat (if audio ever lands) | ~$15/$75 per 1M tokens → ≫$30/mo for heavy | **premium-tier BYOK only** | same |
+
+[bold-colon-opener] 7 hit(s):
+3:**Corpus**: `bench/audio-corpus.json`, 7 samples, 149 s total audio (6 EN, 1 RU). Hand-verified 2026-04-20 — prior two un-verified references (carmack, joker) e
+4:**Dev hardware**: MacBook Pro (Intel i7-9750H @ 2.6 GHz, 32 GB, macOS 26.4.1).
+5:**Providers benched**: 3 local whisper.cpp sizes (base, small, large-v3-turbo), Moonshine base, Groq whisper-large-v3-turbo, OpenRouter-routed Gemini 2.5 Pro (2
+6:**Not yet benched (need keys or Apple Silicon)**: WhisperKit, parakeet-mlx / Parakeet CoreML / Parakeet NIM, ElevenLabs Scribe v2, Deepgram Nova, Mistral Voxtra
+7:**Confirmed unavailable / deferred**:
+
+total flagged lines: 43
+
+prose-check: tests/fixtures/corpus/research/whisper-landscape-2026.md
+
+[em-dash] 42 hit(s):
+1:# Whisper & Alternatives — Landscape (April 2026)
+9:1. **Whisper is no longer the accuracy leader.** On the Artificial Analysis leaderboard, ElevenLabs Scribe v2 (2.3% WER) and Google Gemini 3 Pro (2.9%) beat eve
+10:2. **Whisper's best value play is Groq.** `whisper-large-v3-turbo` on Groq hits 4.8% WER at 242× realtime for ~$0.04/hr — the best cost/latency/accuracy mix for
+14:6. **The competitive app market is crowded but commoditized.** Superwhisper and its alternatives (Whispering, VoiceInk, Wispr Flow, Willow, Turbo Whisper, Vibe,
+18:### Artificial Analysis (multilingual, real-world audio) — April 2026
+
+total flagged lines: 42
+
+prose-check: tests/fixtures/corpus/research/whisper-next-steps.md
+
+[em-dash] 17 hit(s):
+1:# STT Work — Next Steps Guide
+9:## A. Auto-manageable — next session can do these without new input
+17:| A3 | ~~Add `elevenlabs:<model>` provider to `tools/stt-bench/stt_compare.py` (proprietary endpoint shape, not OpenAI-compatible)~~ — landed in `be21efe`. Awai
+21:| A7 | ~~Wire Groq `whisper-large-v3-turbo` into the app as the first cloud final-pass engine, behind a Settings toggle~~ — landed in `86ab7ea` (Settings stub) 
+24:| A10 | Prototype the provider-menu UI in Settings (read-only for now, shows available engines with install/signup prompts) | 1 day | First UI surface of the fl
+
+[ascii-arrow] 3 hit(s):
+16:| A2 | Re-run the full bench with the fixed corpus → update `whisper-bench-2026-04-18.md` with trustworthy numbers | 15 min | Closes the loop on A1. |
+21:| A7 | ~~Wire Groq `whisper-large-v3-turbo` into the app as the first cloud final-pass engine, behind a Settings toggle~~ — landed in `86ab7ea` (Settings stub) 
+22:| A8 | Swift bindings for whisper.cpp (`WhisperCppKit` SPM package or hand-rolled C bridge) → add a `WhisperCppService` implementing `TranscriptionProvider` | 1
+
+total flagged lines: 20
+
+prose-check: tests/fixtures/corpus/research/whisper-vs-apple-speech.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/root/API_ARCHITECTURE_MVP.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/root/GUIDE.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/root/IMPLEMENTATION_PLAN.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/root/PLAYBOOK.md
+
+total flagged lines: 0
+
+prose-check: tests/fixtures/corpus/root/README.md
+
+total flagged lines: 0
+
+================================================================
+scanned 105 file(s); 54 with hits; 1435 total flagged lines
+
+top offenders:
+     136  tests/fixtures/corpus/research/transcription-pain-points-2026-05.md
+     119  tests/fixtures/corpus/research/user-pain-points-and-desires-2026.md
+     108  tests/fixtures/corpus/research/competitor-test-drive-2026-05.md
+      63  tests/fixtures/corpus/research/gsd-workflow.md
+      58  tests/fixtures/corpus/research/seo-keyword-spine-2026-05.md
+      56  tests/fixtures/corpus/research/oss-competitor-landscape-2026.md
+      54  tests/fixtures/corpus/research/apple-fm-benchmark.md
+      53  tests/fixtures/corpus/research/e2e-testing-strategies-2026.md
+      49  tests/fixtures/corpus/research/competitor-deep-diff-2026-05.md
+      45  tests/fixtures/corpus/knowledge/profile-smoke-2026-05-12.md
+      44  tests/fixtures/corpus/research/source-code-insights.md
+      43  tests/fixtures/corpus/research/whisper-bench-2026-04-18.md
+      42  tests/fixtures/corpus/research/stt-quality-apple-speech.md
+      42  tests/fixtures/corpus/research/whisper-landscape-2026.md
+      37  tests/fixtures/corpus/research/claude-code-workflows.md
+      36  tests/fixtures/corpus/research/hooks-system.md
+      34  tests/fixtures/corpus/research/market-sizing-2026-05.md
+      30  tests/fixtures/corpus/knowledge/archive/phase3-thread-reading-integration-spec-2026-04-22.md
+      29  tests/fixtures/corpus/research/community-patterns.md
+      27  tests/fixtures/corpus/knowledge/archive/phase3-ax-feasibility-2026-04-22.md
+      26  tests/fixtures/corpus/research/market-research-outcome-2026-05-ru.md
+      23  tests/fixtures/corpus/research/bmad-method.md
+      22  tests/fixtures/corpus/knowledge/archive/project-status-2026-04-22.md
+      22  tests/fixtures/corpus/research/cloud-llm-provider.md
+      21  tests/fixtures/corpus/research/style-adaptation-competitors.md
+      20  tests/fixtures/corpus/research/whisper-next-steps.md
+      16  tests/fixtures/corpus/research/competitive-landscape.md
+      14  tests/fixtures/corpus/research/claude-md-rules.md
+      14  tests/fixtures/corpus/research/fixtures/meetings/README.md
+      12  tests/fixtures/corpus/research/head-to-head-comparison.md
+      11  tests/fixtures/corpus/research/cli-reference.md
+      11  tests/fixtures/corpus/research/cloud-llm-provider-research.md
+      10  tests/fixtures/corpus/research/fixtures/meetings/meeting-09-one-on-one.md
+       9  tests/fixtures/corpus/_edge/structural_all.md
+       9  tests/fixtures/corpus/research/fixtures/meetings/meeting-01-product-review.md
+       9  tests/fixtures/corpus/research/fixtures/meetings/meeting-02-sales-discovery.md
+       9  tests/fixtures/corpus/research/fixtures/meetings/meeting-10-board-prep.md
+       8  tests/fixtures/corpus/research/fixtures/meetings/meeting-03-sprint-planning.md
+       8  tests/fixtures/corpus/research/fixtures/meetings/meeting-04-design-review.md
+       8  tests/fixtures/corpus/research/fixtures/meetings/meeting-06-hiring-debrief.md
+       8  tests/fixtures/corpus/research/fixtures/meetings/meeting-08-allhands-followup.md
+       7  tests/fixtures/corpus/research/fixtures/meetings/meeting-05-retro.md
+       6  tests/fixtures/corpus/research/fixtures/meetings/meeting-07-client-kickoff.md
+       5  tests/fixtures/corpus/_edge/russian_emdash.md
+       5  tests/fixtures/corpus/research/on-device-translation.md
+       4  tests/fixtures/corpus/_edge/hard_wrap.md
+       3  tests/fixtures/corpus/_edge/ai_attribution.md
+       2  tests/fixtures/corpus/_edge/fenced_code.md
+       2  tests/fixtures/corpus/research/context-aware-cleanup.md
+       2  tests/fixtures/corpus/research/settings-reference.md
+       1  tests/fixtures/corpus/_edge/pragma_some.md
+       1  tests/fixtures/corpus/knowledge/autonomous-execution-brief-2026-04-30.md
+       1  tests/fixtures/corpus/knowledge/follow-up-brief-2026-05-01.md
+       1  tests/fixtures/corpus/reports/Status Report 2026-04-13.md

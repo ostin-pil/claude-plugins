@@ -1,0 +1,16 @@
+{
+  "action_items": [
+    "Felix confirms the Wednesday end-of-day copy deadline with Priya for the permissions screen empty state",
+    "Imani delivers the list of ten target flaky tests by Tuesday and writes the replacements by sprint end",
+    "Ana writes the database migration rollback script and dry-runs it on staging",
+    "Ana picks up bug 4421 (auth-token refresh) around day six",
+    "Theo emails the accessibility team today to book the audit slot for end of next week",
+    "Wei sends the migration on-call calendar holds for the following Saturday today",
+    "Imani refreshes the integration-test fixture set next Wednesday"
+  ],
+  "decisions": [
+    "Sprint 47 goal: ship permissions screen behind flag, fix bugs 4421 and 4438, prep database migration, trim regression suite",
+    "Bug 4438 (Safari calendar widget reflow) is a stretch goal; commits to sprint 48 if tight"
+  ],
+  "notes": "Capacity: Ana full, Theo full minus half-day, Imani 80%. Regression suite is 40 minutes on CI and growing. Mid-sprint check is Thursday."
+}

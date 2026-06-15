@@ -1,0 +1,11 @@
+prose-check: research/market-research-outcome-2026-05-ru.md
+  (Cyrillic > 30%, skipping em-dash check)
+
+[ascii-arrow] 26 hit(s):
+15:- Конкуренция уже скучилась вокруг "voice keyboard в общем". Дифференциация Untype — не в STT и не в LLM-cleanup, а в **L1→L2-композиции + transparent routing +
+26:| Speech-to-text API | $4.66B → $25.28B (2034) | 2025 | ~20.7% | API STT (Big Tech + standalone) | Низкая — инфра-слой |
+27:| ASR (внутри conversational AI) | $2.47B → $9.32B (2030) | 2024 | ~24.8% | ASR в conv-AI стеке | Низкая — IVR/enterprise |
+28:| AI meeting assistants | $3.47B → $21.48B (2033) | 2025 | ~25.8% | Otter / Granola / Fireflies | **Не цель** (явный non-target) |
+29:| Cloud dictation | $8.86B → $22.23B (2034) | 2026 | ~12.2% | Облачная диктовка (broad) | **Ближайший аналог**, но healthcare-heavy |
+
+total flagged lines: 26

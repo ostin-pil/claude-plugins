@@ -1,0 +1,24 @@
+prose-check: research/market-sizing-2026-05.md
+
+[em-dash] 17 hit(s):
+1:# Market sizing — directional TAM table (2026-05)
+4:**Status**: Directional only. Synthesised from public summaries of paid market-research reports (Fortune Business Insights, Grand View Research, Precedence Rese
+19:| Speech-to-text API | $4.66B → $25.28B by 2034 | 2025 | ~20.7% | API revenue (Big Tech + standalone STT vendors) | Low — infra layer, not product layer |
+21:| ASR (within conversational AI) | $2.47B → $9.32B by 2030 | 2024 | ~24.8% | ASR as part of broader conversational-AI stack | Low — enterprise/IVR-weighted |
+22:| Transcription market (broad) | $25.18B → $37.59B by 2032 | 2025 | ~5.9% | Includes human transcription services + software | Low — bulked by services, not sof
+
+[ascii-arrow] 12 hit(s):
+19:| Speech-to-text API | $4.66B → $25.28B by 2034 | 2025 | ~20.7% | API revenue (Big Tech + standalone STT vendors) | Low — infra layer, not product layer |
+20:| Speech-to-text API (alt) | $3.8B → $8.57B by 2030 | 2024 | ~14.1% | Same category, more conservative definition | Same as above; range = $3.8B–$4.66B |
+21:| ASR (within conversational AI) | $2.47B → $9.32B by 2030 | 2024 | ~24.8% | ASR as part of broader conversational-AI stack | Low — enterprise/IVR-weighted |
+22:| Transcription market (broad) | $25.18B → $37.59B by 2032 | 2025 | ~5.9% | Includes human transcription services + software | Low — bulked by services, not sof
+23:| AI meeting assistants | $3.47B → $21.48B by 2033 | 2025 | ~25.8% | Otter / Fireflies / Granola category | None — explicit non-target (see `competitive-landsca
+
+[bold-colon-opener] 5 hit(s):
+3:**Date**: 2026-05-08
+4:**Status**: Directional only. Synthesised from public summaries of paid market-research reports (Fortune Business Insights, Grand View Research, Precedence Rese
+5:**Source**: lifted from a co-founder market doc 2026-05-08; repo previously had no TAM data.
+43:**Untype's actual addressable market is the intersection of**:
+83:**Caveat**: paid-report summaries published online are typically marketing for the underlying report. Numbers may be inflated to make the report sound consequen
+
+total flagged lines: 34

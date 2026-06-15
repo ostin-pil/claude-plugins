@@ -1,0 +1,17 @@
+prose-check: knowledge/archive/project-status-2026-04-22.md
+
+[em-dash] 17 hit(s):
+1:# Untype — Project Status & Health Assessment
+7:## 1. Codebase Health — GOOD
+24:| `Sources/UntypeAXProbe/main.swift` | 367 | Tool/utility — lower priority |
+26:| `Untype/App/RecordingCoordinator.swift` | 300 | **Primary prod file — split before Phase 3** |
+55:- `SettingsStore` / `KeychainStore` — Keychain requires real entitlements; fine
+
+[ascii-arrow] 5 hit(s):
+37:- `RecordingCoordinator` → state mgmt + `TranscriberFactory` (seam partially extracted in session 46)
+38:- `AppContext` → `AppContextProfile` (enums/tone) + `AppContextDetector` (detection logic)
+39:- `CloudProviderConfig` → config structs + `ProviderConfigValidator`
+40:- `AppDelegate` → lifecycle + `AppObservers`
+113:- Speech Recognition: $30B (2026) → $56B (2030), 17% CAGR
+
+total flagged lines: 22

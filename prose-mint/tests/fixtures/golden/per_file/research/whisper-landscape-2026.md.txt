@@ -1,0 +1,10 @@
+prose-check: research/whisper-landscape-2026.md
+
+[em-dash] 42 hit(s):
+1:# Whisper & Alternatives — Landscape (April 2026)
+9:1. **Whisper is no longer the accuracy leader.** On the Artificial Analysis leaderboard, ElevenLabs Scribe v2 (2.3% WER) and Google Gemini 3 Pro (2.9%) beat eve
+10:2. **Whisper's best value play is Groq.** `whisper-large-v3-turbo` on Groq hits 4.8% WER at 242× realtime for ~$0.04/hr — the best cost/latency/accuracy mix for
+14:6. **The competitive app market is crowded but commoditized.** Superwhisper and its alternatives (Whispering, VoiceInk, Wispr Flow, Willow, Turbo Whisper, Vibe,
+18:### Artificial Analysis (multilingual, real-world audio) — April 2026
+
+total flagged lines: 42

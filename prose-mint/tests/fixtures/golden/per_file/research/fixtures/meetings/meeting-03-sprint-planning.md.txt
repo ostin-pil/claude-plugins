@@ -1,0 +1,10 @@
+prose-check: research/fixtures/meetings/meeting-03-sprint-planning.md
+
+[em-dash] 8 hit(s):
+1:# Sprint Planning — Sprint 47
+9:Wei: We need at least one slot for the database migration prep. We can't keep deferring it — the connection pool is starting to throttle on Tuesday peaks.
+13:Theo: I have the Figma file with the latest revisions. There's one open question about the empty-state copy — Priya is finalizing it tomorrow. I can start the l
+23:Felix: Sprint goal — let me restate it. Ship the permissions screen behind a flag, fix bugs 4421 and 4438, prep the database migration, and trim the regression 
+25:Wei: Ana is at full capacity. Theo is at full minus a half-day for the Friday all-hands. Imani is at 80% — she has the QA-onsite on Thursday next week.
+
+total flagged lines: 8

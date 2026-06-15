@@ -1,0 +1,10 @@
+prose-check: research/fixtures/meetings/meeting-10-board-prep.md
+
+[em-dash] 9 hit(s):
+1:# Board Prep — Q2 Update
+9:Dev: Top of the list — we want to land that we're on track to hit revenue plan despite the macroeconomic headwinds. Q2 is at 94% of plan with one month to go.
+13:Lena: We have three deals in late-stage negotiation that close the gap. Brightline Logistics is the largest — $480K ARR, contract under review. Two others worth
+19:Dev: Second message — we want to communicate that the unit economics are improving. Gross margin moved from 64% to 71% over the last three quarters. That's stro
+21:Wei: That's mostly the infra optimization work the platform team did in Q1 and Q2. We can quantify it. I'll put together a one-pager on the cost-reduction initi
+
+total flagged lines: 9

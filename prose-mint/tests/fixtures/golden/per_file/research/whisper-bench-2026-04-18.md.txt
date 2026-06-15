@@ -1,0 +1,21 @@
+prose-check: research/whisper-bench-2026-04-18.md
+
+[em-dash] 34 hit(s):
+1:# STT Benchmark Analysis — 2026-04-18 / -04-19 / -04-20
+3:**Corpus**: `bench/audio-corpus.json`, 7 samples, 149 s total audio (6 EN, 1 RU). Hand-verified 2026-04-20 — prior two un-verified references (carmack, joker) e
+8:- `anthropic/claude-opus-4` via OpenRouter — HTTP 404 `"No endpoints found that support input audio"` across all samples. OpenRouter does not expose an audio-in
+9:- OpenAI `gpt-4o-audio-preview` deliberately dropped (~$14/$55 per 1M in/out tokens — same "premium-plan-only" argument as Opus).
+13:> **Follow-up 2026-04-20.** Added Gemini 2.5 Pro row from `benchmarks/2026-04-20_gemini-claude-opus-audio/`. Voxtral Small re-investigated after the initial "co
+
+[ascii-arrow] 2 hit(s):
+43:Initial bench showed Voxtral Small producing a 97 % WER on `wwdc_swiftui_perf_en`: two rounds at temperature=0 returned two *different* plausible-sounding Swift
+92:| Claude Opus 4 chat (if audio ever lands) | ~$15/$75 per 1M tokens → ≫$30/mo for heavy | **premium-tier BYOK only** | same |
+
+[bold-colon-opener] 7 hit(s):
+3:**Corpus**: `bench/audio-corpus.json`, 7 samples, 149 s total audio (6 EN, 1 RU). Hand-verified 2026-04-20 — prior two un-verified references (carmack, joker) e
+4:**Dev hardware**: MacBook Pro (Intel i7-9750H @ 2.6 GHz, 32 GB, macOS 26.4.1).
+5:**Providers benched**: 3 local whisper.cpp sizes (base, small, large-v3-turbo), Moonshine base, Groq whisper-large-v3-turbo, OpenRouter-routed Gemini 2.5 Pro (2
+6:**Not yet benched (need keys or Apple Silicon)**: WhisperKit, parakeet-mlx / Parakeet CoreML / Parakeet NIM, ElevenLabs Scribe v2, Deepgram Nova, Mistral Voxtra
+7:**Confirmed unavailable / deferred**:
+
+total flagged lines: 43

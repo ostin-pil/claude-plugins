@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+"""Launcher: runs the prose_mint CLI from a source checkout without install.
+
+Resolves the package relative to this file so `bin/prose-mint` works whether
+called by absolute path, from a shim, or from CI. If `python3` here is older
+than 3.11 the CLI prints a clear error and exits 3 (the config layer needs
+stdlib tomllib).
+"""
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from prose_mint.cli import main  # noqa: E402
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,0 +1,7 @@
+prose-check: research/settings-reference.md
+
+[ai-attribution] 2 hit(s):
+121:| `commit` | Git commit attribution text | Generated with Claude Code + Co-Authored-By trailer |
+122:| `pr` | Pull request description attribution | Generated with Claude Code |
+
+total flagged lines: 2

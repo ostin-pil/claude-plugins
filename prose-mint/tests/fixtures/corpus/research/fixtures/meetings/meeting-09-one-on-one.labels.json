@@ -1,0 +1,15 @@
+{
+  "action_items": [
+    "Wei talks to Priya and Yusuf about expanding the settings refresh charter to a cross-team initiative and designating Theo as technical lead, by next week's leadership sync",
+    "Wei sends Lin a note today asking to add Theo to the hiring-loop rotation for the senior frontend role",
+    "Wei raises the late design-handoff cadence with Priya",
+    "Theo drafts the pair-programming write-up in two weeks for Wei's review",
+    "Theo volunteers for the next senior frontend interview rotation"
+  ],
+  "decisions": [
+    "Theo pursues the staff engineer track, not the management track",
+    "This December's performance review uses the existing senior-engineer rubric; staff calibration begins with next cycle",
+    "If Priya misses the Wednesday copy deadline, the permissions-screen accessibility audit shifts to the following week"
+  ],
+  "notes": "Theo has been working late Wednesdays for three weeks due to delayed Tuesday design handoffs. The settings refresh is the candidate cross-team initiative."
+}

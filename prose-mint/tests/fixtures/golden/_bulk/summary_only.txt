@@ -1,0 +1,58 @@
+================================================================
+scanned 105 file(s); 54 with hits; 1435 total flagged lines
+
+top offenders:
+     136  tests/fixtures/corpus/research/transcription-pain-points-2026-05.md
+     119  tests/fixtures/corpus/research/user-pain-points-and-desires-2026.md
+     108  tests/fixtures/corpus/research/competitor-test-drive-2026-05.md
+      63  tests/fixtures/corpus/research/gsd-workflow.md
+      58  tests/fixtures/corpus/research/seo-keyword-spine-2026-05.md
+      56  tests/fixtures/corpus/research/oss-competitor-landscape-2026.md
+      54  tests/fixtures/corpus/research/apple-fm-benchmark.md
+      53  tests/fixtures/corpus/research/e2e-testing-strategies-2026.md
+      49  tests/fixtures/corpus/research/competitor-deep-diff-2026-05.md
+      45  tests/fixtures/corpus/knowledge/profile-smoke-2026-05-12.md
+      44  tests/fixtures/corpus/research/source-code-insights.md
+      43  tests/fixtures/corpus/research/whisper-bench-2026-04-18.md
+      42  tests/fixtures/corpus/research/stt-quality-apple-speech.md
+      42  tests/fixtures/corpus/research/whisper-landscape-2026.md
+      37  tests/fixtures/corpus/research/claude-code-workflows.md
+      36  tests/fixtures/corpus/research/hooks-system.md
+      34  tests/fixtures/corpus/research/market-sizing-2026-05.md
+      30  tests/fixtures/corpus/knowledge/archive/phase3-thread-reading-integration-spec-2026-04-22.md
+      29  tests/fixtures/corpus/research/community-patterns.md
+      27  tests/fixtures/corpus/knowledge/archive/phase3-ax-feasibility-2026-04-22.md
+      26  tests/fixtures/corpus/research/market-research-outcome-2026-05-ru.md
+      23  tests/fixtures/corpus/research/bmad-method.md
+      22  tests/fixtures/corpus/knowledge/archive/project-status-2026-04-22.md
+      22  tests/fixtures/corpus/research/cloud-llm-provider.md
+      21  tests/fixtures/corpus/research/style-adaptation-competitors.md
+      20  tests/fixtures/corpus/research/whisper-next-steps.md
+      16  tests/fixtures/corpus/research/competitive-landscape.md
+      14  tests/fixtures/corpus/research/claude-md-rules.md
+      14  tests/fixtures/corpus/research/fixtures/meetings/README.md
+      12  tests/fixtures/corpus/research/head-to-head-comparison.md
+      11  tests/fixtures/corpus/research/cli-reference.md
+      11  tests/fixtures/corpus/research/cloud-llm-provider-research.md
+      10  tests/fixtures/corpus/research/fixtures/meetings/meeting-09-one-on-one.md
+       9  tests/fixtures/corpus/_edge/structural_all.md
+       9  tests/fixtures/corpus/research/fixtures/meetings/meeting-01-product-review.md
+       9  tests/fixtures/corpus/research/fixtures/meetings/meeting-02-sales-discovery.md
+       9  tests/fixtures/corpus/research/fixtures/meetings/meeting-10-board-prep.md
+       8  tests/fixtures/corpus/research/fixtures/meetings/meeting-03-sprint-planning.md
+       8  tests/fixtures/corpus/research/fixtures/meetings/meeting-04-design-review.md
+       8  tests/fixtures/corpus/research/fixtures/meetings/meeting-06-hiring-debrief.md
+       8  tests/fixtures/corpus/research/fixtures/meetings/meeting-08-allhands-followup.md
+       7  tests/fixtures/corpus/research/fixtures/meetings/meeting-05-retro.md
+       6  tests/fixtures/corpus/research/fixtures/meetings/meeting-07-client-kickoff.md
+       5  tests/fixtures/corpus/_edge/russian_emdash.md
+       5  tests/fixtures/corpus/research/on-device-translation.md
+       4  tests/fixtures/corpus/_edge/hard_wrap.md
+       3  tests/fixtures/corpus/_edge/ai_attribution.md
+       2  tests/fixtures/corpus/_edge/fenced_code.md
+       2  tests/fixtures/corpus/research/context-aware-cleanup.md
+       2  tests/fixtures/corpus/research/settings-reference.md
+       1  tests/fixtures/corpus/_edge/pragma_some.md
+       1  tests/fixtures/corpus/knowledge/autonomous-execution-brief-2026-04-30.md
+       1  tests/fixtures/corpus/knowledge/follow-up-brief-2026-05-01.md
+       1  tests/fixtures/corpus/reports/Status Report 2026-04-13.md

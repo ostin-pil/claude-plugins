@@ -1,0 +1,10 @@
+prose-check: research/fixtures/meetings/meeting-04-design-review.md
+
+[em-dash] 8 hit(s):
+1:# Design Review — Settings Refresh
+13:Quentin: The proposal handles two of those — delete account moves to the bottom of Account, and notification frequency is the first item in Notifications. Expor
+17:Mariam: From engineering, the only hard constraint is that some of the toggles trigger backend calls that take a few seconds — region change, two-factor enrollm
+21:Ben: I'd like to do one more round of testing with the new IA before engineering builds it. We can do an unmoderated study, five participants, single task — fin
+31:Mariam: One more from engineering — I'd like the spec to include the deep-link routes. Right now Settings is reachable by pressing the gear icon, but support ha
+
+total flagged lines: 8

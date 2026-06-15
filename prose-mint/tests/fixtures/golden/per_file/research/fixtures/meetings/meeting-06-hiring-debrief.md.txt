@@ -1,0 +1,10 @@
+prose-check: research/fixtures/meetings/meeting-06-hiring-debrief.md
+
+[em-dash] 8 hit(s):
+1:# Hiring Debrief — Senior Backend Engineer, Final Round
+7:Yusuf: We just finished the loop with Casey Liu for the senior backend role. Ana, you ran the system design — kick us off.
+9:Ana: System design was strong. The prompt was a multi-region message queue with at-least-once delivery. Casey moved through it methodically — clarifying questio
+11:Mariam: My round was the data-modeling exercise. Casey's modeling was clean. They asked good questions about cardinality before committing to schemas. Strong on
+19:Mariam: For the migration question, similar answer — gap, not deal-breaker. I'd hire and pair them with someone who's done a few painful migrations.
+
+total flagged lines: 8

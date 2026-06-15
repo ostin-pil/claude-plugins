@@ -1,0 +1,10 @@
+prose-check: research/on-device-translation.md
+
+[bold-colon-opener] 5 hit(s):
+3:**Date**: 2026-04-10
+4:**Target**: Untype Tier 2 feature -- optional translation after voice cleanup
+5:**Use case**: Speak in language A, insert cleaned text in language B
+6:**Priority pairs**: EN<->RU, EN<->ZH
+7:**Constraints**: macOS 14+, Apple Silicon, native Swift, minimal RAM overhead
+
+total flagged lines: 5

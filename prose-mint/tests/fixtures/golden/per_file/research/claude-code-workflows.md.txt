@@ -1,0 +1,10 @@
+prose-check: research/claude-code-workflows.md
+
+[em-dash] 37 hit(s):
+11:The simplest autonomous workflow — a bash loop that repeatedly feeds Claude Code the same prompt:
+26:- The loop is the hero, not the model — persistent iteration beats clever prompting
+27:- Every task needs **automated verification** (tests, lint, build) — without pass/fail signals, the loop can't self-correct
+33:- **Ryan Carson's snarktank/ralph** — PRD-driven with `prd.json`, `progress.txt`, `AGENTS.md`
+34:- **Cole Medin's quickstart** — [ralph-loop-quickstart](https://github.com/coleam00/ralph-loop-quickstart)
+
+total flagged lines: 37

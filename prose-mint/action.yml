@@ -1,0 +1,75 @@
+name: "prose-mint"
+description: "Scan changed markdown and the PR body for structural AI-prose tells. Scope and rules come from the consumer repo's .prose-mint.toml."
+author: "Costa"
+
+inputs:
+  strict:
+    description: "Fail the job on any hit. Default false: warn-only, findings in the log (no PR comment)."
+    required: false
+    default: "false"
+  scan-pr-body:
+    description: "Also scan the PR title+body. Requires GH_TOKEN in the step env."
+    required: false
+    default: "true"
+  python-version:
+    description: "Python for the CLI. Pinned to 3.11+ (the config layer needs stdlib tomllib)."
+    required: false
+    default: "3.11"
+  config:
+    description: "Explicit .prose-mint.toml path. Default: auto-discovered by walking up from each file."
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install prose-mint
+      shell: bash
+      # The action repo is checked out at github.action_path; it *is* the
+      # prose-mint package, so install it from there. No PyPI needed.
+      run: pip install "${{ github.action_path }}"
+
+    - name: Scan changed markdown
+      shell: bash
+      env:
+        STRICT: ${{ inputs.strict }}
+        CONFIG: ${{ inputs.config }}
+        BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      run: |
+        set -euo pipefail
+        STRICT_FLAG=""; [ "$STRICT" = "true" ] && STRICT_FLAG="--strict"
+        CONFIG_FLAG=""; [ -n "$CONFIG" ] && CONFIG_FLAG="--config $CONFIG"
+        if [ -n "${BASE_SHA:-}" ]; then BASE="$BASE_SHA"; else
+          BASE=$(git merge-base origin/HEAD HEAD 2>/dev/null || echo HEAD~1)
+        fi
+        # Changed, non-deleted markdown. Scope (include/exclude) is the
+        # consumer repo's .prose-mint.toml, not hardcoded here.
+        mapfile -t CHANGED < <(git diff --name-only --diff-filter=d "$BASE"...HEAD \
+          | grep -E '\.md$' || true)
+        if [ "${#CHANGED[@]}" -eq 0 ]; then
+          echo "(no markdown changed)"
+        else
+          prose-mint bulk $CONFIG_FLAG $STRICT_FLAG "${CHANGED[@]}"
+        fi
+
+    - name: Scan PR body
+      if: ${{ inputs.scan-pr-body == 'true' && github.event_name == 'pull_request' }}
+      shell: bash
+      env:
+        STRICT: ${{ inputs.strict }}
+        PR: ${{ github.event.pull_request.number }}
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        set -euo pipefail
+        if [ -z "${GH_TOKEN:-}" ]; then
+          echo "::warning::no GH_TOKEN; skipping PR-body scan"
+          exit 0
+        fi
+        STRICT_FLAG=""; [ "$STRICT" = "true" ] && STRICT_FLAG="--strict"
+        gh pr view "$PR" --json title,body -q '.title + "\n\n" + .body' \
+          | prose-mint scan --stdin --label "PR #$PR" $STRICT_FLAG

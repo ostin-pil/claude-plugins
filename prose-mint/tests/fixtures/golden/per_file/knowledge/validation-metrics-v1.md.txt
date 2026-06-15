@@ -1,0 +1,4 @@
+prose-check: knowledge/validation-metrics-v1.md
+  (pragma disables: bold-colon-opener)
+
+total flagged lines: 0

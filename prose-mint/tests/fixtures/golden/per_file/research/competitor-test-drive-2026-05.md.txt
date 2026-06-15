@@ -1,0 +1,17 @@
+prose-check: research/competitor-test-drive-2026-05.md
+
+[em-dash] 100 hit(s):
+1:# Competitor test-drive kit — dictation scripts (EN + RU)
+4:**Purpose:** Hands-on qualitative evaluation of competing voice-to-text tools using a fixed corpus of 12 passages — 8 contextual + 4 edge-case probes — across E
+7:- [`competitor-deep-diff-2026-05.md`](./competitor-deep-diff-2026-05.md) — 8-row coverage matrix and positioning deltas
+8:- [`competitive-landscape.md`](./competitive-landscape.md) — broader commercial map + emerging tools
+9:- [`oss-competitor-landscape-2026.md`](./oss-competitor-landscape-2026.md) — OSS-only deep profiles
+
+[ascii-arrow] 8 hit(s):
+42:- [ ] macOS Dictation: language switcher includes both English and Russian (System Settings → Keyboard → Dictation → Edit)
+52:- **Install:** `https://wisprflow.ai/` (signup → direct download)
+72:- **Install:** Built-in. Enable in System Settings → Keyboard → Dictation. Add Russian as second language.
+83:| 7 | MacWhisper | `brew install --cask macwhisper` | Transcription-focused (file → text) but real-time mode is a useful counterpoint to dictation-first tools |
+177:  - Self-correction "John → Sarah": does the polish layer remove the strikethrough, or does it leave both names?
+
+total flagged lines: 108

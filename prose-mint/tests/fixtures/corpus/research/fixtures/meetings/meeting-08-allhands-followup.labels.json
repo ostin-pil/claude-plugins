@@ -1,0 +1,18 @@
+{
+  "action_items": [
+    "Hannah confirms the reliability-role freeze carve-out in writing from the CFO this week",
+    "Hannah sends performance-training calendar invites to Wei by end of day tomorrow",
+    "Yusuf, Mei, and Owen each write a one-pager for their team explaining the OKR transition by next Wednesday",
+    "Hannah compiles the three transition notes into a single document and sends it to Wei for review by Friday next week",
+    "Yusuf drafts a list of three failure modes and mitigations for the new performance review framework by next Friday",
+    "Owen circulates the outage postmortem before noon today",
+    "Hannah drafts the next engineering town-hall agenda by next Wednesday"
+  ],
+  "decisions": [
+    "Reliability roles are carved out of the hiring freeze",
+    "The Casey Liu offer stands because it predates the freeze announcement",
+    "Current OKRs run to completion; the new quarterly cadence starts at the next planning cycle",
+    "Engineering runs the full performance-review framework pilot for the December cycle"
+  ],
+  "notes": "Hiring freeze on non-critical roles through Q3. Forty engineering managers in scope for the review pilot. Mandatory two-week training kickoff in October."
+}

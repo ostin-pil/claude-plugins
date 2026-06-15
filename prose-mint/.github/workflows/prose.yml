@@ -1,0 +1,16 @@
+# prose-mint dogfooding its own reusable action. Uses the local action
+# (uses: ./) so a change to action.yml is gated by action.yml on the same PR.
+name: prose
+on:
+  pull_request:
+jobs:
+  prose:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: ./

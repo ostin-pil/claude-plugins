@@ -1,0 +1,14 @@
+prose-check: knowledge/archive/phase3-ax-feasibility-2026-04-22.md
+
+[em-dash] 25 hit(s):
+1:# Phase 3 AX feasibility — Messages.app thread reading
+19:| Transcript container | descendant with `AXIdentifier == "TranscriptCollectionView"` | — |
+22:| Sender (mine vs theirs) | Description prefix of wrapper: `"Your iMessage, …"` vs `"<Contact Name>, …"`. Also disambiguable by horizontal position (x) since mi
+25:Tree size: 69 nodes at depth 15 in a 2-bubble thread — no IPC latency visible; the whole walk was sub-100ms perceived.
+27:## Run 2 (photo-only thread, 2026-04-22) — attachments resolved
+
+[ascii-arrow] 2 hit(s):
+56:| Body web area | `_MAIL_MESSAGE_BODY` → `AXWebArea` | traverse for per-paragraph `AXStaticText`, `AXHeading`, `AXLink` |
+82:The built probe binary lives at `.build/debug/UntypeAXProbe`. On this machine the first run returned `AXIsProcessTrusted() == true` without an explicit grant — 
+
+total flagged lines: 27

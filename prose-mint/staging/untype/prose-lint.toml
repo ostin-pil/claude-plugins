@@ -1,0 +1,14 @@
+# OPTIONAL. Copy to the Untype repo root as `.prose-lint.toml` only if you
+# want `prose-lint bulk <dir>` (the scan-everything convenience) to skip
+# these paths. It is deliberately limited to [scope], which affects only
+# directory walks in `bulk`. It does NOT touch [structural], [language], or
+# thresholds, so single-file `scan` (what the CI gate and the prose-check
+# skill call) stays byte-identical to today's scanner. Omitting this file
+# entirely is also fine: the default already reproduces the original.
+#
+# The exclusions mirror prose-style.md's "does not apply to" list. The
+# Cyrillic em-dash exemption is already the default (true), so it is not
+# restated here.
+
+[scope]
+exclude = ["sessions/*", ".claude/*", "CLAUDE.md"]

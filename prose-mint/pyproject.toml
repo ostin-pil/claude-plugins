@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "prose-mint"
+version = "0.1.0"
+description = "Structural-tells linter for AI-flavored prose"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+# The MCP server is an optional surface; the core engine stays zero-dep.
+mcp = ["fastmcp>=3"]
+
+[project.scripts]
+prose-mint = "prose_mint.cli:main"
+prose-mint-mcp = "prose_mint.server:main"
+
+[tool.setuptools]
+packages = ["prose_mint"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

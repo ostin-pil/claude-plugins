@@ -1,0 +1,7 @@
+prose-check: research/context-aware-cleanup.md
+
+[hard-wrap] 2 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+208:**Cons:** No browser-based app detection, no sub-context within apps.
+235:**Cons:** Window title formats change across app versions; needs maintenance.
+
+total flagged lines: 2

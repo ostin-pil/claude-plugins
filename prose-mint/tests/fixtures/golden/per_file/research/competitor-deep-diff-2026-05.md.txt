@@ -1,0 +1,19 @@
+prose-check: research/competitor-deep-diff-2026-05.md
+
+[em-dash] 44 hit(s):
+1:# Competitor deep-diff: voice-to-text for macOS — May 2026
+4:**Scope:** A focused 8-row coverage matrix across the macOS dictation / voice-to-text category, with one positioning delta per competitor relative to Untype. Ex
+6:- [`competitive-landscape.md`](./competitive-landscape.md) — broader commercial map (Wispr, Superwhisper, MacWhisper, AudioPen, Otter, Notta, plus the April 202
+7:- [`head-to-head-comparison.md`](./head-to-head-comparison.md) — the previous head-to-head against Wispr / Superwhisper
+8:- [`distribution-monetization.md`](./distribution-monetization.md) — distribution and pricing baseline
+
+[ascii-arrow] 1 hit(s):
+89:- **Active monthly:** VoiceInk (v1.74 → v1.70 over Feb–Apr 2026), FluidVoice (v1.5.12 → v1.5.10 in March), macparakeet (v0.5.6 → v0.5.2 across April).
+
+[hard-wrap] 4 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+36:[^g2]: Granola landing — `https://www.granola.ai/`
+37:[^wh1]: Whispo README — `https://github.com/egoist/whispo`
+40:[^s2]: Superwhisper modes docs — `https://superwhisper.com/docs/modes/modes`
+46:[^f1]: FluidVoice README — `https://github.com/altic-dev/FluidVoice/blob/main/README.md`
+
+total flagged lines: 49

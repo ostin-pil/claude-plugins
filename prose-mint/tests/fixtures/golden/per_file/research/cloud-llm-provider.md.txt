@@ -1,0 +1,17 @@
+prose-check: research/cloud-llm-provider.md
+
+[em-dash] 11 hit(s):
+33:3. Preserve meaning and tone — this is NOT rewriting, it's cleanup
+34:4. Keep it fast — this runs on every message, latency is critical
+46:- Claude (Anthropic) — Haiku 4.5, Sonnet 4.6
+47:- GPT (OpenAI) — GPT-4o-mini, GPT-4o
+48:- Gemini (Google) — Flash 2.0, Pro 2.5
+
+[hard-wrap] 11 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+6:the app transcribes (on-device via Apple Speech), then an LLM cleans/structures
+7:the text, and the result is pasted into the active app (Slack, email, etc.).
+17:already supports an optional `cloudProvider` with fallback strategies
+18:(cloud-primary-local-fallback, local-primary-cloud-fallback).
+21:LLMResponse carries: requestId, outputText, providerName, modelName, latencyMs.
+
+total flagged lines: 22

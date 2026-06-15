@@ -1,0 +1,14 @@
+{
+  "action_items": [
+    "Eli circulates the three-system integration spec (TMS, WMS, customer portal) including the security-review buffer by Friday next week",
+    "Sandra aligns the analyst team on Monday on the phase 0 / phase 1 prioritization",
+    "Sandra sends the recurring Tuesday 2 PM weekly status-call invite",
+    "Naomi sends the first weekly summary email to Greg and the COO next Friday and weekly Fridays after that",
+    "Naomi sets up the shared project board with milestones and current status by end of next week and shares access with Sandra, analysts, and Otis"
+  ],
+  "decisions": [
+    "Split delivery into phase 0 (TMS-only Sentinel visibility, 35 days) and phase 1 (full WMS and customer-portal integration, 90 days)",
+    "Use polling on a five-minute interval for the WMS integration; revisit webhooks once the rest stabilizes"
+  ],
+  "notes": "Sentinel Foods threatened to consolidate volume unless real-time visibility lands within 60 days. Real-time = 15-minute updates during transit. Hartwell security requires a 30-day review window before production wiring."
+}

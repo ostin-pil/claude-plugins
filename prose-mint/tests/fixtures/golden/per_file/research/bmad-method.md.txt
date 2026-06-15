@@ -1,0 +1,10 @@
+prose-check: research/bmad-method.md
+
+[hard-wrap] 23 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+10:that transforms AI coding assistants into structured virtual development teams. Created by
+11:Steve Kaplan (GitHub: bmadcode), it provides specialized agent personas, deterministic
+12:workflows, and document management patterns to make AI-assisted development repeatable and
+16:distinct expert roles (PM, Architect, Developer, etc.) with scoped responsibilities,
+17:constrained context, and explicit handoff points. Each role produces artifacts that feed
+
+total flagged lines: 23

@@ -1,0 +1,17 @@
+prose-check: research/gsd-workflow.md
+
+[bold-colon-opener] 13 hit(s):
+358:**Lock file tracking**: A lock file tracks the current unit. If the session dies, the next
+361:**Parallel orchestrator state**: Multi-worker sessions persist state to disk with PID
+365:**Stuck detection**: A sliding-window detector identifies repeated dispatch patterns. On
+368:**Timeout supervision**:
+415:**Creates**: `PROJECT.md`, `REQUIREMENTS.md`, `ROADMAP.md`, `STATE.md`, `.planning/research/`
+
+[hard-wrap] 50 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+10:Claude Code created by Lex Christopherson (GitHub: glittercowboy), a house music
+11:producer in Costa Rica operating under the TACHES organization. First committed in
+12:December 2025, it has grown to 50K+ GitHub stars and 1,700+ commits across 47+ releases
+13:as of April 2026. It supports 12 runtimes (Claude Code, Gemini, Codex, Cursor, Windsurf,
+14:Copilot, Cline, Kilo, Augment, Trae, Antigravity, OpenCode).
+
+total flagged lines: 63

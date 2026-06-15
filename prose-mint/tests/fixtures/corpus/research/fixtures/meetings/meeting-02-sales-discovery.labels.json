@@ -1,0 +1,14 @@
+{
+  "action_items": [
+    "Diane shares the TMS schema dump and a one-week sample export by next Friday",
+    "Tom returns the technical scoping doc within ten business days of receiving the data",
+    "Lena sends the one-page pricing scenario by Wednesday",
+    "Diane confirms the procurement window with finance on Monday",
+    "Lena makes customer-reference introductions to Hartwell Freight and Coastline Express by Thursday"
+  ],
+  "decisions": [
+    "Phase one will be read-only TMS sync with dispatcher-email manifest write-back, avoiding the legacy TMS write-API constraint",
+    "Standard mobile app covers Brightline's Android-heavy fleet; no custom mobile build needed"
+  ],
+  "notes": "Brightline runs 1,200 deliveries/day across four hubs. Drivers wait ~11 min between route and roll. CFO signs for >$200K annual. Four-week procurement review."
+}

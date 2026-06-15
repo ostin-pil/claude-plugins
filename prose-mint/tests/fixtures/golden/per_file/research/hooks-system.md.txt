@@ -1,0 +1,17 @@
+prose-check: research/hooks-system.md
+
+[bold-colon-opener] 16 hit(s):
+78:**SessionStart**: `source` (startup|resume|clear|compact), `model`, optional `agent_type`
+80:**UserPromptSubmit**: `prompt` (the user's text)
+82:**PreToolUse**: `tool_name`, `tool_input`, `tool_use_id`
+84:**PermissionRequest**: `tool_name`, `tool_input`, optional `permission_suggestions[]`
+86:**PostToolUse**: `tool_name`, `tool_input`, `tool_response`, `tool_use_id`
+
+[hard-wrap] 20 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+10:They provide **deterministic** control -- certain actions always happen, rather than
+11:relying on the LLM to choose to run them. Four hook types exist: shell commands, HTTP
+12:endpoints, single-turn LLM prompts, and multi-turn agent subagents.
+159:(`~/.zshrc` or `~/.bashrc`). If your profile has unconditional `echo` statements,
+160:they pollute stdout and break JSON parsing. Guard them:
+
+total flagged lines: 36

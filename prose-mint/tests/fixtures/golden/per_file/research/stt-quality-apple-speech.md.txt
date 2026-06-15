@@ -1,0 +1,21 @@
+prose-check: research/stt-quality-apple-speech.md
+
+[em-dash] 29 hit(s):
+1:# STT Quality — Tuning SFSpeechRecognizer for Untype
+20:   manually. Flip it unconditionally — Untype's deployment target is
+29:   call. Separate spike — scoped below.
+36:   its custom-LM compatibility. Not worth it — WhisperKit is a better
+41:## SFSpeechRecognitionRequest — quality knobs
+
+[ascii-arrow] 2 hit(s):
+78:**Build → ship → runtime:**
+97:- `clientIdentifier` is the cache key. Bump it (`...v1` → `...v2`) whenever training data changes, otherwise prepared files aren't rebuilt.
+
+[hard-wrap] 11 hit(s) — paragraphs broken across short lines; let the renderer wrap:
+5:quality bottleneck in Untype, upstream of any LLM cleanup. This note
+6:enumerates every quality-affecting knob on `SFSpeechRecognizer` /
+7:`SFSpeechAudioBufferRecognitionRequest` on macOS, notes which ones
+11:speech recognition", and the `dotnet/macios` Speech bindings (authoritative
+20:   manually. Flip it unconditionally — Untype's deployment target is
+
+total flagged lines: 42

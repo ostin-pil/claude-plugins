@@ -1,0 +1,24 @@
+prose-check: knowledge/profile-smoke-2026-05-12.md
+
+[em-dash] 34 hit(s):
+1:# T1.3 — Per-profile tone-shift smoke (Groq Llama 3.1 8B Instant)
+7:**Run via**: `swift run UntypeBench --corpus … --providers groq:llama-3.1-8b-instant --profile {chat|email|code|general}` — `--profile` added in `e4f738a` for e
+11:### Input 1 — emotional
+22:### Input 2 — email_request
+33:### Input 3 — technical_jargon
+
+[ascii-arrow] 6 hit(s):
+57:This is the **most serious** finding. If T1.1 (L1→L2 translation) ships on top of this, translated chat output will hallucinate even more aggressively because t
+76:### Failure mode 4 — chat profile shifted "can you" → "I can"
+94:1. **Stronger CRITICAL guard, repeated after the profile block.** The current ordering is: base prompt (with CRITICAL) → profile block. Reverse it: profile bloc
+96:2. **Worked examples per profile.** Replace the abstract tone strings with one input→output pair that anchors "this is what cleanup looks like for this destinat
+127:| **Llama 3.1 8B** | Can you send an email to Sarah letting her know that the quarterly report is attached and I would love to get her feedback by the end of da
+
+[bold-colon-opener] 5 hit(s):
+3:**Date**: 2026-05-12
+4:**Task**: `knowledge/feature-triage-2026-05.md:44` (T1.3)
+5:**Provider**: `groq:llama-3.1-8b-instant`
+6:**Source corpus**: `/tmp/profile-smoke-corpus.json` (3 samples)
+7:**Run via**: `swift run UntypeBench --corpus … --providers groq:llama-3.1-8b-instant --profile {chat|email|code|general}` — `--profile` added in `e4f738a` for e
+
+total flagged lines: 45

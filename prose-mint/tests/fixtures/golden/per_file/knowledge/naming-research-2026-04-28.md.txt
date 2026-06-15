@@ -1,0 +1,4 @@
+prose-check: knowledge/naming-research-2026-04-28.md
+  (pragma disables: bold-colon-opener)
+
+total flagged lines: 0

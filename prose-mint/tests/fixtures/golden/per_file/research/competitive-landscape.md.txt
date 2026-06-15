@@ -1,0 +1,10 @@
+prose-check: research/competitive-landscape.md
+
+[em-dash] 16 hit(s):
+355:| Wispr Flow Pro | $15 | $144 | — |
+357:| MacWhisper Pro | — | $15 (MAS) / $29 (Gumroad) | ~$80 |
+358:| Aqua Voice | ~$8.33 | $100 | — |
+359:| Pipit | subscription tiers | — | — |
+383:| Willow | Seed | 2025 | $4.5M | n/d | Box Group / YC / Burst Capital | iOS-first voice keyboard (not macOS) — launched Nov 2025, 50% MoM user growth, enterpris
+
+total flagged lines: 16
