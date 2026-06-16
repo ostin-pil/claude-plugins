@@ -63,7 +63,7 @@ Distributed through the `claude-plugins` marketplace:
 
 ```
 /plugin marketplace add ostin-pil/claude-plugins
-/plugin install lifecycle-kit@claude-plugins
+/plugin install lifecycle-kit@ostin-pil-plugins
 ```
 
 Then do the per-project setup above (copy the manifest template and fill it).

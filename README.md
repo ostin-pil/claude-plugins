@@ -16,8 +16,8 @@ Add the marketplace once, then install any plugin from it.
 
 ```
 /plugin marketplace add ostin-pil/claude-plugins
-/plugin install lifecycle-kit@claude-plugins
-/plugin install prose-mint@claude-plugins
+/plugin install lifecycle-kit@ostin-pil-plugins
+/plugin install prose-mint@ostin-pil-plugins
 ```
 
 The marketplace id is the `name` field in `.claude-plugin/marketplace.json`
