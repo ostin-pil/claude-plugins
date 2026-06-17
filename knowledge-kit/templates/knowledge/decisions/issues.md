@@ -28,10 +28,10 @@ schema below (it is structured data, not prose).
 
 ## Status values
 
-- **Open** — known issue, not yet fixed
-- **Resolved** — fixed and confirmed
-- **Resolved (verify)** — fixed but needs verification (e.g. may have been reverted)
-- **Regressed** — was fixed but the fix was lost
+- **Open**, known issue, not yet fixed
+- **Resolved**, fixed and confirmed
+- **Resolved (verify)**, fixed but needs verification (e.g. may have been reverted)
+- **Regressed**, was fixed but the fix was lost
 
 ---
 
