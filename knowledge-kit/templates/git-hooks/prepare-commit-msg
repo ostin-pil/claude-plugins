@@ -1,0 +1,31 @@
+#!/bin/sh
+# Append a Session-date trailer so commits made on the same calendar day
+# are grep-able as a unit, even if a parallel terminal interleaves its
+# own commits between mine.
+#
+# Install: copy to .git/hooks/prepare-commit-msg and `chmod +x` it.
+#
+# Usage in retrospect:
+#   git log --grep "Session-date: 2026-05-07"            # one day's work
+#   git log --grep "Session-date: 2026-05-07" --oneline | head
+#
+# Args from git: $1=msg-file, $2=source ('message','template','merge',
+# 'squash','commit'), $3=sha (only on amend).
+#
+# Skip when the message is auto-generated (merge/squash) or being
+# amended (avoid double-trailing). Idempotent: bail if a Session-date
+# is already in the file.
+
+msg_file="$1"
+source="$2"
+
+case "$source" in
+    merge|squash|commit) exit 0 ;;
+esac
+
+if grep -q '^Session-date:' "$msg_file" 2>/dev/null; then
+    exit 0
+fi
+
+# Append with a leading blank line so the trailer is in the trailer block.
+printf '\nSession-date: %s\n' "$(date +%Y-%m-%d)" >> "$msg_file"
