@@ -1,3 +1,4 @@
+<!-- prose-check: skip all -->
 # Prose Style Rule
 
 A starter policy for user-facing prose: PR descriptions, issue and PR comments,

@@ -31,10 +31,10 @@ log. The knowledge-audit skill points unpromoted session learnings here.
 
 ## Status values
 
-- `needs data` — answer is empirical; revisit after the next measurement or run.
-- `needs decision` — non-empirical; a person has to choose.
-- `needs scope` — work shape is unclear (effort vs payoff TBD).
-- `parked` — known and deliberately deferred; the trigger event is in the future.
+- `needs data`, answer is empirical; revisit after the next measurement or run.
+- `needs decision`, non-empirical; a person has to choose.
+- `needs scope`, work shape is unclear (effort vs payoff TBD).
+- `parked`, known and deliberately deferred; the trigger event is in the future.
 
 ---
 
