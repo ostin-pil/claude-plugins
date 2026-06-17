@@ -1,0 +1,7 @@
+#!/bin/sh
+# Strip Co-Authored-By trailers from commit messages.
+# Install: copy to .git/hooks/commit-msg and `chmod +x` it (see knowledge-kit
+# README, "Git hooks"). macOS/BSD sed; on GNU/Linux drop the empty '' after -i.
+sed -i '' '/^Co-Authored-By:/d' "$1"
+# Remove trailing blank lines left behind.
+sed -i '' -e :a -e '/^\n*$/{$d;N;ba' -e '}' "$1"
