@@ -22,6 +22,15 @@
       "homepage": "https://github.com/ostin-pil/claude-plugins#prose-mint",
       "category": "development",
       "keywords": ["prose", "linter", "markdown", "ai-tells", "writing"]
+    },
+    {
+      "name": "knowledge-kit",
+      "description": "Knowledge-base skills driven by the lifecycle manifest: knowledge-audit (orphaned/stale/unpromoted check), issues (ISS-NNN tracker), and session-archive (scrubbed transcript export). Ships a knowledge-skeleton template and the two git-hook templates.",
+      "version": "0.1.0",
+      "source": "./knowledge-kit",
+      "homepage": "https://github.com/ostin-pil/claude-plugins#knowledge-kit",
+      "category": "workflow",
+      "keywords": ["knowledge", "issues", "audit", "archive", "sessions", "reuse"]
     }
   ]
 }
