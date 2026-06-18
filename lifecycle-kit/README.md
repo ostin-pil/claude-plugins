@@ -47,15 +47,26 @@ A `SessionStart` hook (`hooks/validate-manifest.sh`) checks the manifest exists,
 has the required keys, and that the remote is configured when required. It warns;
 it never blocks the session.
 
-## Bundled rules (no companion file)
+## Bundled rules
 
-`workflow_rule` points at the lifecycle invariants the skills assume: one PR per
-session, never merge locally, one worktree per concurrent session,
-assert-then-reconcile, and the REST-not-`gh pr edit` rule. The kit ships a
-generic copy at `rules/workflow.md`, and the manifest template defaults
-`workflow_rule` to it (`${CLAUDE_PLUGIN_ROOT}/rules/workflow.md`), so a project
-adopts the kit with zero companion files. Point the key at your own path if you
-maintain a project-specific version.
+The skills encode the lifecycle invariants directly (one PR per session, never
+merge locally, one worktree per concurrent session, assert-then-reconcile, and
+the REST-not-`gh pr edit` rule), so they run with no companion file. The full
+statement of those invariants ships with the kit at `rules/workflow.md`, and the
+skills cite it by the repo-relative path `.claude/rules/workflow.md`, which the
+manifest's `workflow_rule` key defaults to. Copy the bundled file there if you
+want the reference doc in your own repo:
+
+```
+cp <plugin>/rules/workflow.md .claude/rules/workflow.md
+```
+
+The default is that repo-relative path rather than
+`${CLAUDE_PLUGIN_ROOT}/rules/workflow.md`, because `${CLAUDE_PLUGIN_ROOT}` does
+not reliably expand in skill-body Bash (it does expand in hooks, which is why the
+SessionStart hook still uses it). A repo-relative path resolves through the git
+toplevel, the way the skills already reference it. Point `workflow_rule` at your
+own path if you maintain a project-specific version.
 
 ## Install
 
