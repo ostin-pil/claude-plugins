@@ -36,6 +36,9 @@ local path instead:
 
 ```
 .claude-plugin/marketplace.json     # lists every plugin in the repo
+.github/workflows/prose.yml         # prose gate over the marketplace docs
+.prose-mint.toml                    # prose-gate scope + enabled categories
+LICENSE                             # MIT
 lifecycle-kit/
   .claude-plugin/plugin.json
   skills/<six>/SKILL.md
@@ -57,8 +60,17 @@ knowledge-kit/
 ADOPTING.md                         # end-to-end repo setup across all three plugins
 ```
 
-## Before publishing
+## CI
 
-Pick and add a `license` (omitted for now). The absorbed `prose-mint` keeps its
-own `pyproject.toml` and `action.yml`; decide whether its CI/release runs from
-this monorepo or stays retired with the old `ostin-pil/ProseMint` repo.
+`.github/workflows/prose.yml` runs the bundled prose-mint action over changed
+markdown on every PR, scoped by `.prose-mint.toml` to the marketplace's
+user-facing docs (the structural-tell categories; hard-wrap is off because
+these docs wrap by choice). The absorbed `prose-mint` keeps its own
+`pyproject.toml` and `action.yml`, and the monorepo vendors it as a plugin and
+a reusable action (`uses: ./prose-mint`). Its Python package release stays
+retired with the old `ostin-pil/ProseMint` repo; nothing publishes to PyPI from
+here.
+
+## License
+
+MIT, see [`LICENSE`](./LICENSE).
