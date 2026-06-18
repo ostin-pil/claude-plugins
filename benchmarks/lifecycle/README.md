@@ -36,8 +36,9 @@ scenarios/<name>/assert.sh "$REPO"
 
 | Scenario | Skill | Asserts | gh? |
 |---|---|---|---|
-| `cleanup-containment` | cleanup-worktrees | a worktree whose branch is in the integration ref is swept; one with unique work survives | no |
+| `cleanup-containment` | cleanup-worktrees | a contained worktree is swept; one with unique work survives | no |
+| `branch-birth` | session-start | the session branch is born off the integration ref, not the stray-ahead local main | no |
+| `ambiguous-finalize` | finalize-worktree | two candidates, no target: refuse, push and merge nothing | no |
 
-More to come: branch-birth off the integration ref (not the working tree),
-ambiguous-finalize refusal, finalize idempotency after a simulated partial
-failure, and the local-main-only-fast-forwards guard.
+Still to come (needs a `gh` mock): finalize idempotency after a simulated
+partial merge, and the local-main-only-fast-forwards guard (ISS-W3).
