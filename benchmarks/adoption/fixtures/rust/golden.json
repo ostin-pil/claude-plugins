@@ -1,0 +1,10 @@
+{
+  "ecosystem": "rust-cargo",
+  "product_name": "cog",
+  "fields": {
+    "build_commands": { "accept": [["cargo build"]] },
+    "test_commands": { "accept": [["cargo test"]] },
+    "code_globs": { "accept_ext": ["rs"] }
+  },
+  "notes": "Cargo crate cog. build = cargo build; test = cargo test; code is *.rs."
+}

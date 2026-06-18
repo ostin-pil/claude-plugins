@@ -1,0 +1,10 @@
+{
+  "ecosystem": "go",
+  "product_name": "gadget",
+  "fields": {
+    "build_commands": { "accept": [["go build ./..."], ["go build ."]] },
+    "test_commands": { "accept": [["go test ./..."], ["go test ./... -count=1"]] },
+    "code_globs": { "accept_ext": ["go"] }
+  },
+  "notes": "Go module example.com/gadget. build = go build ./...; test = go test ./...; code is *.go. product_name from the module's last path segment."
+}
