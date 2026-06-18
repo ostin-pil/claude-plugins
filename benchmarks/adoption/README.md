@@ -26,6 +26,12 @@ git and GitHub), so the inference of those three values is the real test.
    fresh agent (no prior context) and save its JSON to `results/<eco>.json`.
 2. `python3 grade.py`
 
+To test robustness to a cheaper model, pin the inference agents to a weaker
+model, save to a parallel results dir, and grade that dir:
+`python3 grade.py --results results-sonnet`. A Sonnet 4.6 run lives in
+`results-sonnet/` with its report in `RESULTS-sonnet.md` (23/24: the weaker model
+invented a Python build step where the baseline correctly declined).
+
 ## What a miss means
 
 A mismatch is a finding about `ADOPTING.md`, not about the fixture: the prompt
