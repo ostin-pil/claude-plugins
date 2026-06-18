@@ -1,0 +1,10 @@
+{
+  "ecosystem": "c-makefile",
+  "product_name": ["thing", "makefile-c"],
+  "fields": {
+    "build_commands": { "accept": [["make"], ["make build"]] },
+    "test_commands": { "accept": [["make test"]] },
+    "code_globs": { "accept_ext": ["c"] }
+  },
+  "notes": "No language manifest, so build/test must come from reading the Makefile targets (build, test). product_name has no canonical source; the binary name 'thing' or the directory name both pass. The discriminator: does the inference read the Makefile rather than give up?"
+}

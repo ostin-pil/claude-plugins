@@ -1,0 +1,15 @@
+{
+  "name": "widget",
+  "version": "1.0.0",
+  "description": "A small TypeScript widget library.",
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "vitest run",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "vitest": "^1.6.0",
+    "eslint": "^9.0.0"
+  }
+}

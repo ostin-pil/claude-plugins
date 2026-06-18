@@ -1,0 +1,10 @@
+{
+  "ecosystem": "node-typescript",
+  "product_name": "widget",
+  "fields": {
+    "build_commands": { "accept": [["npm run build"]] },
+    "test_commands": { "accept": [["npm test"], ["npm run test"]] },
+    "code_globs": { "accept_ext": ["ts"] }
+  },
+  "notes": "TypeScript Node package. build = tsc via the build script; test = vitest via npm test; code is *.ts (optionally scoped to src/)."
+}

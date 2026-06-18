@@ -1,0 +1,12 @@
+{
+  "product_name": "cog",
+  "build_commands": [
+    "cargo build"
+  ],
+  "test_commands": [
+    "cargo test"
+  ],
+  "code_globs": [
+    "*.rs"
+  ]
+}
