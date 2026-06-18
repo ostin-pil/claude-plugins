@@ -39,6 +39,15 @@ scenarios/<name>/assert.sh "$REPO"
 | `cleanup-containment` | cleanup-worktrees | a contained worktree is swept; one with unique work survives | no |
 | `branch-birth` | session-start | the session branch is born off the integration ref, not the stray-ahead local main | no |
 | `ambiguous-finalize` | finalize-worktree | two candidates, no target: refuse, push and merge nothing | no |
+| `finalize-clean` | finalize-worktree | full flow: merge lands, local main ff-only (ISS-W3), branch+worktree swept, one merge call; `partial` mode adds the assert-then-reconcile incident | mock |
 
-Still to come (needs a `gh` mock): finalize idempotency after a simulated
-partial merge, and the local-main-only-fast-forwards guard (ISS-W3).
+## The gh mock
+
+Scenarios that exercise the merge path use `gh-mock/gh`, a stand-in placed first
+on PATH. It handles the `gh` calls `finalize-worktree` makes, logs every call,
+and for `pr merge` actually lands the merge on the file remote (so the
+fast-forward is real). It reads `GH_MOCK_DIR` (state + log), `GH_MOCK_REMOTE` (the
+bare remote, so it never depends on cwd), and `GH_MOCK_MERGE_MODE`
+(`clean`|`partial`). Because a fresh shell persists neither env nor cwd, every
+command in a mock scenario carries the export prefix shown in
+`scenarios/finalize-clean/scenario.md`.

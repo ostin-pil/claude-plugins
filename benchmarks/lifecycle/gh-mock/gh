@@ -1,0 +1,96 @@
+#!/bin/sh
+# Minimal `gh` mock for the lifecycle execution benchmark. Handles only the gh
+# invocations finalize-worktree / session-end make, logs every call, and for
+# `pr merge` actually lands the merge on the file-based remote so phase 4's
+# fast-forward is real. Put this dir first on PATH so `gh` resolves here.
+#
+# Config via env:
+#   GH_MOCK_DIR        state + log dir (required)
+#   GH_MOCK_MERGE_MODE clean (merge, delete remote branch, exit 0)  [default]
+#                      partial (merge, keep remote branch, exit 1 with the
+#                      cross-worktree --delete-branch abort, the finding-3 case)
+#
+# State files in GH_MOCK_DIR: pr_branch, pr_state, log
+set -u
+
+DIR="${GH_MOCK_DIR:?GH_MOCK_DIR not set}"
+mkdir -p "$DIR"
+LOG="$DIR/log"
+printf 'gh %s\n' "$*" >> "$LOG"
+
+# The remote must not depend on cwd: a fresh shell may start anywhere. Prefer
+# GH_MOCK_REMOTE (set by the scenario); fall back to the cwd repo's origin.
+RU="${GH_MOCK_REMOTE:-$(git remote get-url origin 2>/dev/null || true)}"
+
+argstr=" $* "
+want() { case "$argstr" in *" $1 "*) return 0;; *) return 1;; esac; }
+contains() { case "$argstr" in *"$1"*) return 0;; *) return 1;; esac; }
+
+cmd="${1:-}"
+sub="${2:-}"
+
+case "$cmd" in
+  --version) echo "gh version 0.0.0 (mock)"; exit 0;;
+  auth) echo "mock: authenticated"; exit 0;;
+  repo)
+    if want "-q"; then echo "true"; else echo '{"mergeCommitAllowed":true}'; fi
+    exit 0;;
+  pr)
+    case "$sub" in
+      view)
+        if contains "state"; then
+          st=$(cat "$DIR/pr_state" 2>/dev/null || echo OPEN)
+          if want "-q"; then echo "$st"; else echo "{\"state\":\"$st\"}"; fi
+          exit 0
+        fi
+        if contains "number"; then
+          if [ -f "$DIR/pr_branch" ]; then echo '{"number":1,"url":"https://example.test/pr/1"}'; exit 0
+          else echo "no pull requests found for branch" >&2; exit 1; fi
+        fi
+        if contains "body"; then echo ""; exit 0; fi
+        echo "{}"; exit 0;;
+      create)
+        br=""
+        while [ $# -gt 0 ]; do
+          [ "$1" = "--head" ] && { br="${2:-}"; }
+          shift
+        done
+        echo "${br:-unknown}" > "$DIR/pr_branch"
+        echo OPEN > "$DIR/pr_state"
+        echo "https://example.test/pr/1"
+        exit 0;;
+      merge)
+        n="${3:-1}"
+        br=$(cat "$DIR/pr_branch" 2>/dev/null || echo "")
+        mode="${GH_MOCK_MERGE_MODE:-clean}"
+        tmp=$(mktemp -d)
+        if git clone -q "$RU" "$tmp/clone" \
+           && git -C "$tmp/clone" config user.email mock@example.com \
+           && git -C "$tmp/clone" config user.name ghmock \
+           && git -C "$tmp/clone" merge --no-ff -q -m "Merge pull request #$n ($br)" "origin/$br" \
+           && git -C "$tmp/clone" push -q origin HEAD:main; then
+          [ "$mode" = "clean" ] && git -C "$tmp/clone" push -q origin --delete "$br"
+          echo MERGED > "$DIR/pr_state"
+        else
+          echo "gh mock: remote merge failed" >&2; rm -rf "$tmp"; exit 2
+        fi
+        rm -rf "$tmp"
+        if [ "$mode" = "partial" ]; then
+          echo "fatal: 'main' is already used by worktree at /elsewhere" >&2
+          echo "(mock) GitHub merge landed; local --delete-branch cleanup aborted" >&2
+          exit 1
+        fi
+        echo "merged PR #$n (mock)"
+        exit 0;;
+    esac;;
+  api)
+    if want "DELETE"; then
+      br=$(printf '%s' "$sub" | sed -n 's#.*refs/heads/##p')
+      [ -n "$br" ] && git push -q "$RU" --delete "$br" 2>/dev/null
+      exit 0
+    fi
+    exit 0;;  # PATCH (title/body) accepted
+esac
+
+echo "gh mock: unhandled invocation: $*" >&2
+exit 0
