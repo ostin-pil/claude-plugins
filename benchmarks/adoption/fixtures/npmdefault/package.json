@@ -1,0 +1,12 @@
+{
+  "name": "thinger",
+  "version": "1.0.0",
+  "description": "A TypeScript thinger. Tests were never set up.",
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}

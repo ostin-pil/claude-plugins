@@ -1,0 +1,10 @@
+{
+  "product_name": "thinger",
+  "build_commands": [
+    "npm run build"
+  ],
+  "test_commands": [],
+  "code_globs": [
+    "**/*.ts"
+  ]
+}

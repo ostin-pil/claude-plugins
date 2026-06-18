@@ -1,0 +1,10 @@
+{
+  "ecosystem": "node-no-real-test",
+  "product_name": "thinger",
+  "fields": {
+    "build_commands": { "accept": [["npm run build"]] },
+    "test_commands": { "accept": [[], ["none"]], "note": "The test script is the npm-init placeholder (echo + exit 1), not a real test. A correct adoption sets test_commands to none rather than wiring a command that always fails the gate." },
+    "code_globs": { "accept_ext": ["ts"] }
+  },
+  "notes": "The discriminator: does the inference recognize the npm-init default `test` script as a non-test? Setting test_commands to ['npm test'] here would make session-end's gate fail on every run."
+}

@@ -1,0 +1,12 @@
+{
+  "product_name": "gadget",
+  "build_commands": [
+    "go build ./..."
+  ],
+  "test_commands": [
+    "go test ./..."
+  ],
+  "code_globs": [
+    "*.go"
+  ]
+}
