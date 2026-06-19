@@ -1,1 +1,12 @@
-{"product_name": "thinger", "build_commands": ["npm run build"], "test_commands": ["none"], "code_globs": ["*.ts"]}
+{
+  "product_name": "thinger",
+  "build_commands": [
+    "npm run build"
+  ],
+  "test_commands": [
+    "none"
+  ],
+  "code_globs": [
+    "*.ts"
+  ]
+}

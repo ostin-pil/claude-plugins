@@ -1,1 +1,12 @@
-{"product_name": "widget", "build_commands": ["npm run build"], "test_commands": ["npm test"], "code_globs": ["*.ts"]}
+{
+  "product_name": "widget",
+  "build_commands": [
+    "npm run build"
+  ],
+  "test_commands": [
+    "npm test"
+  ],
+  "code_globs": [
+    "*.ts"
+  ]
+}

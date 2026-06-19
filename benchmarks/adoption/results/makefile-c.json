@@ -1,1 +1,12 @@
-{"product_name": "thing", "build_commands": ["make build"], "test_commands": ["make test"], "code_globs": ["*.c"]}
+{
+  "product_name": "thing",
+  "build_commands": [
+    "make build"
+  ],
+  "test_commands": [
+    "make test"
+  ],
+  "code_globs": [
+    "*.c"
+  ]
+}
