@@ -29,8 +29,10 @@ git and GitHub), so the inference of those three values is the real test.
 To test robustness to a cheaper model, pin the inference agents to a weaker
 model, save to a parallel results dir, and grade that dir:
 `python3 grade.py --results results-sonnet`. A Sonnet 4.6 run lives in
-`results-sonnet/` with its report in `RESULTS-sonnet.md` (23/24: the weaker model
-invented a Python build step where the baseline correctly declined).
+`results-sonnet/` with its report in `RESULTS-sonnet.md`. It first scored 23/24
+(the weaker model invented a Python build step); a sharper step-2 instruction in
+ADOPTING.md closed that to 24/24, which is the regression-net value of running the
+benchmark against a cheaper model.
 
 ## What a miss means
 

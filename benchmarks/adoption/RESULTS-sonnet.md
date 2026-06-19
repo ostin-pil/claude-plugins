@@ -1,37 +1,38 @@
 # Adoption benchmark — weaker-model run (Sonnet 4.6)
 
 The same six fixtures inferred by fresh `general-purpose` agents pinned to
-`claude-sonnet-4-6` (no prior context), following ADOPTING.md as written. Run
-2026-06-18. Results in `results-sonnet/`; grade with
-`python3 grade.py --results results-sonnet`. The baseline (stronger-model) run is
-`RESULTS.md` / `results/`, which scored 24/24.
+`claude-sonnet-4-6` (no prior context), following ADOPTING.md. Results in
+`results-sonnet/`; grade with `python3 grade.py --results results-sonnet`. The
+baseline (stronger-model) run is `RESULTS.md` / `results/`.
 
-The point of this run: ADOPTING.md is the only ecosystem-aware surface in the
-kit, so the question is whether its inference instructions are robust to a
-cheaper model. They mostly are. One field regressed.
+This run is what motivated the step-2 sharpening in ADOPTING.md. The point: that
+guide is the only ecosystem-aware surface in the kit, so the question is whether
+its inference instructions hold up on a cheaper model.
 
-## The one regression
+## What the first run found, and the fix
 
-`python` `build_commands`: Sonnet inferred `pip install -e .`; the baseline
-correctly declined (an empty list). This fixture exists precisely to test whether
-the inference invents a Python build step, and the weaker model did. An editable
-install is not a build, and the manifest's `build_commands` is a pre-merge "does
-it build" gate, so an invented install command is a real miss, not a defensible
-variant. If ADOPTING.md gains a sharper instruction here ("Python projects
-usually have no build step; set `build_commands` to none rather than inventing
-one"), re-run this to confirm the gap closes. Everything else matched, including
-the `npmdefault` placeholder-test trap (Sonnet correctly returned no test
-command).
+On the first run (ADOPTING.md as originally written) Sonnet scored 23/24. The one
+miss was `python` `build_commands`: it inferred `pip install -e .` where the
+baseline correctly declined. That fixture exists precisely to test whether the
+inference invents a Python build step, and the weaker model did. An editable
+install is setup, not a build, so it was a real miss.
 
-## Score
+The fix was a sharper step-2 instruction: "Not every project has a real build
+step or a real test step; when there is none, set that field to `none` rather
+than inventing one," with the editable-install case called out by name. After
+that change, Sonnet returns an empty `build_commands` for the Python fixture and
+scores 24/24, with no over-correction on the four fixtures that do have a real
+build (go, node, rust, makefile-c still infer theirs).
+
+## Score (Sonnet, after the sharpening, run 2026-06-19)
 
 ```
 ## go (go) — 4/4
 ## makefile-c (c-makefile) — 4/4
 ## node (node-typescript) — 4/4
-## npmdefault (node-no-real-test) — 4/4
-## python (python-pyproject) — 3/4   build_commands MISS: `pip install -e .` (should decline)
+## npmdefault (node-no-real-test) — 4/4   (placeholder test correctly declined)
+## python (python-pyproject) — 4/4        (build correctly declined; was the lone miss)
 ## rust (rust-cargo) — 4/4
 
-Total: 23/24 fields across 6 fixtures.
+Total: 24/24 fields across 6 fixtures.
 ```

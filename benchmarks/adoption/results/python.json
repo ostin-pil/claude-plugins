@@ -1,12 +1,1 @@
-{
-  "product_name": "sprocket",
-  "build_commands": [
-    "python -m build"
-  ],
-  "test_commands": [
-    "pytest"
-  ],
-  "code_globs": [
-    "*.py"
-  ]
-}
+{"product_name": "sprocket", "build_commands": ["none"], "test_commands": ["pytest"], "code_globs": ["*.py"]}

@@ -1,1 +1,1 @@
-{"product_name": "sprocket", "build_commands": ["pip install -e ."], "test_commands": ["pytest"], "code_globs": ["*.py"]}
+{"product_name": "sprocket", "build_commands": ["none"], "test_commands": ["pytest"], "code_globs": ["*.py"]}
