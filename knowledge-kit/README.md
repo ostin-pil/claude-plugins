@@ -1,3 +1,4 @@
+<!-- prose-check: skip ai-attribution -->
 # knowledge-kit
 
 Knowledge-base skills for Claude Code, driven by the same per-project

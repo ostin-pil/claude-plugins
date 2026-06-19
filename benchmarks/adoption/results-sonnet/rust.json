@@ -1,12 +1,12 @@
 {
-  "product_name": "sprocket",
+  "product_name": "cog",
   "build_commands": [
-    "none"
+    "cargo build"
   ],
   "test_commands": [
-    "pytest"
+    "cargo test"
   ],
   "code_globs": [
-    "*.py"
+    "*.rs"
   ]
 }

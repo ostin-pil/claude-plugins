@@ -40,6 +40,7 @@ scenarios/<name>/assert.sh "$REPO"
 | `branch-birth` | session-start | the session branch is born off the integration ref, not the stray-ahead local main | no |
 | `ambiguous-finalize` | finalize-worktree | two candidates, no target: refuse, push and merge nothing | no |
 | `finalize-clean` | finalize-worktree | full flow: merge lands, local main ff-only (ISS-W3), branch+worktree swept, one merge call; `partial` mode adds the assert-then-reconcile incident | mock |
+| `finalize-already-merged` | finalize-worktree | re-entry on a PR already `MERGED`: skip the merge entirely (zero `gh pr merge` calls), reconcile local main + branch + worktree, delete the lingering remote branch via `gh api` | mock |
 
 ## The gh mock
 

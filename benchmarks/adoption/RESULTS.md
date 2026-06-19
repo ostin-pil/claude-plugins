@@ -1,6 +1,6 @@
 # Adoption benchmark — baseline run
 
-Fixtures inferred by fresh general-purpose agents (no prior context) following ADOPTING.md as written. Run 2026-06-18.
+Fixtures inferred by fresh general-purpose agents (no prior context) following ADOPTING.md as written. Run 2026-06-19, after the step-2 sharpening that steers inference away from inventing a build or test step that does not exist. The baseline held 24/24 before and after the sharpening; the change moved `python` `build_commands` from `python -m build` (an accepted variant) to an empty list (the cleaner answer).
 
 # Adoption inference benchmark
 
@@ -20,7 +20,7 @@ Fixtures inferred by fresh general-purpose agents (no prior context) following A
 | product_name | PASS | `thing` | thing | makefile-c |
 | build_commands | PASS | `make build` | make | make build |
 | test_commands | PASS | `make test` | make test |
-| code_globs | PASS | `c, h` | ext: c |
+| code_globs | PASS | `c` | ext: c |
 
 ## node (node-typescript) — 4/4
 
@@ -45,7 +45,7 @@ Fixtures inferred by fresh general-purpose agents (no prior context) following A
 | field | verdict | inferred | accepted |
 |---|---|---|---|
 | product_name | PASS | `sprocket` | sprocket |
-| build_commands | PASS | `python -m build` | (none) | python -m build | none |
+| build_commands | PASS | `` | (none) | python -m build | none |
 | test_commands | PASS | `pytest` | pytest | python -m pytest |
 | code_globs | PASS | `py` | ext: py |
 

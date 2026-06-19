@@ -1,0 +1,24 @@
+# Prose gate for the marketplace's own user-facing docs. Runs the bundled
+# prose-mint action over changed markdown on every PR. Scope and the enabled
+# category set come from .prose-mint.toml at the repo root, so the same rules
+# apply to a local `prose-mint bulk` walk and to CI.
+#
+# The action lives at ./prose-mint (it is the prose-mint plugin's package
+# root), so this dogfoods the action from the same checkout that ships it: a
+# change to action.yml is gated by that same action.yml on the PR.
+name: prose
+on:
+  pull_request:
+jobs:
+  prose:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: ./prose-mint
+        with:
+          strict: "true"

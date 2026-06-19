@@ -85,7 +85,11 @@ case "$cmd" in
     esac;;
   api)
     if want "DELETE"; then
-      br=$(printf '%s' "$sub" | sed -n 's#.*refs/heads/##p')
+      # The ref path may be any positional arg: the skill writes
+      # `gh api -X DELETE repos/.../refs/heads/<branch>` (flag first), but a
+      # path-first form is equally valid. Pull the branch from the whole arg
+      # string, not from a fixed position ($2 is `-X` in the flag-first form).
+      br=$(printf '%s' "$argstr" | sed -n 's#.*refs/heads/\([^ ]*\).*#\1#p')
       [ -n "$br" ] && git push -q "$RU" --delete "$br" 2>/dev/null
       exit 0
     fi

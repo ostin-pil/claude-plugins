@@ -1,0 +1,35 @@
+# Scope and rules for the monorepo's own prose gate
+# (.github/workflows/prose.yml runs the bundled prose-mint action over changed
+# markdown on every PR). This config governs the `bulk` walk the action runs.
+#
+# Scope is the marketplace's user-facing docs. Deliberately out of scope:
+#   - the prose-mint tool's own docs and tests, which enumerate the very tells
+#     they detect (a linter over them is noise),
+#   - the benchmark internals (benchmarks/**), which are working notes, and
+#   - the consumer-facing templates (a prose-style rule template necessarily
+#     quotes banned patterns).
+#
+# hard-wrap is intentionally not enabled: these docs wrap at ~80 columns by
+# choice. The gate targets the structural rhetoric tells (em dashes, ASCII
+# arrows, not-X-but-Y and its siblings, bold-colon definition openers, and
+# AI-attribution footers), which is where the AI flavor actually lives.
+
+[scope]
+include = [
+  "README.md",
+  "ADOPTING.md",
+  "lifecycle-kit/README.md",
+  "knowledge-kit/README.md",
+]
+
+[structural]
+enabled = [
+  "em-dash",
+  "ascii-arrow",
+  "not-X-but-Y",
+  "no-X-no-Y-just-Z",
+  "this-isnt-about-X",
+  "not-only-but",
+  "bold-colon-opener",
+  "ai-attribution",
+]
