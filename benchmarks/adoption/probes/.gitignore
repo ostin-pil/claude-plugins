@@ -1,0 +1,3 @@
+# Raw probes stay local (real, possibly private repos). Only derived,
+# minimized fixtures + goldens get committed.
+*.jsonl
