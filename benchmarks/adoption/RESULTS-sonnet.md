@@ -33,9 +33,9 @@ build (go, node, rust, makefile-c still infer theirs).
 ## npmdefault (node-no-real-test) — 4/4   (placeholder test correctly declined)
 ## python (python-pyproject) — 4/4        (build correctly declined; was the lone miss)
 ## rust (rust-cargo) — 4/4
-## shell-ops-no-build — 4/4               (no-manifest ops repo; build declined, test=none like Opus)
+## shell-ops-no-build — 4/4               (no-manifest ops repo; build declined, shellcheck test gate)
 
 Total: 28/28 fields across 7 fixtures.
 ```
 
-The `shell-ops-no-build` fixture (added 2026-06-20 from a real adoption probe) grades the same on both models: build correctly declined, `test_commands` set to `none`. See `RESULTS.md` for the open observation about a linter gate.
+The `shell-ops-no-build` fixture (added 2026-06-20 from a real adoption probe) grades the same on both models: build correctly declined, and after the shell-specific step-2 sharpening, `test_commands` set to `shellcheck scripts/*.sh`. See `RESULTS.md` for that loop.

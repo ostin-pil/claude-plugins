@@ -4,7 +4,7 @@
     "none"
   ],
   "test_commands": [
-    "none"
+    "shellcheck scripts/*.sh"
   ],
   "code_globs": [
     "*.sh"

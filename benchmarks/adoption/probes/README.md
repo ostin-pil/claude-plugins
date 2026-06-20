@@ -87,6 +87,8 @@ if you want to inspect before writing into the benchmark.
 For a no-manifest repo (a `manifests: []` probe, such as an ops or shell repo)
 the helper has no filenames to stub, so author the representative files by hand.
 The first such case, `shell-ops-no-build`, is a worked example: it grades clean
-and still surfaced a finding (the inference declines a `shellcheck` test gate that
-the real adoption accepted). A future probe schema could carry a small sample of
-key files to close that gap.
+and drove an ADOPTING.md sharpening. The inference first declined a `shellcheck`
+test gate that the real adoption had accepted; step 2 gained a shell-specific
+exception, and the inference now proposes it. A future probe schema could carry a
+small sample of key files, since a no-manifest probe gives the helper no
+filenames to stub.
