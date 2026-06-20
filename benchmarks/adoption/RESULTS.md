@@ -1,6 +1,10 @@
 # Adoption benchmark — baseline run
 
-Fixtures inferred by fresh general-purpose agents (no prior context) following ADOPTING.md as written. Run 2026-06-19, after the step-2 sharpening that steers inference away from inventing a build or test step that does not exist. The baseline held 24/24 before and after the sharpening; the change moved `python` `build_commands` from `python -m build` (an accepted variant) to an empty list (the cleaner answer).
+Fixtures inferred by fresh general-purpose agents (no prior context) following ADOPTING.md as written. Seven fixtures: six hand-built (go, makefile-c, node, npmdefault, python, rust) and one derived from a real adoption probe (shell-ops-no-build). Last run 2026-06-20.
+
+## Finding: the no-build shell repo
+
+`shell-ops-no-build` is the first fixture grown from a real adoption (ecosystem `shell-ops-no-build`, an ops repo with no dependency manifest). It grades 4/4, and it confirms the inference correctly declines a compiler build for a repo with no manifest, the thing it guards. It also surfaced an opportunity: both models set `test_commands` to `none`, while the real adoption it came from proposed `shellcheck` as a lint gate and the user accepted that unchanged. `none` is honest (no test framework), so the golden accepts it, but a linter gate is the more useful answer for a shell-dominant repo. ADOPTING.md step 2 could steer such repos toward the standard linter rather than declining. The fixture's golden accepts both, with a note, so the observation is recorded without failing a defensible answer.
 
 # Adoption inference benchmark
 
@@ -58,6 +62,15 @@ Fixtures inferred by fresh general-purpose agents (no prior context) following A
 | test_commands | PASS | `cargo test` | cargo test |
 | code_globs | PASS | `rs` | ext: rs |
 
+## shell-ops-no-build (shell-ops-no-build) — 4/4
+
+| field | verdict | inferred | accepted |
+|---|---|---|---|
+| product_name | PASS | `meshctl` | meshctl |
+| build_commands | PASS | `` | (none) | none |
+| test_commands | PASS | `` | (none) | none | shellcheck variants |
+| code_globs | PASS | `sh` | ext: sh |
+
 ---
 
-**Total: 24/24 fields across 6 fixtures.**
+**Total: 28/28 fields across 7 fixtures.**

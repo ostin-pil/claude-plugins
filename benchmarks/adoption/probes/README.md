@@ -83,3 +83,10 @@ identifiers), widen the golden `accept` lists if other answers are also correct,
 run the inference on the new fixture to produce `results/<eco>.json`, and
 `python3 grade.py`. Use `--out <dir>` to scaffold into a scratch directory first
 if you want to inspect before writing into the benchmark.
+
+For a no-manifest repo (a `manifests: []` probe, such as an ops or shell repo)
+the helper has no filenames to stub, so author the representative files by hand.
+The first such case, `shell-ops-no-build`, is a worked example: it grades clean
+and still surfaced a finding (the inference declines a `shellcheck` test gate that
+the real adoption accepted). A future probe schema could carry a small sample of
+key files to close that gap.
