@@ -1,0 +1,20 @@
+{
+  "date": "2026-06-19",
+  "repo": "acme-web",
+  "ecosystem": "node-pnpm-workspace",
+  "manifests": ["package.json", "pnpm-workspace.yaml"],
+  "inferred": {
+    "product_name": "acme-web",
+    "build_commands": ["npm run build"],
+    "test_commands": ["npm test"],
+    "code_globs": ["*.ts"]
+  },
+  "final": {
+    "product_name": "acme-web",
+    "build_commands": ["pnpm -r build"],
+    "test_commands": ["pnpm -r test"],
+    "code_globs": ["*.ts", "*.tsx"]
+  },
+  "corrected": ["build_commands", "test_commands", "code_globs"],
+  "notes": "pnpm workspace; npm is wrong, build/test must recurse with pnpm -r"
+}

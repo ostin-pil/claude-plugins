@@ -24,7 +24,7 @@ that change, Sonnet returns an empty `build_commands` for the Python fixture and
 scores 24/24, with no over-correction on the four fixtures that do have a real
 build (go, node, rust, makefile-c still infer theirs).
 
-## Score (Sonnet, after the sharpening, run 2026-06-19)
+## Score (Sonnet, after the sharpening)
 
 ```
 ## go (go) — 4/4
@@ -33,6 +33,9 @@ build (go, node, rust, makefile-c still infer theirs).
 ## npmdefault (node-no-real-test) — 4/4   (placeholder test correctly declined)
 ## python (python-pyproject) — 4/4        (build correctly declined; was the lone miss)
 ## rust (rust-cargo) — 4/4
+## shell-ops-no-build — 4/4               (no-manifest ops repo; build declined, shellcheck test gate)
 
-Total: 24/24 fields across 6 fixtures.
+Total: 28/28 fields across 7 fixtures.
 ```
+
+The `shell-ops-no-build` fixture (added 2026-06-20 from a real adoption probe) grades the same on both models: build correctly declined, and after the shell-specific step-2 sharpening, `test_commands` set to `shellcheck scripts/*.sh`. See `RESULTS.md` for that loop.

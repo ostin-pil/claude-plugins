@@ -1,0 +1,12 @@
+{
+  "product_name": "meshctl",
+  "build_commands": [
+    "none"
+  ],
+  "test_commands": [
+    "shellcheck scripts/*.sh"
+  ],
+  "code_globs": [
+    "*.sh"
+  ]
+}

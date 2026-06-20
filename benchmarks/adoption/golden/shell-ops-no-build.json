@@ -1,0 +1,16 @@
+{
+  "ecosystem": "shell-ops-no-build",
+  "product_name": "meshctl",
+  "fields": {
+    "build_commands": {
+      "accept": [[], ["none"]],
+      "note": "Ops repo: shell + config, nothing to compile. Declining is correct. Inventing a compiler/package build (make, npm run build, go build) is the failure this fixture guards. A config-validate gate is defensible too; widen accept if an inference proposes one that exists in the repo."
+    },
+    "test_commands": {
+      "accept": [["shellcheck scripts/*.sh"], ["shellcheck -S warning scripts/*.sh"], ["shellcheck scripts/"], ["shellcheck"]],
+      "note": "shellcheck over the scripts is the conventional check gate for a shell repo with no test framework, and the real adoption this came from chose it. ADOPTING.md step 2 was sharpened to prefer it, so declining (test=none) is now a regression this fixture catches."
+    },
+    "code_globs": { "accept_ext": ["sh"] }
+  },
+  "notes": "Derived from the first real adoption probe (ecosystem shell-ops-no-build, an ops/infra repo with no dependency manifest). Discriminating cases: decline a compiler build, pick shellcheck as the gate, glob *.sh."
+}
