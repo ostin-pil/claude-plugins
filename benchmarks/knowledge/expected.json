@@ -1,0 +1,19 @@
+{
+  "note": "Ground truth for the controlled corpus in setup.sh. knowledge-audit (defaults: knowledge-dir=knowledge, log-dir=sessions, stale-days=90, recent-logs=8) must flag exactly these and nothing else.",
+  "orphans": [
+    "knowledge/decisions/orphan-a.md",
+    "knowledge/orphan-b.md"
+  ],
+  "stale": [
+    "knowledge/old-stale.md"
+  ],
+  "unpromoted_sessions": [
+    "51"
+  ],
+  "must_not_flag": {
+    "referenced_docs": ["knowledge/design/cited.md", "knowledge/decisions/open-decisions.md"],
+    "stale_but_cited_is_not_orphan": "knowledge/old-stale.md",
+    "promoted_session": "50",
+    "session_without_decisions": "52"
+  }
+}
