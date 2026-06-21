@@ -12,10 +12,12 @@ awk -F'|' '
   END {
     printf "%-24s %-28s %-9s %-9s\n", "scenario", "model", "control", "skill"
     printf "%-24s %-28s %-9s %-9s\n", "------------------------", "----------------------------", "--------", "--------"
+    cmd = "sort"
     for (k in seen) {
       c = (pass[k"|control"]+0)"/"(tot[k"|control"]+0)
       s = (pass[k"|skill"]+0)"/"(tot[k"|skill"]+0)
-      printf "%-24s %-28s %-9s %-9s\n", scen[k], model[k], c, s
+      printf "%-24s %-28s %-9s %-9s\n", scen[k], model[k], c, s | cmd
     }
+    close(cmd)
   }
-' "$PSV" | (head -2; tail -n +3 | sort)
+' "$PSV"
