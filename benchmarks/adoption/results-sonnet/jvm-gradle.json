@@ -1,0 +1,12 @@
+{
+  "product_name": "orderservice",
+  "build_commands": [
+    "./gradlew build"
+  ],
+  "test_commands": [
+    "./gradlew test"
+  ],
+  "code_globs": [
+    "*.java"
+  ]
+}

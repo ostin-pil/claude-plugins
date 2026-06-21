@@ -34,8 +34,10 @@ build (go, node, rust, makefile-c still infer theirs).
 ## python (python-pyproject) — 4/4        (build correctly declined; was the lone miss)
 ## rust (rust-cargo) — 4/4
 ## shell-ops-no-build — 4/4               (no-manifest ops repo; build declined, shellcheck test gate)
+## pnpm-workspace — 4/4                    (monorepo; pnpm -r build, not npm)
+## jvm-gradle — 4/4                        (Gradle; ./gradlew build via the wrapper)
 
-Total: 28/28 fields across 7 fixtures.
+Total: 36/36 fields across 9 fixtures.
 ```
 
-The `shell-ops-no-build` fixture (added 2026-06-20 from a real adoption probe) grades the same on both models: build correctly declined, and after the shell-specific step-2 sharpening, `test_commands` set to `shellcheck scripts/*.sh`. See `RESULTS.md` for that loop.
+Sonnet matches Opus on all nine fixtures. The `shell-ops-no-build` fixture (from a real adoption probe) needed the shell-specific step-2 sharpening to set `test_commands` to `shellcheck scripts/*.sh`; the two new-ecosystem fixtures (pnpm monorepo, Gradle JVM) pass with no change. See `RESULTS.md` for details.

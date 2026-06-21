@@ -1,0 +1,15 @@
+{
+  "ecosystem": "node-pnpm-workspace",
+  "product_name": "acme-platform",
+  "fields": {
+    "build_commands": {
+      "accept": [["pnpm -r build"], ["pnpm build"], ["pnpm run build"]],
+      "note": "pnpm workspace (pnpm-workspace.yaml + pnpm-lock.yaml + packageManager: pnpm). The build must use pnpm and span the packages, via the root script (pnpm build / pnpm run build, which is `pnpm -r build`) or `pnpm -r build` directly. `npm run build` is the failure to watch: it ignores the pnpm signal."
+    },
+    "test_commands": {
+      "accept": [["pnpm -r test"], ["pnpm test"], ["pnpm run test"]]
+    },
+    "code_globs": { "accept_ext": ["ts"] }
+  },
+  "notes": "Monorepo coverage: a pnpm workspace with two TypeScript packages. Discriminating cases: pick pnpm (not npm) from the lockfile/workspace signals, span the packages, glob *.ts."
+}
