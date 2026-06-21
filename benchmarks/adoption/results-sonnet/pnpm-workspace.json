@@ -1,0 +1,12 @@
+{
+  "product_name": "acme-platform",
+  "build_commands": [
+    "pnpm -r build"
+  ],
+  "test_commands": [
+    "pnpm -r test"
+  ],
+  "code_globs": [
+    "*.ts"
+  ]
+}

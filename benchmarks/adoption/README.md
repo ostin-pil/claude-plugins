@@ -10,10 +10,11 @@ git and GitHub), so the inference of those three values is the real test.
 
 ## Layout
 
-- `fixtures/<eco>/` — a minimal but realistic repo for one ecosystem (Node, Go,
-  Python, Rust, a Makefile-driven C repo, an npm placeholder-test trap, and
-  `shell-ops-no-build`, a no-manifest ops repo grown from a real adoption probe),
-  with the answer key in `golden/<eco>.json`.
+- `fixtures/<eco>/` — a minimal but realistic repo for one ecosystem. Nine so
+  far: Node, Go, Python, Rust, a Makefile-driven C repo, an npm placeholder-test
+  trap, `shell-ops-no-build` (a no-manifest ops repo grown from a real adoption
+  probe), `pnpm-workspace` (a pnpm monorepo), and `jvm-gradle` (a Gradle Java
+  project). The answer key is in `golden/<eco>.json`.
 - `results/<eco>.json` — what an adoption run inferred for that fixture. Written
   by running the inference (a fresh agent following `ADOPTING.md` step 2 against
   the fixture), one JSON object with `product_name`, `build_commands`,

@@ -1,0 +1,15 @@
+{
+  "ecosystem": "jvm-gradle",
+  "product_name": "orderservice",
+  "fields": {
+    "build_commands": {
+      "accept": [["./gradlew build"], ["gradle build"]],
+      "note": "Gradle project with a wrapper present; ./gradlew build is the conventional answer, gradle build is also fine."
+    },
+    "test_commands": {
+      "accept": [["./gradlew test"], ["gradle test"]]
+    },
+    "code_globs": { "accept_ext": ["java"] }
+  },
+  "notes": "JVM coverage: a Gradle (Groovy DSL) Java project with a wrapper and JUnit tests. Discriminating cases: recognize gradle, prefer the wrapper, product_name from settings.gradle rootProject.name, glob *.java."
+}

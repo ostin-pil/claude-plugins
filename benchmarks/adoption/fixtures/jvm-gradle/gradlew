@@ -1,0 +1,3 @@
+#!/bin/sh
+# Gradle wrapper (stub for the fixture; the real one bootstraps the distribution).
+exec gradle "$@"
