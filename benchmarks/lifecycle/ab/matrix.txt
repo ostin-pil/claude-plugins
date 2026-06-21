@@ -1,0 +1,11 @@
+# Focused A/B cells: <scenario> <model>. Lines starting with # are skipped.
+# The weak-model arm (haiku) is where capability uplift, if any, surfaces; the
+# first A/B already showed the top tier (opus) ties because the manifest carries
+# branch-birth and the rules carried the rest. A couple of sonnet cells calibrate
+# how fast the gap closes as the model strengthens.
+branch-birth             claude-haiku-4-5-20251001
+ambiguous-finalize       claude-haiku-4-5-20251001
+finalize-already-merged  claude-haiku-4-5-20251001
+cleanup-containment      claude-haiku-4-5-20251001
+branch-birth             claude-sonnet-4-6
+ambiguous-finalize       claude-sonnet-4-6
