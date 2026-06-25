@@ -73,7 +73,9 @@ Caveat, read before installing: the bundled MCP server is launched by an absolut
 
 ## MCP server
 
-A thin server exposes two read-only tools over the same engine: `scan_text(text, label?)` and `scan_files(paths)`. It is credential-free by design. To lint a Notion page or Google Doc, Claude fetches the content with the MCP you already have connected and pipes the text to `scan_text`; this server holds no Notion or Drive auth. The plugin launches it via `uv run --with fastmcp`, so `fastmcp` is an optional extra rather than a core dependency.
+A thin server exposes two read-only tools over the same engine: `scan_text(text, label?)` and `scan_files(paths)`. It is credential-free by design. To lint a Notion page or Google Doc, Claude fetches the content with the MCP you already have connected and pipes the text to `scan_text`; this server holds no Notion or Drive auth. The plugin launches it via `uvx --from 'prose-mint[mcp]' prose-mint-mcp`, so `fastmcp` is an optional extra rather than a core dependency.
+
+On a cold uvx cache the first connect downloads fastmcp and prose-mint, which can overrun Claude Code's MCP connect window and show "Failed to connect" until the cache is warm. Warm it once with `bin/warm-mcp-cache` (or the inline `uvx --from 'prose-mint[mcp]' prose-mint-mcp </dev/null`), then run `/mcp` to reconnect. The CLI and the `/prose-check` skill are unaffected. See issue #8.
 
 ## CI gate (reusable action)
 

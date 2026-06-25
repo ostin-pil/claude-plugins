@@ -17,6 +17,16 @@ The plugins are user-scoped, so once installed they're available in every
 project. To try the marketplace from a local checkout before it's on GitHub:
 `/plugin marketplace add ~/Projects/claude-plugins`.
 
+### First use: warm the prose-mint MCP cache
+
+The prose-mint plugin ships an MCP server launched with `uvx --from 'prose-mint[mcp]' prose-mint-mcp`. On a cold uvx cache the first connect has to download fastmcp and prose-mint, and that can overrun Claude Code's MCP connect window, so right after install the server may show "Failed to connect" even though it is healthy. Warm the cache once and reconnect:
+
+```
+uvx --from 'prose-mint[mcp]' prose-mint-mcp </dev/null
+```
+
+That resolves and downloads the server, starts it, and exits on EOF. Then run `/mcp` to reconnect (or restart the session) and it connects warm in a few seconds. From a local checkout, `prose-mint/bin/warm-mcp-cache` wraps the same command. The bundled prose-mint CLI and the `/prose-check` skill work regardless; only the MCP server needs the warm-up.
+
 ## 2. Set up a repo (paste this to Claude Code from the repo root)
 
 > Set this repo up to use the lifecycle-kit, prose-mint, and knowledge-kit plugins.

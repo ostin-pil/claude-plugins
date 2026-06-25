@@ -1,0 +1,26 @@
+#!/bin/sh
+# Warm the uvx cache for the prose-mint MCP server.
+#
+# On a cold cache, `uvx --from 'prose-mint[mcp]' prose-mint-mcp` has to resolve and
+# download fastmcp and prose-mint before the server starts, and that first run can
+# overrun Claude Code's MCP connect window. The server then shows "Failed to connect"
+# until something warms the cache. Running it once here does the download and starts
+# the server, which exits on stdin EOF. After that the in-session connect is warm
+# (about 4s) and a /mcp reconnect succeeds. See issue #8.
+set -u
+
+echo "Warming the prose-mint MCP cache (first run downloads fastmcp + prose-mint; this can take a minute)..."
+
+# Safety net: cap the run if a timeout tool is present, in case the server does not
+# exit on EOF. It normally exits cleanly, so the bare path is the common case. Single
+# quotes around 'prose-mint[mcp]' keep the inner shell from globbing the brackets.
+if command -v timeout >/dev/null 2>&1; then
+  timeout 180 sh -c "uvx --from 'prose-mint[mcp]' prose-mint-mcp </dev/null >/dev/null 2>&1"
+elif command -v gtimeout >/dev/null 2>&1; then
+  gtimeout 180 sh -c "uvx --from 'prose-mint[mcp]' prose-mint-mcp </dev/null >/dev/null 2>&1"
+else
+  uvx --from 'prose-mint[mcp]' prose-mint-mcp </dev/null >/dev/null 2>&1
+fi
+
+echo "Done. The prose-mint MCP server should now connect warm. If Claude Code still"
+echo "shows it as failed, run /mcp to reconnect, or restart the session."
