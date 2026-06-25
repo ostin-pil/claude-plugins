@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Score an `issues add` run against the planted tracker.
 
-Usage: assert.py <repo>
+Usage: assert-add.py <repo>
 
 Reads <repo>/knowledge/decisions/issues.md after the agent added one issue and
 checks three things, each a discipline the skill encodes:
@@ -19,7 +19,7 @@ from pathlib import Path
 
 def main():
     if len(sys.argv) < 2:
-        sys.exit("usage: assert.py <repo>")
+        sys.exit("usage: assert-add.py <repo>")
     f = Path(sys.argv[1]) / "knowledge" / "decisions" / "issues.md"
     text = f.read_text(encoding="utf-8", errors="replace") if f.is_file() else ""
 
@@ -43,7 +43,7 @@ def main():
     print(f"  {'ok' if schema else 'FAIL'}  schema      (ISS-006 has Status/Symptom/Root Cause/Fix)")
 
     ok = preserved and seq and schema
-    print(f"CHECKS preserved={int(preserved)} seq={int(seq)} schema={int(schema)}")
+    print(f"CHECKS preserved={int(preserved)}/1 seq={int(seq)}/1 schema={int(schema)}/1")
     print(f"VERDICT: {'PASS' if ok else 'FAIL'}")
     return 0 if ok else 1
 
