@@ -1,28 +1,26 @@
-# Issues add A/B (skill vs no-skill)
+# Issues A/B (skill vs no-skill)
 
-The `issues` skill is a pure agent procedure (no backing script), so this is the cleanest "does the procedure help the agent" A/B of the three knowledge-kit skills. It targets the core `add` command against an already-populated tracker.
+One scenario-based harness for the `issues` skill, covering the three commands worth an A/B: `add`, `verify`, and `search`. The `issues` skill is a pure agent procedure (no backing script), so this is the cleanest "does the procedure help the agent" test of the knowledge-kit skills. This dir folds the earlier `issues-ab` (add) and `issues-ops-ab` (verify/search) into one runner.
 
-## What it measures
+## Scenarios
 
-`setup.sh` builds a throwaway repo with a manifest (`issues_file` set) and a tracker holding ISS-001..005 in the skill's canonical format, plus two session logs. Both arms are asked to add the same new bug. `assert.py` checks three disciplines the skill encodes:
+- `add` builds a tracker holding ISS-001..005 in the canonical format and asks both arms to add the same new bug. `assert-add.py` scores the tracker: all five originals preserved, exactly one new entry at the next sequential id (ISS-006), and the canonical fields present. The tracker is self-documenting, so this is the floor case.
+- `verify` plants four "Resolved (verify)" issues, two whose fix marker still sits in the referenced file and two whose marker was reverted, plus two non-target issues that must not change. `assert-verify.py` scores the exact status transitions and breaks out `detected` (did the agent notice the fix was gone, whatever word it used) from `regressed` (did it use the canonical `Regressed`).
+- `search` plants an issue whose only link to the query "thermal throttling" lives in a session log, not its tracker entry. `assert-search.py` scores the agent's report for the log-only match (ISS-207).
 
-- `preserved`: all five planted entries survive (no data loss, the skill's "read the current file before writing" guideline).
-- `seq`: exactly one new entry at the next sequential id (ISS-006), with no duplicate or skipped number.
-- `schema`: the new entry carries the canonical fields (Status, Symptom, Root Cause, Fix).
+## Isolation and the command-sliced inline
 
-## Isolation
-
-Both arms run a fresh `claude -p --safe-mode` agent (no host CLAUDE.md, plugin, skills, or hooks; auth and tools intact). The skill arm gets the `issues` SKILL.md inlined; the control gets only the bare task. Both are given the same structured bug details, so the single variable is the skill's procedure. The entry format is discoverable from the existing tracker, which turns out to be central to the result.
+Both arms run a fresh `claude -p --safe-mode` agent (no host CLAUDE.md, plugin, skills, or hooks; auth and tools intact). The control gets the goal but not the procedure. The skill arm gets the `issues` SKILL.md, but `run-ab.sh` inlines only the slice relevant to the scenario's command: the shared head (intro, project-configuration, the `## Commands` lead-in), the single `### /issues <cmd>` block, and the shared tail (Entry Format, Status Values, Guidelines). The three sibling command blocks and the no-arg list block are dropped, so the skill arm is not handicapped by prose for commands the task never exercises. The single variable stays the skill's procedure for that one command.
 
 ## Run
 
 ```
-sh run-ab.sh <skill|control> <model> [trial]
-sh run-matrix.sh 3
+sh run-ab.sh <add|verify|search> <skill|control> <model> [trial]
+sh run-matrix.sh 3        # add/verify/search x control/skill x haiku/sonnet/opus x 3
 python3 tally.py
 ```
 
-`assert.py <repo>` scores the tracker file directly, never the agent's self-report. Per-trial transcripts land in `runs/` (git-ignored).
+`assert-add.py <repo>` and `assert-verify.py <repo>` score the tracker file directly; `assert-search.py <agent-log>` scores the agent's report (search is read-only). Never the agent's self-report. Per-trial transcripts and `tally.psv` land in `runs/` (git-ignored).
 
 ## Results
 
