@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+Added `bin/warm-mcp-cache`, a one-shot helper that warms the uvx cache so the MCP server's first in-session connect does not time out on a cold download (issue #8). Documented the warm-up and the `/mcp` reconnect in ADOPTING.md and the README, and corrected the README's MCP launch line to the `uvx --from 'prose-mint[mcp]' prose-mint-mcp` form shipped in 0.1.0.
+
 ## 0.1.0 (2026-05-20)
 
 First PyPI release, under the final product name **prose-mint** (the provisional `prose-lint` was rejected by PyPI's name-similarity check against the unrelated `proselint`; the rename also retires the "ProseMint" provisional that was hanging over the GitHub repo). Adds a `prose-mint-mcp` console script (`prose_mint.server:main`) and switches the Claude Code plugin's MCP launch to `uvx --from "prose-mint[mcp]" prose-mint-mcp`, retiring the absolute-path-to-local-checkout form documented as the v0 "Caveat, read before installing" in the README. Consumers can now `pipx install prose-mint`, `uv tool install prose-mint`, and install the plugin without cloning the repo to a fixed path. The Python package directory renamed `prose_lint/` to `prose_mint/`; the config file convention is now `.prose-mint.toml` (consumers carrying `.prose-lint.toml` need a one-line rename to keep auto-discovery working). The GitHub repo stays at `ostin-pil/ProseMint` for now; the action ref `uses: ostin-pil/ProseMint@v1` works unchanged.
