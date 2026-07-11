@@ -15,17 +15,23 @@ The detection logic is a faithful port of the Untype scanner and tracks it as th
 
 Requires Python 3.11+ (the config layer uses the standard-library `tomllib`, which arrived in 3.11). There are no third-party dependencies.
 
-From a checkout, without installing anything:
+As a command on your PATH, from PyPI:
+
+```
+pipx install prose-mint               # or: uv tool install prose-mint
+prose-mint scan --file path/to/doc.md
+```
+
+Without installing anything, straight from PyPI:
+
+```
+uvx prose-mint scan --file path/to/doc.md
+```
+
+From a source checkout, no install:
 
 ```
 bin/prose-mint scan --file path/to/doc.md
-```
-
-As a command on your PATH:
-
-```
-pipx install /path/to/prose-mint      # or: uv tool install /path/to/prose-mint
-prose-mint scan --file path/to/doc.md
 ```
 
 ## Usage
@@ -35,10 +41,15 @@ prose-mint scan  --file doc.md              # scan one file
 prose-mint scan  --stdin --label "PR #5"    # scan piped text (PR bodies, etc.)
 prose-mint scan  --file doc.md --json       # structured output for tools
 prose-mint scan  --file doc.md --strict     # non-zero exit on any hit
+prose-mint scan  --file doc.md --no-config  # ignore any .prose-mint.toml, use defaults
 prose-mint bulk  knowledge/ research/       # walk dirs, print a summary table
 prose-mint bulk  --exclude '*/archive/*' .  # skip paths by glob
 prose-mint unwrap --file doc.md             # join a hard-wrapped paragraph
 ```
+
+`--config <path>` pins an explicit config; `--no-config` ignores project
+config entirely and runs the built-in default ruleset (useful for a canonical,
+reproducible scan regardless of where it runs). The two are mutually exclusive.
 
 Text output and bulk output are byte-for-byte compatible with the original scanner, so a project migrating to prose-mint sees identical findings. `--json` is a new, additive contract and carries the full hit list rather than the human report's first-five truncation.
 
@@ -58,18 +69,16 @@ The em dash is ordinary punctuation in Russian, not a machine-text tell. When Cy
 
 ## Use it in every project (Claude Code plugin)
 
-The repo is its own single-plugin marketplace. Add it once and the `prose-check` skill, the `/prose-check` command, and the MCP server are available in any project, no per-repo file copying:
+prose-mint ships in the [`claude-plugins`](https://github.com/ostin-pil/claude-plugins) marketplace. Add the marketplace once and the `prose-check` skill, the `/prose-check` command, and the MCP server are available in any project, no per-repo file copying:
 
 ```
-claude plugin marketplace add ~/Projects/prose-mint
-claude plugin install prose-mint@prose-mint
+/plugin marketplace add ostin-pil/claude-plugins
+/plugin install prose-mint@ostin-pil-plugins
 ```
 
-The marketplace name comes from `.claude-plugin/marketplace.json`, so the `add` command takes only the path. The same operations work as `/plugin marketplace add` and `/plugin install` from inside a Claude Code session.
+The marketplace id (`ostin-pil-plugins`) is the `name` field in the marketplace manifest. The same operations work as `claude plugin marketplace add` / `claude plugin install` on the CLI.
 
-The skill and command resolve `prose-mint` from `PATH` first, then a local checkout, so they work whether or not the CLI is installed globally.
-
-Caveat, read before installing: the bundled MCP server is launched by an absolute path to this checkout (`/Users/costa/Projects/prose-mint`) in `plugin/.claude-plugin/plugin.json`. That is the v0 local-only reality, the package is not yet published, and `${CLAUDE_PLUGIN_ROOT}` cannot reach the repo because the Python package lives outside `plugin/`. It works on this machine because the repo lives at that path. If you move or clone the repo elsewhere the MCP server stops starting (the skill and command keep working, since they resolve at runtime). When prose-mint is published, replace that command with the `uvx`/console-script form and the tie disappears.
+The skill and command resolve `prose-mint` from `PATH` first, then `uvx prose-mint`, so they work whether or not the CLI is installed globally. The MCP server launches via `uvx --from 'prose-mint[mcp]' prose-mint-mcp`, pulling the published package with no fixed checkout path required.
 
 ## MCP server
 
@@ -79,17 +88,17 @@ On a cold uvx cache the first connect downloads fastmcp and prose-mint, which ca
 
 ## CI gate (reusable action)
 
-Any repo gets the gate as one stanza. Drop `examples/prose.yml` into `.github/workflows/`:
+Any repo gets the gate as one stanza:
 
 ```yaml
 - uses: actions/checkout@v5
   with:
     fetch-depth: 0
-- uses: ostin-pil/ProseMint@v1
+- uses: ostin-pil/claude-plugins/prose-mint@main
 ```
 
-The action lives in the private repo `ostin-pil/ProseMint` (provisional GitHub name; the tool, CLI, and plugin stay `prose-mint`). A consumer repo must have access to it: GitHub only lets a private repo's action run in other repos when same-owner private-action sharing is enabled (Settings, Actions, Access on `ProseMint`). The dogfood `uses: ./` inside this repo always works. The action sets up Python 3.11, installs prose-mint from its own checkout (no PyPI), scans the PR's changed markdown, and scans the PR title and body. What counts as in-scope is the consumer repo's `.prose-mint.toml`, not anything hardcoded in the action. It is warn-only by default (findings in the Actions log, no PR comment); set `strict: "true"` to fail the build on a hit. Inputs: `strict`, `scan-pr-body`, `python-version`, `config`. prose-mint dogfoods this action on itself via `uses: ./` in its own `.github/workflows/prose.yml`.
+The action is the `prose-mint` package root inside the public `claude-plugins` monorepo. It sets up Python, installs prose-mint from that checkout, scans the PR's changed markdown, and scans the PR title and body. What counts as in-scope is the consumer repo's `.prose-mint.toml`, not anything hardcoded in the action. It is warn-only by default (findings in the Actions log, no PR comment); set `strict: "true"` to fail the build on a hit. Inputs: `strict`, `scan-pr-body`, `python-version`, `config`. prose-mint dogfoods this action on itself via `uses: ./` in `.github/workflows/prose.yml`.
 
 ## Status
 
-The GitHub repo is `ostin-pil/ProseMint` (private, provisional name); the tool, CLI, package, and plugin are `prose-mint` and may be renamed once a final name is chosen. Done: the standalone engine and byte-for-byte regression gate, the per-project config layer, the Claude Code plugin (skill, command, marketplace), the MCP server, the reusable CI action, the opt-in mechanized banlist, and the Untype fallback-chain migration (staged in `staging/untype/`, applied by you on an Untype branch). A drift guard fails the suite if the upstream Untype scanner gains a category prose-mint has not ported. The remaining open thread is renaming away from the provisional name and any future polish. See CHANGELOG.md for the phase log.
+prose-mint lives in the [`claude-plugins`](https://github.com/ostin-pil/claude-plugins) monorepo and is published to PyPI as [`prose-mint`](https://pypi.org/project/prose-mint/). Done: the standalone engine and byte-for-byte regression gate, the per-project config layer, the Claude Code plugin (skill, command, marketplace), the MCP server, the reusable CI action, and the opt-in mechanized banlist. A drift guard fails the suite if the upstream Untype scanner (the source of the detection logic) gains a category prose-mint has not ported. See CHANGELOG.md for the phase log.

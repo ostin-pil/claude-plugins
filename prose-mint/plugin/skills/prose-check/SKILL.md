@@ -14,13 +14,14 @@ files or PR bodies, never "fix" silently.
 
 ## Resolve the tool
 
-Use the first that exists, in order:
+Use the first that works, in order:
 
 1. `prose-mint` on `PATH` (installed via `pipx`/`uv tool install`)
-2. `~/Projects/prose-mint/bin/prose-mint` (local checkout)
+2. `uvx prose-mint` (runs the published package with no install; needs `uv`)
 
-If neither resolves, report that prose-mint is not installed and stop. Do
-not fall back to guessing or hand-scanning.
+Treat whichever resolves as `<tool>` below. If neither is available, report
+that prose-mint is not installed and stop. Do not fall back to guessing or
+hand-scanning.
 
 ## Run
 

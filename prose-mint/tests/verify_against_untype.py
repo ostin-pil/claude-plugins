@@ -20,7 +20,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 UNTYPE = Path(os.environ.get("UNTYPE_REPO", "/Users/costa/Projects/Untype"))
 OLD = UNTYPE / "bin" / "check-prose-bulk.sh"
-NEW = REPO / "bin" / "prose-lint"
+NEW = REPO / "bin" / "prose-mint"
 
 # The set Untype's CI gate cares about (prose.yml path filter), restricted to
 # what exists at the Untype root plus the three doc trees.

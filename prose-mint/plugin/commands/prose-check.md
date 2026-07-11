@@ -6,9 +6,9 @@ allowed-tools: [Bash, Read]
 
 Run a prose-mint scan on `$ARGUMENTS`.
 
-Resolve the tool in order: `prose-mint` on `PATH`, then
-`~/Projects/prose-mint/bin/prose-mint`. If neither exists, report that
-prose-mint is not installed and stop.
+Resolve the tool in order: `prose-mint` on `PATH`, then `uvx prose-mint`
+(runs the published package with no install; needs `uv`). If neither is
+available, report that prose-mint is not installed and stop.
 
 Dispatch on `$ARGUMENTS`:
 
