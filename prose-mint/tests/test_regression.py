@@ -51,7 +51,10 @@ def test_scan_matches_live_scanner(label, src, golden):
     sys.stdin = io.StringIO(content)
     try:
         with redirect_stdout(buf):
-            rc = cli_main(["scan", "--stdin", "--label", label])
+            # --no-config pins the built-in default ruleset: the golden was
+            # captured from the config-less source scanner, so an ambient
+            # .prose-mint.toml above cwd (e.g. the monorepo's) must not apply.
+            rc = cli_main(["scan", "--stdin", "--no-config", "--label", label])
     finally:
         sys.stdin = real_stdin
 
@@ -71,7 +74,7 @@ def test_scan_matches_live_scanner(label, src, golden):
 def test_bulk_matches_live_wrapper(key, args):
     expected = (GOLDEN / "_bulk" / f"{key}.txt").read_text(encoding="utf-8")
     res = subprocess.run(
-        [sys.executable, str(REPO / "bin" / "prose-mint"), "bulk", *args],
+        [sys.executable, str(REPO / "bin" / "prose-mint"), "bulk", "--no-config", *args],
         cwd=str(REPO),
         capture_output=True,
         text=True,
@@ -83,7 +86,8 @@ def test_bulk_matches_live_wrapper(key, args):
 def test_strict_exit_code_on_hits():
     res = subprocess.run(
         [sys.executable, str(REPO / "bin" / "prose-mint"),
-         "scan", "--file", str(CORPUS / "_edge" / "structural_all.md"), "--strict"],
+         "scan", "--file", str(CORPUS / "_edge" / "structural_all.md"),
+         "--no-config", "--strict"],
         capture_output=True, text=True,
     )
     assert res.returncode == 1
@@ -92,7 +96,8 @@ def test_strict_exit_code_on_hits():
 def test_strict_exit_code_clean():
     res = subprocess.run(
         [sys.executable, str(REPO / "bin" / "prose-mint"),
-         "scan", "--file", str(CORPUS / "_edge" / "clean.md"), "--strict"],
+         "scan", "--file", str(CORPUS / "_edge" / "clean.md"),
+         "--no-config", "--strict"],
         capture_output=True, text=True,
     )
     assert res.returncode == 0
