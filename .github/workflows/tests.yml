@@ -1,0 +1,37 @@
+# Test gate for the marketplace. Runs the prose-mint Python suite across the
+# supported interpreter range and shellcheck over the bundled shell scripts.
+# The prose gate (structural-tell linting of the docs) is a separate workflow,
+# prose.yml.
+name: tests
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install prose-mint and pytest
+        run: pip install ./prose-mint pytest
+      - name: Run the suite
+        # The regression tests pin --no-config, so the repo-root .prose-mint.toml
+        # does not leak into them. Machine-only tests (test_source_drift,
+        # verify_against_untype) skip when the Untype checkout is absent.
+        run: python -m pytest prose-mint/tests -q
+
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Shellcheck shipped kit scripts (strict)
+        run: shellcheck lifecycle-kit/hooks/*.sh knowledge-kit/bin/*.sh
+      - name: Shellcheck benchmark harness scripts (warnings and up)
+        run: find benchmarks -name '*.sh' -print0 | xargs -0 shellcheck --severity=warning

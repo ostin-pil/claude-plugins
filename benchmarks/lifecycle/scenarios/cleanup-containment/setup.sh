@@ -42,7 +42,7 @@ git push -q -u origin main
 
 # 901: merged into main (contained in origin/main)
 git switch -qc feature/session-901-done
-echo done > done.txt
+echo "done" > done.txt
 git add done.txt
 git commit -qm "feat: 901"
 git switch -q main
