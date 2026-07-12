@@ -4,6 +4,7 @@
   "owner": {
     "name": "Costa"
   },
+  "description": "Claude Code plugins for a solo or small-team dev workflow, driven by a shared per-project manifest: session lifecycle (lifecycle-kit), knowledge base and issue tracking (knowledge-kit), and a deterministic AI-prose linter (prose-mint).",
   "plugins": [
     {
       "name": "lifecycle-kit",
