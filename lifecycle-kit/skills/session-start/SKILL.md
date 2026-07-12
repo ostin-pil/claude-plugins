@@ -11,6 +11,12 @@ Counterpart to `/session-end`, which finalizes a session. This is the
 
 ## Project configuration
 
+The manifest is this skill's configuration. If
+`$(git rev-parse --show-toplevel)/.claude/lifecycle-manifest.md` does not exist, the
+project has not adopted the kit: say so, offer to create it from
+`${CLAUDE_PLUGIN_ROOT}/lifecycle-manifest.template.md` (the marketplace `ADOPTING.md`
+carries a repo-inspecting setup prompt), and stop. Never infer the keys and run anyway.
+
 Read `.claude/lifecycle-manifest.md` first (resolve via
 `$(git rev-parse --show-toplevel)/.claude/lifecycle-manifest.md`). Where a
 step names a manifest key in `code font` (`log_glob`, `log_dir`,
