@@ -1,9 +1,7 @@
 # Drop this into any repo at .github/workflows/prose.yml. The whole gate is
 # one `uses:` stanza; scope and rules come from that repo's .prose-mint.toml.
-# The action lives in the private repo ostin-pil/ProseMint; the consumer
-# repo must have access (same-owner private-action sharing, or make the
-# action repo accessible). "ProseMint" is the provisional GitHub repo name;
-# the tool, CLI, and plugin are still "prose-mint".
+# The action is the prose-mint package root inside the public claude-plugins
+# monorepo.
 name: prose
 on:
   pull_request:
@@ -17,7 +15,7 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - uses: ostin-pil/ProseMint@v1
+      - uses: ostin-pil/claude-plugins/prose-mint@main
         # with:
         #   strict: "true"          # fail the build on any hit
         #   scan-pr-body: "false"   # skip the PR title+body scan

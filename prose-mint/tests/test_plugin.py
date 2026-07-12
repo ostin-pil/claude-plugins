@@ -10,20 +10,23 @@ import json
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-MARKETPLACE = REPO / ".claude-plugin" / "marketplace.json"
+# prose-mint lives inside the claude-plugins monorepo; the marketplace is the
+# repo-root manifest listing all plugins (the nested one was dropped on
+# absorption, commit 32d7499).
+MONOREPO = REPO.parent
+MARKETPLACE = MONOREPO / ".claude-plugin" / "marketplace.json"
 PLUGIN_DIR = REPO / "plugin"
 PLUGIN_JSON = PLUGIN_DIR / ".claude-plugin" / "plugin.json"
 
 
-def test_marketplace_manifest_valid_and_points_at_plugin():
+def test_marketplace_manifest_lists_prose_mint_plugin():
     m = json.loads(MARKETPLACE.read_text(encoding="utf-8"))
-    assert m["name"] == "prose-mint"
-    assert isinstance(m["plugins"], list) and len(m["plugins"]) == 1
-    entry = m["plugins"][0]
-    assert entry["name"] == "prose-mint"
-    assert entry["source"] == "./plugin"
-    # The local source path must resolve to a real plugin.
-    assert (REPO / entry["source"][2:] / ".claude-plugin" / "plugin.json").is_file()
+    assert m["name"] == "ostin-pil-plugins"
+    assert isinstance(m["plugins"], list)
+    entry = next(p for p in m["plugins"] if p["name"] == "prose-mint")
+    assert entry["source"] == "./prose-mint/plugin"
+    # The source path (repo-root relative) must resolve to a real plugin.
+    assert (MONOREPO / entry["source"][2:] / ".claude-plugin" / "plugin.json").is_file()
 
 
 def test_plugin_manifest_valid():

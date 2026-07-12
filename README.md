@@ -62,14 +62,18 @@ ADOPTING.md                         # end-to-end repo setup across all three plu
 
 ## CI
 
-`.github/workflows/prose.yml` runs the bundled prose-mint action over changed
-markdown on every PR, scoped by `.prose-mint.toml` to the marketplace's
-user-facing docs (the structural-tell categories; hard-wrap is off because
-these docs wrap by choice). The absorbed `prose-mint` keeps its own
-`pyproject.toml` and `action.yml`, and the monorepo vendors it as a plugin and
-a reusable action (`uses: ./prose-mint`). Its Python package release stays
-retired with the old `ostin-pil/ProseMint` repo; nothing publishes to PyPI from
-here.
+Two workflows run on every PR. `.github/workflows/tests.yml` runs the
+prose-mint pytest suite (the byte-for-byte regression gate and the config,
+banlist, JSON, MCP-body, and plugin-manifest tests) across Python 3.11-3.13,
+plus `shellcheck` over the bundled shell scripts. `.github/workflows/prose.yml`
+runs the bundled prose-mint action over changed markdown, scoped by
+`.prose-mint.toml` to the marketplace's user-facing docs (the structural-tell
+categories; hard-wrap is off because these docs wrap by choice).
+
+The absorbed `prose-mint` keeps its own `pyproject.toml` and `action.yml`, and
+the monorepo vendors it as a plugin and a reusable action (`uses:
+./prose-mint`). Its Python package is published to PyPI as
+[`prose-mint`](https://pypi.org/project/prose-mint/).
 
 ## License
 
