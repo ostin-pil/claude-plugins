@@ -1,9 +1,14 @@
 <!-- prose-check: skip ai-attribution, banlist -->
 # Changelog
 
-## Unreleased
+## 0.1.1 (2026-07-12)
 
-Added `bin/warm-mcp-cache`, a one-shot helper that warms the uvx cache so the MCP server's first in-session connect does not time out on a cold download (issue #8). Documented the warm-up and the `/mcp` reconnect in ADOPTING.md and the README, and corrected the README's MCP launch line to the `uvx --from 'prose-mint[mcp]' prose-mint-mcp` form shipped in 0.1.0.
+Maintenance release, cut from the `ostin-pil/claude-plugins` monorepo (prose-mint now lives there as a plugin and a reusable action, not in a standalone repo).
+
+- Added a `--no-config` flag to `scan` and `bulk` (mutually exclusive with `--config`) that ignores any ambient `.prose-mint.toml` and runs the built-in default ruleset. The regression suite uses it so the goldens, captured from the config-less source scanner, stay valid regardless of a parent config above the working directory.
+- Added `bin/warm-mcp-cache`, a one-shot helper that warms the uvx cache so the MCP server's first in-session connect does not time out on a cold download (issue #8). Documented the warm-up and the `/mcp` reconnect in ADOPTING.md and the README.
+- Refreshed the docs for the published package: install and marketplace instructions point at PyPI and the monorepo, and the stale v0 absolute-path MCP caveat is gone. Enriched the package metadata (author, project URLs, MIT classifier) and made the version dynamic from `prose_mint.__version__`.
+- Removed `staging/untype/`, the unapplied pre-rename Untype migration, from the package tree. Releases are now published to PyPI by `.github/workflows/release.yml` on a `prose-mint-v*` tag.
 
 ## 0.1.0 (2026-05-20)
 
@@ -48,4 +53,4 @@ The banlist is implemented and ships with content (the prose-style.md word and p
 
 ### Planned
 
-Rename away from the provisional "ProseMint" repo name once a final name is chosen.
+Promote the opt-in banlist toward a v2 default once its precision is tuned, and keep the structural detectors in sync with the upstream source scanner via the drift guard.

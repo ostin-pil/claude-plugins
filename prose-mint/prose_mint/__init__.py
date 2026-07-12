@@ -10,6 +10,6 @@ Engine behavior is a faithful port of the Untype scanner so a project
 migrating to this tool sees identical findings.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 REQUIRES_PYTHON = (3, 11)

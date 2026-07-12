@@ -4,11 +4,23 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "prose-mint"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Structural-tells linter for AI-flavored prose"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = []
+authors = [{ name = "Costa" }]
+keywords = ["prose", "linter", "markdown", "ai-tells", "ai-slop", "writing"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Software Development :: Quality Assurance",
+  "Topic :: Text Processing :: Linguistic",
+]
 
 [project.optional-dependencies]
 # The MCP server is an optional surface; the core engine stays zero-dep.
@@ -18,8 +30,16 @@ mcp = ["fastmcp>=3"]
 prose-mint = "prose_mint.cli:main"
 prose-mint-mcp = "prose_mint.server:main"
 
+[project.urls]
+Homepage = "https://github.com/ostin-pil/claude-plugins/tree/main/prose-mint"
+Repository = "https://github.com/ostin-pil/claude-plugins"
+Changelog = "https://github.com/ostin-pil/claude-plugins/blob/main/prose-mint/CHANGELOG.md"
+
 [tool.setuptools]
 packages = ["prose_mint"]
+
+[tool.setuptools.dynamic]
+version = { attr = "prose_mint.__version__" }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
