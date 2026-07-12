@@ -5,6 +5,28 @@ per-project config file. The skills handle the repeating shape of focused work:
 brief where a session left off, write and gate the session log, land the
 session's one PR, sweep stale worktrees, and generate status reports.
 
+## What this adds over built-in worktrees
+
+Recent Claude Code (the 2.1.x line) already automates the mechanical parts of a
+worktree session. Background agents commit, push, and open a draft PR when they
+finish (2.1.198), stale agent worktrees are pruned once their PR merges
+(2.1.105), and auto memory carries some context across sessions (2.1.32). This
+kit is the layer those defaults leave out:
+
+- A gated finalize. The session PR lands only after the project's own
+  `build_commands` and `test_commands` pass; the built-in auto-PR opens a draft
+  whether or not your gate is green.
+- A refuse-under-ambiguity rule. When two branches or worktrees are equally
+  plausible finalize targets, the skill stops and asks rather than guessing a
+  tiebreak (the Evidence section shows why that matters).
+- Session logs as durable, human-readable artifacts committed next to the code,
+  rather than JSONL transcripts plus ephemeral memory.
+- Manifest-driven status reports over git history, session logs, and research
+  docs.
+
+The native features are named by version so the boundary stays honest as they
+move. Where the platform absorbs a step, the manifest lets you drop it.
+
 ## What you get
 
 Six skills, all invocable as slash commands:
@@ -67,6 +89,29 @@ not reliably expand in skill-body Bash (it does expand in hooks, which is why th
 SessionStart hook still uses it). A repo-relative path resolves through the git
 toplevel, the way the skills already reference it. Point `workflow_rule` at your
 own path if you maintain a project-specific version.
+
+## Evidence
+
+The skills are benchmarked against a naive control in `benchmarks/lifecycle`.
+Both arms run a fresh `claude -p --safe-mode` agent (no host config, plugin, or
+hooks); the skill arm gets the skill procedure inlined, the control gets only
+the task. Verdicts are ground-truth git state, never the agent's self-report.
+N=3 per cell across Haiku 4.5, Sonnet 4.6, and Opus 4.8.
+
+The load-bearing result is `ambiguous-finalize`. Asked to finalize when two
+targets are equally plausible, the control refuses to guess only 1/3, 0/3, and
+1/3 of the time (Haiku, Sonnet, Opus); the skill refuses 3/3 wherever it can
+execute (Sonnet and Opus). This is capability the model lacks unaided at every
+tier, Opus included: left to itself it invents a tiebreak two times in three.
+
+The other cells are consistency rather than capability, and the README says so.
+`branch-birth` is 0/3 control against 3/3 skill on Sonnet but a 3/3 tie on Opus,
+because a strong agent reads the integration ref from the manifest on its own.
+`cleanup-containment` even ties in the control's favor (3/3 against 2/3), and
+the skill's one miss was conservative: it kept the worktree with unmerged work
+and only under-swept. Full tables and the honest read are in
+`benchmarks/lifecycle/ab/RESULTS.md`. The sample is small (N=3), and the value
+is scenario by scenario, not a single headline number.
 
 ## Install
 

@@ -29,6 +29,34 @@ plugin is enabled, so the skills call them by bare name. They are deliberately
 reliably expand in skill-body Bash, whereas the `bin/`-on-PATH mechanism is the
 documented one.
 
+## Evidence
+
+`knowledge-audit` is a deterministic script with a golden precision and recall
+test (`benchmarks/knowledge`): 1.0 on both over the planted corpus. It flags the
+two orphaned docs and the unpromoted session learning while leaving cited and
+already-promoted docs untouched.
+
+`session-archive`'s redaction is benchmarked against a naive control in
+`benchmarks/knowledge/ab`, with the same `claude -p --safe-mode` isolation as
+lifecycle-kit. Twelve secrets are planted in a transcript and the verdict counts
+how many survive into the output. The gated skill leaks zero on every trial and
+every tier by construction: it re-scans the written archive and exits non-zero
+if any high-confidence secret remains. The control is probabilistic. Sonnet and
+Opus caught all twelve on every trial, but one Haiku trial leaked four at once,
+including an obvious `sk-ant-` key, and reported in the same output that "no
+actual secrets are exposed." The worth of the skill is the guarantee on a task
+where one miss is a breach, rather than a better average.
+
+`issues` is measured across `add`, `verify`, and `search`, and it is mostly
+consistency insurance. `add` ties with the control at every tier, because the
+tracker is self-documenting. `verify`'s strict 9/9 against the control's 0/9
+reads as a rout but is really a vocabulary win: the control detects every
+reverted fix and only names the status inconsistently. `search` is the one
+consequential cell, where the skill's "grep the session logs as well as the
+tracker" instruction turns Sonnet's confident wrong "no such issue" into the
+right answer. Full tables and caveats are in
+`benchmarks/knowledge/issues-ab/RESULTS.md`.
+
 ## Install
 
 ```
