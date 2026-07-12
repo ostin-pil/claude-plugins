@@ -7,7 +7,7 @@ add, one CI, shared dev tooling, and atomic changes across plugins that overlap.
 
 | Plugin | Status | What it does |
 | --- | --- | --- |
-| [`lifecycle-kit`](./lifecycle-kit) | v0.1 | Session lifecycle and reporting skills driven by a per-project manifest |
+| [`lifecycle-kit`](./lifecycle-kit) | v0.1 | Session lifecycle and reporting skills on a per-project manifest: build/test-gated PR finalize, safe-under-ambiguity, session logs, and status reports (the parts built-in worktrees leave out) |
 | [`prose-mint`](./prose-mint) | v0.1 (absorbed from `ostin-pil/ProseMint`, history preserved) | Structural-tells linter for AI-flavored prose; ships the `prose-check` skill, a `/prose-check` command, and an MCP server. The plugin is `prose-mint/plugin`; the Python tool and tests sit alongside it |
 | [`knowledge-kit`](./knowledge-kit) | v0.1 | Knowledge-base skills on the same manifest: `knowledge-audit`, `issues`, `session-archive`. Ships a knowledge-skeleton template and the two git-hook templates |
 
