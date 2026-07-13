@@ -1,7 +1,7 @@
 {
   "name": "lifecycle-kit",
   "description": "Session lifecycle and reporting skills driven by a per-project manifest: session-start, session-report, session-end, finalize-worktree, cleanup-worktrees, report.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "Costa"
   },

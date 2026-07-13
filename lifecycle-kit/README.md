@@ -65,9 +65,16 @@ run `report` plus the read-only half of `session-start` and `session-report`,
 but not the finalize lifecycle; that is a deliberate scope choice, because a
 local-merge fallback would cross the kit's never-merge-locally invariant.
 
-A `SessionStart` hook (`hooks/validate-manifest.sh`) checks the manifest exists,
-has the required keys, and that the remote is configured when required. It warns;
-it never blocks the session.
+A `SessionStart` hook (`hooks/validate-manifest.sh`) validates the manifest of a
+project that has adopted the kit: required keys present, remote configured when
+required. It warns; it never blocks the session.
+
+The kit is user-scoped, so the hook runs in every repo on the machine. A repo with
+no `.claude/lifecycle-manifest.md` has simply not adopted the kit, which is the
+resting state of most repos, so the hook stays **silent** there rather than warning
+about setup nobody asked for. The skills raise the missing-manifest message
+themselves when one is actually invoked, and offer to write the manifest from the
+template.
 
 ## Bundled rules
 

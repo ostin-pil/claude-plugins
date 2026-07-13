@@ -10,6 +10,14 @@ Generate a project status report for the project (`product_name`, Untype). The r
 
 ## Project configuration
 
+The manifest is this skill's configuration. If
+`$(git rev-parse --show-toplevel)/.claude/lifecycle-manifest.md` does not exist, the
+project has not adopted the kit: say so, offer to create it, and stop. Never infer
+the keys and run anyway. The kit ships the template as
+`lifecycle-manifest.template.md`; locate the installed copy with
+`find ~/.claude/plugins -path '*lifecycle-kit*' -name lifecycle-manifest.template.md | head -1`.
+The marketplace's `ADOPTING.md` carries a repo-inspecting setup prompt.
+
 Read `.claude/lifecycle-manifest.md` first (resolve via
 `$(git rev-parse --show-toplevel)/.claude/lifecycle-manifest.md`). Where a step
 names a manifest key in `code font` (`product_name`, `log_dir`, `log_archive`,
