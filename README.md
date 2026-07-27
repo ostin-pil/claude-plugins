@@ -3,6 +3,12 @@
 A Claude Code plugin marketplace, hosted as a monorepo. One repo, one place to
 add, one CI, shared dev tooling, and atomic changes across plugins that overlap.
 
+**What you get in 30 seconds:** three installable plugins that cover the parts of a
+working session Claude Code leaves to you. Gated session logs and PR finalize
+(`lifecycle-kit`), a linter for the structural tells of AI-flavored prose
+(`prose-mint`), and knowledge-base upkeep (`knowledge-kit`). Add the marketplace once,
+install what you want, skip the rest.
+
 ## Plugins
 
 | Plugin | Status | What it does |
@@ -25,8 +31,8 @@ Add the marketplace once, then install any plugin from it.
 ```
 
 The marketplace id is the `name` field in `.claude-plugin/marketplace.json`
-(`ostin-pil-plugins`). To try it before this repo is on GitHub, add it from the
-local path instead:
+(`ostin-pil-plugins`). To work on the plugins locally, add the marketplace from a
+checkout instead:
 
 ```
 /plugin marketplace add ~/Projects/claude-plugins
