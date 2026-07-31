@@ -33,7 +33,7 @@ MANIFEST="$TOPLEVEL/.claude/lifecycle-manifest.md"
 
 # Resolve the template from this script's own location, so the message names a path
 # the user can actually copy rather than one relative to nothing.
-PLUGIN_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." 2>/dev/null && pwd)
+PLUGIN_ROOT=$(unset CDPATH; cd -- "$(dirname -- "$0")/.." 2>/dev/null && pwd)
 TEMPLATE="${PLUGIN_ROOT:-$CLAUDE_PLUGIN_ROOT}/lifecycle-manifest.template.md"
 
 msg=""
