@@ -19,6 +19,16 @@ inputs:
     description: "Explicit .prose-mint.toml path. Default: auto-discovered by walking up from each file."
     required: false
     default: ""
+  pr-body-config:
+    description: >-
+      Ruleset for the PR-body scan, which is a different medium from a repo doc.
+      GitHub renders single newlines in a comment body as line breaks, so a
+      hard-wrapped paragraph comes out ragged even where the same wrapping is
+      correct in a file. Empty (the default) reuses `config`, preserving existing
+      behavior. "default" runs the built-in ruleset, which includes hard-wrap.
+      Any other value is a path to a .prose-mint.toml.
+    required: false
+    default: ""
 
 runs:
   using: "composite"
@@ -62,6 +72,8 @@ runs:
       shell: bash
       env:
         STRICT: ${{ inputs.strict }}
+        CONFIG: ${{ inputs.config }}
+        BODY_CONFIG: ${{ inputs.pr-body-config }}
         PR: ${{ github.event.pull_request.number }}
         GH_TOKEN: ${{ github.token }}
       run: |
@@ -70,6 +82,19 @@ runs:
           echo "::warning::no GH_TOKEN; skipping PR-body scan"
           exit 0
         fi
-        STRICT_FLAG=""; [ "$STRICT" = "true" ] && STRICT_FLAG="--strict"
+        STRICT_FLAG=""
+        if [ "$STRICT" = "true" ]; then STRICT_FLAG="--strict"; fi
+        # A PR body is not a repo doc. A repo's config tunes categories for files
+        # it ships; the body renders through GitHub's comment pipeline, where a
+        # single newline becomes a line break. pr-body-config lets the body scan
+        # carry its own ruleset without touching the file scan's.
+        CONFIG_FLAG=""
+        if [ "$BODY_CONFIG" = "default" ]; then
+          CONFIG_FLAG="--no-config"
+        elif [ -n "$BODY_CONFIG" ]; then
+          CONFIG_FLAG="--config $BODY_CONFIG"
+        elif [ -n "$CONFIG" ]; then
+          CONFIG_FLAG="--config $CONFIG"
+        fi
         gh pr view "$PR" --json title,body -q '.title + "\n\n" + .body' \
-          | prose-mint scan --stdin --label "PR #$PR" $STRICT_FLAG
+          | prose-mint scan --stdin --label "PR #$PR" $CONFIG_FLAG $STRICT_FLAG
