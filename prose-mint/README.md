@@ -116,7 +116,9 @@ Any repo gets the gate as one stanza:
 - uses: ostin-pil/claude-plugins/prose-mint@main
 ```
 
-The action is the `prose-mint` package root inside the public `claude-plugins` monorepo. It sets up Python, installs prose-mint from that checkout, scans the PR's changed markdown, and scans the PR title and body. What counts as in-scope is the consumer repo's `.prose-mint.toml`, not anything hardcoded in the action. It is warn-only by default (findings in the Actions log, no PR comment); set `strict: "true"` to fail the build on a hit. Inputs: `strict`, `scan-pr-body`, `python-version`, `config`. prose-mint dogfoods this action on itself via `uses: ./` in `.github/workflows/prose.yml`.
+The action is the `prose-mint` package root inside the public `claude-plugins` monorepo. It sets up Python, installs prose-mint from that checkout, scans the PR's changed markdown, and scans the PR title and body. What counts as in-scope is the consumer repo's `.prose-mint.toml`, not anything hardcoded in the action. It is warn-only by default (findings in the Actions log, no PR comment); set `strict: "true"` to fail the build on a hit. Inputs: `strict`, `scan-pr-body`, `python-version`, `config`, `pr-body-config`. prose-mint dogfoods this action on itself via `uses: ./` in `.github/workflows/prose.yml`.
+
+`pr-body-config` exists because a PR body is a different medium from a repo doc. GitHub's comment pipeline renders a single newline as a line break, so a hard-wrapped paragraph comes out ragged in a PR description even where the same wrapping is correct in a file that renders through CommonMark. Left empty it reuses `config`, so existing setups are unchanged; set it to `default` to scan the body against the built-in ruleset (which has `hard-wrap` on), or give it a path to a dedicated `.prose-mint.toml`. This repo uses `default`, because its own docs wrap at ~80 columns deliberately and its PR descriptions should not.
 
 ## Status
 
