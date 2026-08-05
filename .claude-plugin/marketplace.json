@@ -18,7 +18,7 @@
     {
       "name": "prose-mint",
       "description": "Structural-tells linter for AI-flavored prose: scan files, PR bodies, or piped text for em dashes, arrows, not-X-but-Y, bold-colon openers, AI-attribution boilerplate, hard-wraps. Bundles the prose-check skill, a /prose-check command, and an MCP server.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "source": "./prose-mint/plugin",
       "homepage": "https://github.com/ostin-pil/claude-plugins#prose-mint",
       "category": "development",
