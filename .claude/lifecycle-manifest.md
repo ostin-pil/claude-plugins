@@ -43,14 +43,15 @@ log_presence_regex: '^sessions/[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}_session.*\.md$'
 code_globs: ["prose-mint/**/*.py", "prose-mint/bin/*", "**/*.sh", "knowledge-kit/bin/*"]
 build_commands: none                 # no compile step (Python + shell repo)
 test_commands:
-  - python -m pytest prose-mint/tests
+  - uv run --with pytest --with ./prose-mint python -m pytest prose-mint/tests
   - shellcheck lifecycle-kit/hooks/*.sh knowledge-kit/bin/*.sh
 
 # merge
 merge_strategy: merge                # gh pr merge --merge; alternatives: squash | rebase
 
-# prose gate (the marketplace's user-facing docs, scoped by .prose-mint.toml)
-prose_gate: uvx prose-mint bulk --strict .
+# prose gate (the marketplace's user-facing docs, scoped by .prose-mint.toml;
+# the checkout's own launcher, so the local gate runs the same code as CI's ./prose-mint action)
+prose_gate: prose-mint/bin/prose-mint bulk --strict .
 prose_rule: none
 
 # code review (optional; none disables the step)
@@ -59,7 +60,7 @@ review_command: none
 
 # commit / PR convention
 commit_convention: "prefix(topic): short description"
-commit_trailers: none
+commit_trailers: "Co-Authored-By: Claude <model> <noreply@anthropic.com> + Claude-Session: <url>"
 subject_max: 72
 
 # project knowledge & docs
