@@ -1,0 +1,66 @@
+#!/bin/sh
+# Minimal `git` shim for the lifecycle execution benchmark. Passes every
+# invocation straight through to the real git, and stages one deterministic
+# mid-run change: after the FIRST `fetch`, it lands a concurrent session's
+# branch on the bare remote. Put this dir first on PATH so `git` resolves here.
+#
+# Why a shim rather than a timer: the drift has to happen between the agent's
+# first fetch and its second, and setup.sh runs before the agent starts. A
+# sleep would make the scenario race the agent's reading speed. Counting
+# fetches is exact.
+#
+# Config via env:
+#   GIT_MOCK_DIR     state + log dir (required)
+#   GIT_MOCK_REAL    absolute path to the real git (required; the shim is
+#                    first on PATH, so it cannot resolve git by name)
+#   GIT_MOCK_REMOTE  the bare remote to push the drift into (required)
+#   GIT_MOCK_BRANCH  branch name to land   [default feature/session-6-concurrent]
+#
+# State files in GIT_MOCK_DIR: log, drifted
+set -u
+
+DIR="${GIT_MOCK_DIR:?GIT_MOCK_DIR not set}"
+REAL="${GIT_MOCK_REAL:?GIT_MOCK_REAL not set}"
+REMOTE="${GIT_MOCK_REMOTE:?GIT_MOCK_REMOTE not set}"
+BRANCH="${GIT_MOCK_BRANCH:-feature/session-6-concurrent}"
+
+mkdir -p "$DIR"
+printf 'git %s\n' "$*" >> "$DIR/log"
+
+# Find the subcommand, skipping global flags and their values. `git -C <path>
+# fetch` must still register as a fetch.
+sub=""
+skip=0
+for a in "$@"; do
+  if [ "$skip" = 1 ]; then skip=0; continue; fi
+  case "$a" in
+    -C|--git-dir|--work-tree|--namespace|-c) skip=1 ;;
+    -*) ;;
+    *) sub="$a"; break ;;
+  esac
+done
+
+"$REAL" "$@"
+status=$?
+
+# Land the drift after the first fetch returns, so the agent's step-1 read saw
+# the pre-drift state and only a re-read can see this.
+if [ "$sub" = "fetch" ] && [ ! -f "$DIR/drifted" ]; then
+  : > "$DIR/drifted"
+  W="$DIR/drift-work"
+  rm -rf "$W"
+  # Every inner call uses $REAL: this shim is first on PATH and would recurse.
+  if "$REAL" clone -q "$REMOTE" "$W" 2>>"$DIR/drift-err"; then
+    "$REAL" -C "$W" config user.email drift@example.com
+    "$REAL" -C "$W" config user.name Drift
+    "$REAL" -C "$W" checkout -q -b "$BRANCH"
+    echo "concurrent session work" > "$W/concurrent.txt"
+    "$REAL" -C "$W" add concurrent.txt
+    "$REAL" -C "$W" commit -qm "feat: work from a concurrent session"
+    if "$REAL" -C "$W" push -q origin "$BRANCH" 2>>"$DIR/drift-err"; then
+      echo "$BRANCH" > "$DIR/drift-landed"
+    fi
+  fi
+fi
+
+exit $status

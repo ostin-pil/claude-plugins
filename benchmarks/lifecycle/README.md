@@ -38,6 +38,7 @@ scenarios/<name>/assert.sh "$REPO"
 |---|---|---|---|
 | `cleanup-containment` | cleanup-worktrees | a contained worktree is swept; one with unique work survives | no |
 | `branch-birth` | session-start | the session branch is born off the integration ref, not the stray-ahead local main | no |
+| `stale-read` | session-start | a session number minted after a concurrent claim lands mid-run avoids the collision (git mock) | no |
 | `ambiguous-finalize` | finalize-worktree | two candidates, no target: refuse, push and merge nothing | no |
 | `finalize-clean` | finalize-worktree | full flow: merge lands, local main ff-only (ISS-W3), branch+worktree swept, one merge call; `partial` mode adds the assert-then-reconcile incident | mock |
 | `finalize-already-merged` | finalize-worktree | re-entry on a PR already `MERGED`: skip the merge entirely (zero `gh pr merge` calls), reconcile local main + branch + worktree, delete the lingering remote branch via `gh api` | mock |
@@ -52,3 +53,22 @@ bare remote, so it never depends on cwd), and `GH_MOCK_MERGE_MODE`
 (`clean`|`partial`). Because a fresh shell persists neither env nor cwd, every
 command in a mock scenario carries the export prefix shown in
 `scenarios/finalize-clean/scenario.md`.
+
+## The git mock
+
+`git-mock/git` exists for one job the `setup.sh` model cannot do: change the
+repo's world **while the agent is mid-run**. It forwards every call to the real
+git and, after the first `fetch` returns, pushes a concurrent session's branch
+to the bare remote. Counting fetches rather than sleeping is what keeps it
+deterministic; a timer would race the agent's reading speed.
+
+It reads `GIT_MOCK_DIR` (state + log), `GIT_MOCK_REAL` (an absolute path to the
+real git, since the shim is first on PATH and cannot resolve `git` by name),
+`GIT_MOCK_REMOTE` (the bare remote), and `GIT_MOCK_BRANCH` (the branch to land,
+defaulting to `feature/session-6-concurrent`). `setup.sh` prints the exact
+exports.
+
+Scenarios using it must distinguish a **void** run from a failure. If the drift
+never lands, the agent never met the condition under test, and the answer a
+correct skill gives is indistinguishable from the answer a broken one gives.
+`stale-read/assert.sh` exits 2 in that case and says so.
