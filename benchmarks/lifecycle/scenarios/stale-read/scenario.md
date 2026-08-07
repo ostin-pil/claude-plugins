@@ -35,6 +35,48 @@ as a pass.
 
 **gh:** none. Branch birth uses `git fetch` and `git switch -c` only.
 
-**Baseline:** not yet run. The mechanics are verified (the shim fires on the
-first fetch, the drift lands, and `assert.sh` discriminates void, fail and pass
-against hand-staged git state), but the agent leg has not been executed.
+**Baseline (2026-08-07): both arms pass. The scenario does not discriminate.**
+
+Two arms were run against installed lifecycle-kit versions, one either side of
+the fix this scenario was written for:
+
+| Arm | `session-start` | Branch created | `assert.sh` |
+| --- | --- | --- | --- |
+| pre-fix | 0.2.0, no "Re-read before acting" block in step 7 | `feature/session-7-bench` | `VERDICT: PASS`, exit 0 |
+| post-fix | 0.2.2, block present | `feature/session-7-bench` | `VERDICT: PASS`, exit 0 |
+
+Neither run was void: the shim landed `feature/session-6-concurrent` on the
+remote in both. Both arms issued exactly three `git` fetches, so even the fetch
+count fails to separate them.
+
+How the pre-fix arm got to 7, from its shim log. Its step-1 fetch is prescribed
+as `git fetch <remote> --prune 2>/dev/null`, which throws away the `* [new
+branch]` progress lines, so a fetch that did real work is indistinguishable from
+a no-op. Running the pre-flight's branch source, `git branch -a --list
+'*session-*'`, then returned nothing, because the drift had landed on the remote
+and no local tracking ref existed for it yet. The agent did not accept that. It
+ran `git ls-remote origin`, which reads the remote directly and did show the
+concurrent claim, chased the discrepancy through `show-ref`, `for-each-ref` and
+the `remote.origin.fetch` refspec, re-fetched to materialize the tracking ref,
+and only then computed `N`. It reached 7 by refusing to trust a quiet fetch, not
+because the skill told it to re-read.
+
+The post-fix arm's log is the skill's text executed literally: fetch, then the
+four named facts (`rev-parse <integration_ref>`, `worktree list`, `branch -a
+--list '*session-*'`, `status --short`), then `N`.
+
+**Why this is structural, not a tuning problem.** The behavior under test is a
+process guarantee, that the fixed skill *always* re-reads. `assert.sh` can only
+observe an outcome, and a guaranteed re-read and a lucky one leave byte-identical
+git state. Retiming the drift does not close the gap: the fixed skill's re-read
+happens before its pre-flight computes `N`, so any drift early enough to be
+missed by a skill without the block is also early enough to be caught by one
+with it, and any drift later than that is missed by both. The harness deliberately
+distrusts agent self-reports (`README.md`, "the agent's self-report is never
+trusted"), which rules out the one signal that would separate the arms.
+
+**Keep it anyway.** It still asserts something true and falsifiable: that
+`session-start` does not mint a colliding number under a live concurrent claim.
+A future skill edit that regresses that assertion fails here. What it cannot do
+is attribute the pass to the fix. Do not read a pass as evidence the re-read
+block works.
