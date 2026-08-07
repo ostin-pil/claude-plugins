@@ -81,6 +81,42 @@ the monorepo vendors it as a plugin and a reusable action (`uses:
 ./prose-mint`). Its Python package is published to PyPI as
 [`prose-mint`](https://pypi.org/project/prose-mint/).
 
+## Tags that predate the subtree merge
+
+Absorbing `ostin-pil/ProseMint` preserved its history and moved every file in
+that package one level down. Two annotated tags sit before the move, at the old
+root:
+
+| Tag | Commit | Package root at that tag |
+| --- | --- | --- |
+| `v1` | `aa57678` | `prose_lint/`, at the repo root |
+| `v0.1.0` | `7f1edc8` | `prose_mint/`, at the repo root |
+
+Diffing either against `main` the obvious way compares two layouts and reports
+the whole package as deleted and re-added:
+
+```
+git diff --stat v0.1.0..main             # ~450 stat lines, nearly all path moves
+```
+
+Give the diff the subtree on the newer side and it says something:
+
+```
+git diff --stat v0.1.0 main:prose-mint   # 24 files
+git diff --stat v1     main:prose-mint   # 42 files
+```
+
+Both tags are reachable from `main`, so the names are labels and no history
+depends on them. Neither is on this repo's remote either; `git ls-remote --tags
+origin` lists only `prose-mint-v0.1.1`. They live in clones that also fetched
+the ProseMint remote. `prose-mint/CHANGELOG.md` records `v1` as frozen for
+consumers on `uses: ostin-pil/ProseMint@v1`, and that ref resolves in the
+`ostin-pil/ProseMint` repo rather than here, so a local copy of the tag is not
+what keeps it working.
+
+Releases cut from this repo carry the plugin prefix (`prose-mint-v0.1.1`) and
+sit at the post-merge layout, so they diff against `main` without any of this.
+
 ## License
 
 MIT, see [`LICENSE`](./LICENSE).

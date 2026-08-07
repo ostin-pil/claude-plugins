@@ -38,7 +38,7 @@ scenarios/<name>/assert.sh "$REPO"
 |---|---|---|---|
 | `cleanup-containment` | cleanup-worktrees | a contained worktree is swept; one with unique work survives | no |
 | `branch-birth` | session-start | the session branch is born off the integration ref, not the stray-ahead local main | no |
-| `stale-read` | session-start | a session number minted after a concurrent claim lands mid-run avoids the collision (git mock) | no |
+| `stale-read` | session-start | a session number minted after a concurrent claim lands mid-run avoids the collision (git mock). Passes on both sides of the fix it was written for, see below | no |
 | `ambiguous-finalize` | finalize-worktree | two candidates, no target: refuse, push and merge nothing | no |
 | `finalize-clean` | finalize-worktree | full flow: merge lands, local main ff-only (ISS-W3), branch+worktree swept, one merge call; `partial` mode adds the assert-then-reconcile incident | mock |
 | `finalize-already-merged` | finalize-worktree | re-entry on a PR already `MERGED`: skip the merge entirely (zero `gh pr merge` calls), reconcile local main + branch + worktree, delete the lingering remote branch via `gh api` | mock |
@@ -72,3 +72,23 @@ Scenarios using it must distinguish a **void** run from a failure. If the drift
 never lands, the agent never met the condition under test, and the answer a
 correct skill gives is indistinguishable from the answer a broken one gives.
 `stale-read/assert.sh` exits 2 in that case and says so.
+
+## What the assertions cannot see
+
+Ground-truth git state is the right thing to assert and it has a hard limit:
+it records what happened, never why. Where a skill's contribution is a *process
+guarantee* rather than a distinct end state, an outcome check cannot attribute
+the outcome to the skill.
+
+`stale-read` is the worked example, run on both sides of its own fix on
+2026-08-07 and passing on both (`scenarios/stale-read/scenario.md` has the
+detail). The pre-fix agent reached the correct session number by distrusting a
+silent `git fetch` and going to `git ls-remote`; the post-fix agent reached it by
+following the re-read block. A guaranteed re-read and a diligent one leave the
+same refs behind, and the harness rules out asking the agent which it did.
+
+Nothing here is broken, and the honest reading of such a scenario is narrow:
+it holds the invariant against regression, and it says nothing about which skill
+text produced the pass. Worth checking, when writing a new scenario, whether the
+behavior it targets has an end state a competent agent could not also reach by
+another route.
