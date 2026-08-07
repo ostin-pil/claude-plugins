@@ -6,6 +6,10 @@
 # tested nothing); exit 1 is a real skill failure. They must not be confused:
 # a void run that reported PASS would be the worst outcome here, since 6 is
 # the answer both a correct skill and a broken harness produce.
+# Resolve this script's own directory BEFORE cd'ing into the repo: after the
+# cd, a relative $0 no longer points here.
+DIR=$(unset CDPATH; cd -- "$(dirname -- "$0")" && pwd)
+
 REPO="$1"
 [ -d "$REPO" ] || { echo "FAIL: repo not found: $REPO"; exit 2; }
 cd "$REPO" || exit 2
@@ -48,6 +52,21 @@ else
   echo "FAIL: $B tip $(git rev-parse --short "$B") != origin/main $(git rev-parse --short origin/main)"
   fail=1
 fi
+
+# Process assertion. Everything above reads end-state git, and the 2026-08-07
+# run proved that end state cannot separate the fixed skill from the unfixed
+# one: both arms minted session 7 and both passed every check above. The order
+# of commands does separate them, and the shim records it. See assert-trace.sh
+# for why two fetches before the first session-branch read is the test.
+[ -x "$DIR/assert-trace.sh" ] || { echo "FAIL: assert-trace.sh missing from $DIR"; exit 2; }
+"$DIR/assert-trace.sh" "${GIT_MOCK_DIR:-}/log"
+case $? in
+  0) ;;
+  1) fail=1 ;;
+  *) echo "VOID: the shim trace is missing or unreadable, so the re-read could not"
+     echo "      be checked. Check GIT_MOCK_DIR."
+     exit 2 ;;
+esac
 
 echo "VERDICT: $([ $fail -eq 0 ] && echo PASS || echo FAIL)"
 exit $fail

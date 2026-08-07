@@ -35,7 +35,21 @@ as a pass.
 
 **gh:** none. Branch birth uses `git fetch` and `git switch -c` only.
 
-**Baseline (2026-08-07): both arms pass. The scenario does not discriminate.**
+**Baseline (2026-08-07): pre-fix fails, post-fix passes.** The scenario
+discriminates, but only because of the process assertion in `assert-trace.sh`,
+added later the same day. The end-state checks alone do not, and the record of
+that is kept below because it is the whole reason that assertion exists.
+
+| Arm | `session-start` | End-state checks | `assert-trace.sh` | Overall |
+| --- | --- | --- | --- | --- |
+| pre-fix | 0.2.0 | pass | **FAIL**, 1 fetch before the first session read | `VERDICT: FAIL`, exit 1 |
+| post-fix | 0.2.2 | pass | ok, 2 fetches before it | `VERDICT: PASS`, exit 0 |
+
+Both shim traces are kept under `fixtures/`, and `selftest.sh` runs the
+assertion against them, so a regression in the assertion itself is caught
+without spending two agent runs to find out.
+
+### The end-state result, and why it was not enough
 
 Two arms were run against installed lifecycle-kit versions, one either side of
 the fix this scenario was written for:
@@ -65,18 +79,27 @@ The post-fix arm's log is the skill's text executed literally: fetch, then the
 four named facts (`rev-parse <integration_ref>`, `worktree list`, `branch -a
 --list '*session-*'`, `status --short`), then `N`.
 
-**Why this is structural, not a tuning problem.** The behavior under test is a
-process guarantee, that the fixed skill *always* re-reads. `assert.sh` can only
-observe an outcome, and a guaranteed re-read and a lucky one leave byte-identical
-git state. Retiming the drift does not close the gap: the fixed skill's re-read
-happens before its pre-flight computes `N`, so any drift early enough to be
-missed by a skill without the block is also early enough to be caught by one
-with it, and any drift later than that is missed by both. The harness deliberately
-distrusts agent self-reports (`README.md`, "the agent's self-report is never
-trusted"), which rules out the one signal that would separate the arms.
+**Why end state cannot separate them.** The behavior under test is a process
+guarantee, that the fixed skill *always* re-reads. End state is an outcome, and
+a guaranteed re-read and a lucky one leave byte-identical git state. Retiming
+the drift does not close the gap either: the fixed skill's re-read happens
+before its pre-flight computes `N`, so any drift early enough to be missed by a
+skill without the block is also early enough to be caught by one with it, and
+any drift later than that is missed by both.
 
-**Keep it anyway.** It still asserts something true and falsifiable: that
-`session-start` does not mint a colliding number under a live concurrent claim.
-A future skill edit that regresses that assertion fails here. What it cannot do
-is attribute the pass to the fix. Do not read a pass as evidence the re-read
-block works.
+**What closed it.** The harness distrusts the agent's *self-report* (`README.md`,
+"the agent's self-report is never trusted"), and that rule was read too broadly
+at first, as ruling out any evidence about process. The shim's log is not a
+self-report. It is a mechanical record the harness writes itself, from the
+outside, of every `git` invocation the agent made, and the agent neither
+produces it nor knows its contents. Asserting on it keeps the distrust intact.
+
+The two arms are plainly different in that record: the pre-fix arm reads session
+branches after one fetch and has to redo the work, the post-fix arm reads them
+after two. `assert-trace.sh` tests exactly that, and the ordering is a proxy
+rather than proof of intent, which its header says plainly.
+
+**What it still cannot do.** An unfixed skill whose operator happens to fetch
+twice before the pre-flight passes this check. The assertion is strictly more
+than the outcome checks can see, and it fails the recorded pre-fix trace, which
+is the property that matters. It is not a proof that the re-read was deliberate.

@@ -38,7 +38,7 @@ scenarios/<name>/assert.sh "$REPO"
 |---|---|---|---|
 | `cleanup-containment` | cleanup-worktrees | a contained worktree is swept; one with unique work survives | no |
 | `branch-birth` | session-start | the session branch is born off the integration ref, not the stray-ahead local main | no |
-| `stale-read` | session-start | a session number minted after a concurrent claim lands mid-run avoids the collision (git mock). Passes on both sides of the fix it was written for, see below | no |
+| `stale-read` | session-start | a session number minted after a concurrent claim lands mid-run avoids the collision, **and** the re-read that guarantees it actually happened (git mock + shim-trace assertion) | no |
 | `ambiguous-finalize` | finalize-worktree | two candidates, no target: refuse, push and merge nothing | no |
 | `finalize-clean` | finalize-worktree | full flow: merge lands, local main ff-only (ISS-W3), branch+worktree swept, one merge call; `partial` mode adds the assert-then-reconcile incident | mock |
 | `finalize-already-merged` | finalize-worktree | re-entry on a PR already `MERGED`: skip the merge entirely (zero `gh pr merge` calls), reconcile local main + branch + worktree, delete the lingering remote branch via `gh api` | mock |
@@ -81,14 +81,26 @@ guarantee* rather than a distinct end state, an outcome check cannot attribute
 the outcome to the skill.
 
 `stale-read` is the worked example, run on both sides of its own fix on
-2026-08-07 and passing on both (`scenarios/stale-read/scenario.md` has the
-detail). The pre-fix agent reached the correct session number by distrusting a
-silent `git fetch` and going to `git ls-remote`; the post-fix agent reached it by
-following the re-read block. A guaranteed re-read and a diligent one leave the
-same refs behind, and the harness rules out asking the agent which it did.
+2026-08-07 and passing on both by end state alone
+(`scenarios/stale-read/scenario.md` has the detail). The pre-fix agent reached
+the correct session number by distrusting a silent `git fetch` and going to `git
+ls-remote`; the post-fix agent reached it by following the re-read block. A
+guaranteed re-read and a diligent one leave the same refs behind.
 
-Nothing here is broken, and the honest reading of such a scenario is narrow:
-it holds the invariant against regression, and it says nothing about which skill
-text produced the pass. Worth checking, when writing a new scenario, whether the
-behavior it targets has an end state a competent agent could not also reach by
-another route.
+## Asserting on the trace, not the self-report
+
+The way out is narrower than it first looks. "The agent's self-report is never
+trusted" rules out asking the agent what it did. It does not rule out watching.
+A mock on `PATH` writes its own log of every call the agent made, from outside
+the agent, and that log is evidence of *process* without being testimony.
+
+`stale-read/assert-trace.sh` is the worked example: the pre-fix arm reads
+session branches after one fetch, the post-fix arm after two, and asserting that
+ordering separates two runs whose git state is identical. It is a proxy for
+intent rather than proof of it, and it says so.
+
+Two habits worth carrying into a new scenario. Check whether the behavior has an
+end state a competent agent could not also reach by another route; if it does
+not, the mock log is where to look. And keep the trace assertion in its own
+script with recorded traces as fixtures, so a `selftest.sh` can regression-test
+the assertion without spending agent runs on it.
