@@ -1,6 +1,15 @@
 <!-- prose-check: skip ai-attribution, banlist -->
 # Changelog
 
+## Unreleased
+
+Fixed the two phrase rules that could not match the canonical renderings of the constructions they target, found when the frozen corpus was analyzed for the distribution writeup (the crafted edge sampler contains both forms, and neither fired; the byte-stable goldens had captured the miss as expected output).
+
+- `no-X-no-Y-just-Z` no longer requires line-start position and title-case fragments; fragment bounds keep it a slogan detector. It previously had zero detections across the whole corpus.
+- `not-X-but-Y` gains the canonical comma arm and drops the "but" arm, whose only detection in 366 measured files was a false positive on natural comparative speech. The em-dash and "rather" arms are retained.
+- Goldens regenerated from the fixed source scanner, in lockstep with the same two-line change in Untype (its `fix/prose-phrase-rule-patterns`), keeping the default-equals-source invariant. Net golden delta: the edge sampler gains its two intended hits, one meeting fixture loses the false positive.
+- `regen_golden.py` now documents that it must run with HOME and PATH pinned: Untype's `check-prose.sh` is a fallback-chain shim that otherwise resolves to an installed or checked-out prose-mint, making the capture circular.
+
 ## 0.1.1 (2026-07-12)
 
 Maintenance release, cut from the `ostin-pil/claude-plugins` monorepo (prose-mint now lives there as a plugin and a reusable action, not in a standalone repo).

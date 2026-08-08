@@ -70,6 +70,12 @@ prose-check: tests/fixtures/corpus/_edge/structural_all.md
 [ascii-arrow] 1 hit(s):
 11:The arrow flow is input → transform → output.
 
+[not-X-but-Y] 1 hit(s):
+3:It's not a bug, it's a feature of the design.
+
+[no-X-no-Y-just-Z] 1 hit(s):
+9:No tickets. No standups. Just code.
+
 [this-isnt-about-X] 1 hit(s):
 5:This isn't about speed. It's about correctness.
 
@@ -83,7 +89,7 @@ prose-check: tests/fixtures/corpus/_edge/structural_all.md
 18:**Fourth**: a fourth one.
 19:**Fifth**: a fifth one, which crosses the threshold of five.
 
-total flagged lines: 9
+total flagged lines: 11
 
 prose-check: tests/fixtures/corpus/knowledge/animation-direction-2026-04-14.md
 
@@ -532,10 +538,7 @@ prose-check: tests/fixtures/corpus/research/fixtures/meetings/meeting-01-product
 21:Sara: Perfect. Next item — the export feature request. We've had it in the backlog for two quarters. Marcus, do we have data on how many users would use it?
 25:Jordan: We've been wanting to refactor the data layer anyway. If we tackle export, we should fold the refactor into the same workstream. I'll write up a one-pag
 
-[not-X-but-Y] 1 hit(s):
-23:Marcus: Pulled the survey responses last week. About 22% of paid users said they'd use export at least monthly. It's not the biggest ask but it's the second-mos
-
-total flagged lines: 9
+total flagged lines: 8
 
 prose-check: tests/fixtures/corpus/research/fixtures/meetings/meeting-02-sales-discovery.md
 
@@ -954,7 +957,7 @@ prose-check: tests/fixtures/corpus/root/README.md
 total flagged lines: 0
 
 ================================================================
-scanned 105 file(s); 54 with hits; 1435 total flagged lines
+scanned 105 file(s); 54 with hits; 1436 total flagged lines
 
 top offenders:
      136  tests/fixtures/corpus/research/transcription-pain-points-2026-05.md
@@ -987,13 +990,13 @@ top offenders:
       14  tests/fixtures/corpus/research/claude-md-rules.md
       14  tests/fixtures/corpus/research/fixtures/meetings/README.md
       12  tests/fixtures/corpus/research/head-to-head-comparison.md
+      11  tests/fixtures/corpus/_edge/structural_all.md
       11  tests/fixtures/corpus/research/cli-reference.md
       11  tests/fixtures/corpus/research/cloud-llm-provider-research.md
       10  tests/fixtures/corpus/research/fixtures/meetings/meeting-09-one-on-one.md
-       9  tests/fixtures/corpus/_edge/structural_all.md
-       9  tests/fixtures/corpus/research/fixtures/meetings/meeting-01-product-review.md
        9  tests/fixtures/corpus/research/fixtures/meetings/meeting-02-sales-discovery.md
        9  tests/fixtures/corpus/research/fixtures/meetings/meeting-10-board-prep.md
+       8  tests/fixtures/corpus/research/fixtures/meetings/meeting-01-product-review.md
        8  tests/fixtures/corpus/research/fixtures/meetings/meeting-03-sprint-planning.md
        8  tests/fixtures/corpus/research/fixtures/meetings/meeting-04-design-review.md
        8  tests/fixtures/corpus/research/fixtures/meetings/meeting-06-hiring-debrief.md
