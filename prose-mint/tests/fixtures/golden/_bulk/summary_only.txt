@@ -1,5 +1,5 @@
 ================================================================
-scanned 105 file(s); 54 with hits; 1435 total flagged lines
+scanned 105 file(s); 54 with hits; 1436 total flagged lines
 
 top offenders:
      136  tests/fixtures/corpus/research/transcription-pain-points-2026-05.md
@@ -32,13 +32,13 @@ top offenders:
       14  tests/fixtures/corpus/research/claude-md-rules.md
       14  tests/fixtures/corpus/research/fixtures/meetings/README.md
       12  tests/fixtures/corpus/research/head-to-head-comparison.md
+      11  tests/fixtures/corpus/_edge/structural_all.md
       11  tests/fixtures/corpus/research/cli-reference.md
       11  tests/fixtures/corpus/research/cloud-llm-provider-research.md
       10  tests/fixtures/corpus/research/fixtures/meetings/meeting-09-one-on-one.md
-       9  tests/fixtures/corpus/_edge/structural_all.md
-       9  tests/fixtures/corpus/research/fixtures/meetings/meeting-01-product-review.md
        9  tests/fixtures/corpus/research/fixtures/meetings/meeting-02-sales-discovery.md
        9  tests/fixtures/corpus/research/fixtures/meetings/meeting-10-board-prep.md
+       8  tests/fixtures/corpus/research/fixtures/meetings/meeting-01-product-review.md
        8  tests/fixtures/corpus/research/fixtures/meetings/meeting-03-sprint-planning.md
        8  tests/fixtures/corpus/research/fixtures/meetings/meeting-04-design-review.md
        8  tests/fixtures/corpus/research/fixtures/meetings/meeting-06-hiring-debrief.md
