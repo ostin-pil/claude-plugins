@@ -11,7 +11,9 @@ to this file's value. Angle-bracket names that are not keys here (`<N>`,
 `<branch>`, a SHA) are runtime values the skill computes.
 
 The git, branch, worktree, and session-log defaults below suit most GitHub
-projects; change them only if your conventions differ. The build/test gate and
+projects; change them only if your conventions differ. A project on Forgejo or
+Gitea sets `forge: forgejo`; a repo with no remote by design sets `forge: none`
+and gets the local-merge lifecycle described in `forges/none.md`. The build/test gate and
 the product name are the values you must set. Optional knobs accept `none`
 (`prose_gate`, `code_reviewer`, `issues_file`, `plan_doc`, `subpkg_guard`); the
 skill that reads each one skips its step. See `examples/untype-manifest.md` for a
@@ -30,7 +32,14 @@ remote: origin
 integration_ref: origin/main         # remote integration branch (authoritative)
 local_main: main                     # local integration branch
 pr_base: main                        # base branch for the session PR
-requires_remote: true                # finalize/cleanup need a fetchable remote + gh-driven PR
+requires_remote: true                # finalize/cleanup need a fetchable remote + a PR
+
+# forge — which provider the finalize lifecycle drives. Presets are in the
+# kit's forges/ directory; each implements the same nine-verb contract, so
+# switching provider is this one key. Defaults to github when absent.
+forge: github                        # github | forgejo | none
+forge_url: none                      # self-hosted base URL, e.g. https://git.example.ts.net
+forge_repo: none                     # owner/name on the forge; unused by github (gh infers it)
 
 # branches & worktrees
 branch_pattern: "feature/session-{n}-{topic}"
