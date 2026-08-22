@@ -6,6 +6,12 @@ prose-check: _edge/structural_all.md
 [ascii-arrow] 1 hit(s):
 11:The arrow flow is input → transform → output.
 
+[not-X-but-Y] 1 hit(s):
+3:It's not a bug, it's a feature of the design.
+
+[no-X-no-Y-just-Z] 1 hit(s):
+9:No tickets. No standups. Just code.
+
 [this-isnt-about-X] 1 hit(s):
 5:This isn't about speed. It's about correctness.
 
@@ -19,4 +25,4 @@ prose-check: _edge/structural_all.md
 18:**Fourth**: a fourth one.
 19:**Fifth**: a fifth one, which crosses the threshold of five.
 
-total flagged lines: 9
+total flagged lines: 11

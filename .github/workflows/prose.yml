@@ -22,3 +22,9 @@ jobs:
       - uses: ./prose-mint
         with:
           strict: "true"
+          # The docs in scope wrap at ~80 columns by choice, so hard-wrap stays
+          # off in .prose-mint.toml. A PR body is the other medium: GitHub's
+          # comment pipeline turns a single newline into a line break, so the
+          # same wrapping renders ragged there. Scan the body with the built-in
+          # ruleset, which has hard-wrap on.
+          pr-body-config: "default"

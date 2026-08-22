@@ -4,8 +4,11 @@ Golden = source-of-truth behavior. We capture the exact stdout of the
 original bin/check-prose.sh and bin/check-prose-bulk.sh so the regression
 test can assert the ported engine reproduces it byte-for-byte.
 
-Run from the prose-mint repo root:
-    python3 tests/regen_golden.py
+Run from the prose-mint repo root, with HOME and PATH pinned so Untype's
+fallback-chain shims (bin/check-prose.sh) cannot resolve to an installed or
+checked-out prose-mint instead of the vendored source impl — otherwise the
+capture is circular and the golden records prose-mint's own output:
+    env HOME=$(mktemp -d) PATH=/usr/bin:/bin python3 tests/regen_golden.py
 
 This is intentionally a manual, checked-in step (not a fixture factory the
 test calls), so the golden files are a frozen artifact reviewed in git.

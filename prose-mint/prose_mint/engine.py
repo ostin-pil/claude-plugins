@@ -21,8 +21,13 @@ if TYPE_CHECKING:
 PATTERNS = [
     ("em-dash", re.compile(r"—"), 1, True),
     ("ascii-arrow", re.compile(r"→"), 1, False),
-    ("not-X-but-Y", re.compile(r"\bIt'?s not\b.*\b(it'?s|but|—) (it'?s|rather)\b", re.I), 1, False),
-    ("no-X-no-Y-just-Z", re.compile(r"^No [A-Z][^.]*\. No [A-Z][^.]*\. Just ", re.M), 1, False),
+    # Synced with Untype fix/prose-phrase-rule-patterns (2026-08-08): the comma
+    # form is the canonical rendering; the "but" arm was dropped after its only
+    # detection across 366 measured files was a false positive on natural
+    # comparative speech (ketin evaluations/2026-08-07).
+    ("not-X-but-Y", re.compile(r"\bIt'?s not\b[^.!?\n]{1,60}[,—]\s*(?:it'?s|rather)\b", re.I), 1, False),
+    # Sentence-case, any position; fragment bounds keep it a slogan detector.
+    ("no-X-no-Y-just-Z", re.compile(r"\bNo [^.!?\n]{1,40}[.!?] No [^.!?\n]{1,40}[.!?] Just \S"), 1, False),
     ("this-isnt-about-X", re.compile(r"\bThis isn'?t about\b", re.I), 1, False),
     ("not-only-but", re.compile(r"\bNot only\b.*\bbut\b", re.I), 1, False),
     ("bold-colon-opener", re.compile(r"^\*\*[^*]+\*\*\s*[—:]\s+\S", re.M), 5, False),

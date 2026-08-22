@@ -42,6 +42,7 @@ The collision examples ("session-99") are documentation, not configuration.
    - `HEAD` is on a `feature/*` branch but the user thinks they're on `main` (or vice-versa).
    - **Shared-checkout collision.** You are in the *primary checkout* (not a linked worktree), on a non-`main` branch, at session start, while `git worktree list` shows only that one checkout. That means another session likely left its branch here and you are about to share its working tree — the exact failure the worktree rule guards against (`.claude/rules/workflow.md`, "Concurrent sessions: one worktree each"). Detect it with `git rev-parse --git-dir` (a path containing `/worktrees/` means you are already isolated in a linked worktree, which is fine) plus `git worktree list`.
    Surface any of these in the briefing's "Where we left off" line; don't silently move on. If local `main` is ahead of `origin/main` with stray direct commits, flag it: under one-PR-per-session those should not be there (see `.claude/rules/workflow.md`). If the shared-checkout signal fired, treat it as stop-and-isolate: warn explicitly and, in step 7, lead with the worktree option.
+   Keep `git rev-parse <integration_ref>` and the `git worktree list` output as the **preflight snapshot**. Step 7 re-reads both and compares, because everything between here and there is reading that takes minutes.
 
 2. **Find the latest session log.** `ls <log_glob> | sort | tail -3` (`log_glob` is `sessions/[0-9]*_session*.md` for Untype) — the lexicographically last log matching `log_pattern` (the glob skips `log_index` and the `log_archive` subdir; prefer non-worktree-suffixed ones if multiple share a date, and the highest `N` if dates tie). Read it in full, focusing on `## What's next`, `## Build status`, `## Commits`, and the branch line at the top. Also note the highest session number from filenames — feeds the step-7 pre-flight.
 
@@ -68,9 +69,17 @@ The collision examples ("session-99") are documentation, not configuration.
 
 7. **Branch birth.** A session is one branch, one PR (`.claude/rules/workflow.md`, "Session lifecycle: one PR per session"). The branch must be born off a freshly fetched `origin/main`, never off whatever the working tree currently points at.
 
+   **Re-read before acting.** Steps 2 through 6 are minutes of reading, so step 1's fetch is that stale by the time you arrive here. Under a parallel session the window is wide enough for the branch you are about to offer to stop existing, or for the number you are about to mint to be claimed by someone else. Re-run `git fetch <remote> --prune 2>/dev/null`, then re-read the four facts branch birth rests on and compare each against the preflight snapshot:
+   - `git rev-parse <integration_ref>` — the integration ref moved, so the briefing's "shipped since" and its base commit are both wrong.
+   - `git worktree list` — a worktree appeared or vanished under you.
+   - `git branch -a --list '*session-*'` — a concurrent session claimed a number.
+   - `git status --short` — the tree was dirtied since step 3.
+
+   If any of them disagree, **correct the briefing before asking anything**: name what moved, restate the lines that depended on it, and recompute `N` and the offered options from the fresh read. Everything step 6 printed is a claim about the past, and this is the point where it has to become true. Never carry a stale option into the question, and never quietly drop one either — an option that vanished is worth a sentence, because it usually means another session is live in the same repo.
+
    **Compute the next session number `N` with a collision pre-flight.** Do not just take the highest log filename + 1: a concurrent session can have already claimed that number on a branch you have not pulled, which is exactly the session-99/session-99 collision (two sessions independently picked 99 because nothing checked branches). Take `N` as one more than the **maximum session number across all three sources**, then assert the chosen `N` is unclaimed:
    - Log filenames: the highest `_session_<n>_` in `sessions/` (step 2).
-   - Branches, local **and** remote: `git branch -a --list '*session-*' | grep -oE 'session-[0-9]+' | grep -oE '[0-9]+' | sort -n | tail -1` (run after the step-1 `git fetch`, so `origin/*` refs are current).
+   - Branches, local **and** remote: `git branch -a --list '*session-*' | grep -oE 'session-[0-9]+' | grep -oE '[0-9]+' | sort -n | tail -1` (run after the re-fetch above, so `origin/*` refs are current; step 1's fetch is too old to settle a collision).
    - Recent history: `git log --all --oneline | grep -oE 'session-[0-9]+' | grep -oE '[0-9]+' | sort -n | tail -1`.
 
    With `N` chosen, confirm it is free before claiming it: `git branch -a --list "*session-$N-*"` must be empty and no `<log_dir>/*_session_${N}[._]*` may exist (the `[._]` matches both the suffixless `_session_${N}.md` and the suffixed `_session_${N}_<topic>.md`; a bare `_${N}_` glob silently misses the suffixless form). If either is non-empty, increment `N` by one and repeat this check until both come back empty, then claim that `N`. State the chosen `N` and that the pre-flight passed in the briefing.
