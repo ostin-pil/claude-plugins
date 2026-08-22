@@ -228,7 +228,7 @@ and never onto a branch whose PR already merged.
 
    Fallback, only these cases: `$SESSION_BRANCH` is empty or `main` (no
    session branch, research/discussion-only), or
-   `gh pr list --state merged --head "$SESSION_BRANCH"` shows its PR
+   `<forge.pr_find_merged> "$SESSION_BRANCH"` returns its PR number
    already merged (if that `gh` call errors rather than returning empty,
    treat the state as unknown and stop; a silent `gh` failure must not be
    read as "not merged", or the log lands on an already-merged branch).
@@ -300,7 +300,7 @@ aborted before the local reconcile finished, just re-run `/session-end`
 with `--skip-build` (the log is already committed). Phase 2.5 no-ops
 (nothing new to commit), and `/finalize-worktree` detects the already-`MERGED`
 PR and skips to its idempotent phase 4 reconcile. Never re-run
-`gh pr merge` by hand; it errors on a merged PR.
+`<forge.pr_merge>` by hand; every provider errors on a merged PR.
 
 ### Phase 4 — Cleanup stale worktrees
 

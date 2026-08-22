@@ -55,11 +55,12 @@ These keep the skills correct under parallel sessions and flaky external tools.
 - **Assert-then-reconcile, never assume.** A lifecycle step names a target end state, checks the actual state, and acts only if the target is unmet. It never encodes an imperative sequence built on an assumption about what an external tool (`gh`, `git`) did as a side effect. Every step is idempotent and safe to re-run. The recurring failure these guards exist for was always a step that assumed a side effect instead of verifying it.
 - **A session's identity is the branch its log landed on**, not the current working directory or the primary checkout. Under a parallel session those differ. Skills target that branch explicitly and refuse to guess: more than one finalize candidate with no explicit target is an abort-or-ask, never an auto-pick.
 - **Divergence is prevented by never merging locally**, independent of the remote merge strategy. The local integration branch only ever fast-forwards from the remote integration ref after the remote merge. The merge-strategy choice (`merge_strategy`) is about branch-deletion safety (`git branch -d` self-verifies after a merge commit), not the divergence guarantee.
-- **The authoritative merge signal is the remote PR state** (`gh pr view <n> --json state` is `MERGED`), not a local command's exit code. `gh pr merge --delete-branch`'s local cleanup is best-effort and can abort while the remote merge has landed; reconcile locally, never treat that as a failed merge or retry the merge.
+- **The authoritative merge signal is the forge's PR state** (`<forge.pr_state> <n>` is `MERGED`), not a local command's exit code. A provider's branch-delete side effect is best-effort and can abort while the remote merge has landed; reconcile locally, never treat that as a failed merge or retry the merge. Forge access goes through the `forge` preset's verb table (`forges/<forge>.md`), never a provider CLI called directly from a skill.
 
 ## GitHub CLI
 
-This applies everywhere, not only inside the lifecycle skills.
+Provider-specific: applies when `forge` is `github`. It applies everywhere
+`gh` is used, not only inside the lifecycle skills.
 
 - **Editing an existing PR's title or body uses the REST API, never `gh pr edit`.** `gh pr edit` issues a GraphQL `projectCards` query that errors under the GitHub Projects-classic sunset, and the whole edit aborts with nothing changed. Use REST:
   ```bash

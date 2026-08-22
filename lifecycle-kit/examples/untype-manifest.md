@@ -51,7 +51,14 @@ remote: origin
 integration_ref: origin/main         # remote integration branch (authoritative)
 local_main: main                     # local integration branch
 pr_base: main                        # base branch for the session PR
-requires_remote: true                # the finalize/cleanup lifecycle needs a fetchable remote + gh-driven PR; the kit targets remote-backed projects only (Gap 2, session 122). No-remote subset: report + read-only session-start/session-report
+requires_remote: true                # the finalize/cleanup lifecycle needs a fetchable remote + a PR
+
+# forge — Untype is on GitHub, which is also the default when this key is
+# absent, so this block changes nothing here. It exists so the provider is
+# swappable from one key; see the kit's forges/ presets.
+forge: github                        # github | forgejo | none
+forge_url: none                      # gh infers owner/name from the repo
+forge_repo: none
 
 # branches & worktrees
 branch_pattern: "feature/session-{n}-{topic}"   # a session's branch
@@ -110,6 +117,8 @@ Copying the six skills and editing this manifest now ports every command body un
 
 Command bodies are tokenized; narration is not. Every operative literal in the four categories the ketin trial flagged is now a `<key>` placeholder resolved from this manifest: the build/test gate (`<build_commands>` / `<test_commands>` in `session-end` Phase 1 and `finalize-worktree` Phase 2 step 5), the git refs (`<integration_ref>` / `<local_main>` / `<remote>` across the four git skills), the session-log presence check (`<log_presence_regex>` in `finalize-worktree` Phase 2 step 4), and the `report` globs (`<log_dir>` / `<log_archive>` / `<research_dir>`). The prose around the commands still names Untype's values for readability (e.g. "born off `origin/main`"); that narration runs nothing, so a port can leave it untouched or update it for taste. A parsing core only ever substitutes the `<key>` placeholders, never the prose.
 
-A GitHub remote is required, by decision (`requires_remote: true`). `finalize-worktree`, `session-end`'s finalize phase, and `cleanup-worktrees`' containment check all need `remote` / `integration_ref` to be a real, fetchable remote reached through a `gh`-driven PR. The kit officially targets remote-backed projects only. A no-remote mode is deliberately out of scope: it would have to merge locally, which crosses the never-merge-locally invariant (`workflow_rule`, ISS-W3) that exists for a documented divergence incident, so it is a different product, not a knob. On a no-remote repo the write/finalize lifecycle does not run; the subset that does is `report` plus the read-only half of `session-start` and `session-report` (briefing and log-writing, minus the `git fetch` and the branch-birth). `requires_remote` exists so the eventual plugin core can assert the precondition up front and fail with one clear message instead of a cryptic git error mid-finalize.
+A remote is required for the PR-shaped providers (`requires_remote: true`). `finalize-worktree`, `session-end`'s finalize phase, and `cleanup-worktrees`' containment check all need `remote` / `integration_ref` to be a real, fetchable remote reached through a PR. Untype is on GitHub and stays there; `forge: github` is both its setting and the default.
+
+**Superseded:** this section used to state that a no-remote mode was deliberately out of scope, because it would have to merge locally and cross the never-merge-locally invariant (`workflow_rule`, ISS-W3). That reasoning was too broad. ISS-W3 exists to stop local `main` diverging from the remote integration ref, which takes two writers of one remote; a repo with no remote has one ref and cannot diverge. The scope hole cost more than the rule protected — no-remote projects still finalized, just by hand and unguarded. `forge: none` now covers that case explicitly (`forges/none.md`). `requires_remote` remains useful for the PR-shaped providers, so the plugin core can assert the precondition up front instead of failing cryptically mid-finalize.
 
 Optional knobs accept `none`. `prose_gate`, `code_reviewer`, `issues_file`, and `plan_doc` may be set to `none` (or left empty) on a project that has no prose gate, no code reviewer, no issues file, or no plan doc. The skill that reads each one skips the corresponding step instead of executing a path named `none`. The required keys (the git refs, the log conventions, the build gate) have no `none` form.

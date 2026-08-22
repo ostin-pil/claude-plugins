@@ -46,13 +46,42 @@ for key in product_name remote integration_ref local_main pr_base branch_pattern
 done
 [ -n "$missing" ] && msg="lifecycle-kit: $MANIFEST is missing required key(s):$missing. Fill them in; the full set with defaults is in $TEMPLATE."
 
-# requires_remote (default true) needs a real remote configured.
-if ! grep -qE "^requires_remote:[[:space:]]*false" "$MANIFEST"; then
+add() { [ -n "$msg" ] && msg="$msg $1" || msg="$1"; }
+
+# forge (default github when absent, so pre-forge manifests keep working).
+forge=$(grep -E "^forge:" "$MANIFEST" | head -1 | sed -E 's/^forge:[[:space:]]*//; s/[[:space:]]*#.*$//')
+[ -n "$forge" ] || forge=github
+case "$forge" in
+  github|forgejo|none) ;;
+  *) add "lifecycle-kit: forge: '$forge' is not a known provider (github, forgejo, none). Presets live in $PLUGIN_ROOT/forges/." ;;
+esac
+
+# Per-provider preconditions. Each is a real mid-finalize failure otherwise.
+case "$forge" in
+  github)
+    command -v gh >/dev/null 2>&1 || add "lifecycle-kit: forge is github but 'gh' is not on PATH; phase 3 cannot create or merge the PR."
+    ;;
+  forgejo)
+    command -v jq >/dev/null 2>&1 || add "lifecycle-kit: forge is forgejo but 'jq' is not on PATH; the forgejo preset parses every API response with it."
+    for k in forge_url forge_repo; do
+      v=$(grep -E "^${k}:" "$MANIFEST" | head -1 | sed -E "s/^${k}:[[:space:]]*//; s/[[:space:]]*#.*$//")
+      { [ -n "$v" ] && [ "$v" != none ]; } || add "lifecycle-kit: forge is forgejo but $k is unset; the API base URL and owner/name are both required."
+    done
+    [ -n "$FORGEJO_TOKEN" ] || add "lifecycle-kit: forge is forgejo but FORGEJO_TOKEN is unset in the environment; every API call will 401."
+    ;;
+  none)
+    strat=$(grep -E "^merge_strategy:" "$MANIFEST" | head -1 | sed -E 's/^merge_strategy:[[:space:]]*//; s/[[:space:]]*#.*$//')
+    [ -z "$strat" ] || [ "$strat" = merge ] || add "lifecycle-kit: forge is none, which requires merge_strategy: merge; '$strat' leaves the branch tip unreachable from the integration branch, breaking the ancestry that stands in for a PR record."
+    ;;
+esac
+
+# requires_remote (default true) needs a real remote configured. forge: none
+# has its own supported no-remote lifecycle, so it never warrants this warning.
+if [ "$forge" != none ] && ! grep -qE "^requires_remote:[[:space:]]*false" "$MANIFEST"; then
   remote=$(grep -E "^remote:" "$MANIFEST" | head -1 | sed -E 's/^remote:[[:space:]]*//; s/[[:space:]]*#.*$//')
   [ -n "$remote" ] || remote=origin
   if ! git remote | grep -qx "$remote"; then
-    rmsg="lifecycle-kit: requires_remote is set but git remote '$remote' is not configured; the finalize/cleanup lifecycle needs a fetchable remote (report and read-only briefing still work). Set requires_remote: false to silence this."
-    [ -n "$msg" ] && msg="$msg $rmsg" || msg="$rmsg"
+    add "lifecycle-kit: requires_remote is set but git remote '$remote' is not configured; the finalize/cleanup lifecycle needs a fetchable remote (report and read-only briefing still work). Set requires_remote: false, or forge: none for a repo that has no remote by design."
   fi
 fi
 

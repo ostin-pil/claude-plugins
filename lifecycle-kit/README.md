@@ -58,16 +58,33 @@ Setup in a project:
 
 ## Preconditions
 
-A GitHub remote is required (`requires_remote: true`). `finalize-worktree`,
-`session-end`'s finalize phase, and `cleanup-worktrees`' containment check all
-need a fetchable remote reached through a `gh`-driven PR. A no-remote project can
-run `report` plus the read-only half of `session-start` and `session-report`,
-but not the finalize lifecycle; that is a deliberate scope choice, because a
-local-merge fallback would cross the kit's never-merge-locally invariant.
+The finalize lifecycle needs a forge, selected by the `forge` manifest key.
+Presets live in `forges/` and each implements the same nine-verb contract, so
+the provider is one key rather than a fork:
+
+| `forge` | Transport | Needs a remote | Merge gate |
+|---|---|---|---|
+| `github` (default) | `gh` | yes | PR on GitHub |
+| `forgejo` | `curl` + `jq`, `$FORGEJO_TOKEN` | yes | PR on Forgejo/Gitea |
+| `none` | local git only | no | local, `--no-ff` |
+
+`forge` defaults to `github` when absent, so manifests written before the key
+existed keep working unchanged.
+
+`none` supersedes what used to be a documented scope hole. A no-remote project
+previously got `report` plus the read-only half of `session-start` and
+`session-report` and nothing else, on the grounds that a local-merge fallback
+would cross the never-merge-locally invariant. That invariant guards against
+local/remote divergence, which needs two writers of one remote. It therefore
+protects nothing on a repo that has no remote, while its absence left those
+sessions finalizing by hand with no guard at all. `forges/none.md` sets out the
+shape and what it genuinely costs.
 
 A `SessionStart` hook (`hooks/validate-manifest.sh`) validates the manifest of a
 project that has adopted the kit: required keys present, remote configured when
-required. It warns; it never blocks the session.
+required, and the selected forge's own preconditions (`gh` on PATH, or `jq` plus
+`forge_url`/`forge_repo`/`$FORGEJO_TOKEN`, or `merge_strategy: merge`). It
+warns; it never blocks the session.
 
 The kit is user-scoped, so the hook runs in every repo on the machine. A repo with
 no `.claude/lifecycle-manifest.md` has simply not adopted the kit, which is the
