@@ -75,10 +75,10 @@ existed keep working unchanged.
 previously got `report` plus the read-only half of `session-start` and
 `session-report` and nothing else, on the grounds that a local-merge fallback
 would cross the never-merge-locally invariant. That invariant guards against
-local/remote divergence, which needs two writers of one remote — so it protects
-nothing on a repo that has no remote, while its absence left those sessions
-finalizing by hand with no guard at all. `forges/none.md` sets out the shape and
-what it genuinely costs.
+local/remote divergence, which needs two writers of one remote. It therefore
+protects nothing on a repo that has no remote, while its absence left those
+sessions finalizing by hand with no guard at all. `forges/none.md` sets out the
+shape and what it genuinely costs.
 
 A `SessionStart` hook (`hooks/validate-manifest.sh`) validates the manifest of a
 project that has adopted the kit: required keys present, remote configured when
