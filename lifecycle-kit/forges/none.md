@@ -32,16 +32,34 @@ worktree.
    the branch open.
 4. **Merge, with the target tree verified first.** The merge lands in whichever
    worktree holds `<local_main>` — usually `$MAIN`, and it may be **in active
-   use by another session**. Assert before touching it:
+   use by another session**. Two assertions, and they are not the same strength:
+
    ```bash
-   git -C "$MAIN" status --porcelain          # must be empty
-   git -C "$MAIN" rev-parse --abbrev-ref HEAD # must be <local_main>
+   git -C "$MAIN" rev-parse --abbrev-ref HEAD   # must be <local_main>
+   git -C "$MAIN" status --porcelain            # inspect; see the intersection test
    ```
-   Either check failing is a **stop**, not something to work around: a dirty
-   primary checkout at merge time is the working-tree collision `workflow_rule`
-   exists to prevent, and merging into it would sweep another session's
-   uncommitted work exactly as a stray `git add -A` would. Report and wait.
-   Only with both clean:
+
+   Being on the wrong branch is a hard **stop**. A dirty tree is not, by
+   itself: what matters is whether the merge would touch the dirty paths.
+   Apply the same intersection test phase 4 step 2 uses, rather than demanding
+   the tree be pristine:
+
+   ```bash
+   comm -12      <(git -C "$MAIN" status --porcelain | awk '{print $NF}' | sort -u)      <(git -C "$MAIN" diff --name-only <local_main>.."$BRANCH" | sort -u)
+   ```
+
+   **Non-empty output is a stop.** Merging would sweep another session's
+   uncommitted work exactly as a stray `git add -A` would, which is the
+   working-tree collision `workflow_rule` exists to prevent. Report and wait.
+
+   **Empty output means the dirty files are none of your business** — git will
+   not touch them, they stay uncommitted on top of the merge commit, and the
+   merge is safe. Say so when reporting rather than blocking on an unrelated
+   file. Note this is still a coordination question: the merge moves
+   `<local_main>` under a session that may be mid-work, so surface it at the
+   merge gate in step 3 and let the human decide.
+
+   Then:
    ```bash
    git -C "$MAIN" merge --no-ff "$BRANCH" -m "Merge $BRANCH"
    ```
