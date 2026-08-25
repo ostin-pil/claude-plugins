@@ -3,6 +3,13 @@
 
 ## Unreleased
 
+Fixed the Windows failures, which were three separate implicit-encoding and platform-default assumptions rather than one.
+
+- `scan` and `bulk` now write UTF-8 regardless of the platform's default encoding. A finding quotes the offending line, so the output carries whatever the document carries, and a redirected stdout on Windows falls back to the ANSI code page. cp1252 cannot encode an ASCII arrow, the robot emoji in an AI-attribution footer, or any Cyrillic, so two of the eight structural categories and every Russian document killed the process with `UnicodeEncodeError` on exactly the input the scanner exists to report. It failed only when redirected, so an interactive run looked healthy while CI and any `| tee` died. The em dash is at 0x97 in cp1252, which is why the most-reported category never crashed and this went unseen.
+- `bulk`'s walk order no longer depends on the platform. `sorted()` over `Path` objects compares a case-folded key on Windows and raw bytes on POSIX, so `README.md` sorted before `meeting.md` on Linux and after it on Windows. The walk order is the report's order, so one corpus produced two documents and the byte-for-byte golden was unmatchable on one platform by construction.
+- The test suite stopped reading and writing in the platform encoding: sixteen `subprocess.run(..., text=True)` calls decoded child output with the locale encoding, and five `read_text()` calls read UTF-8 fixtures back as cp1252. Golden comparison now normalises path separators, keeping `bulk` output native for the reader while the POSIX-captured fixtures stay portable.
+- On Windows the suite goes from 139 passed / 5 failed to 151 passed / 0 failed. Linux behaviour is unchanged; every fix is a no-op where UTF-8 and byte-order sorting are already the default.
+
 Fixed the two phrase rules that could not match the canonical renderings of the constructions they target, found when the frozen corpus was analyzed for the distribution writeup (the crafted edge sampler contains both forms, and neither fired; the byte-stable goldens had captured the miss as expected output).
 
 - `no-X-no-Y-just-Z` no longer requires line-start position and title-case fragments; fragment bounds keep it a slogan detector. It previously had zero detections across the whole corpus.
