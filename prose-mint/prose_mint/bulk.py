@@ -34,7 +34,14 @@ def collect_files(
             files.append(path)
         elif path.is_dir():
             for ext in extensions:
-                files.extend(sorted(path.rglob(f"*.{ext}")))
+                # Sort on the POSIX string, never on Path objects. Comparing
+                # WindowsPath uses a case-folded key while PosixPath compares
+                # bytes, so "README.md" sorts before "meeting-01.md" on Linux
+                # and after it on Windows. The walk order is the report's order,
+                # so the same corpus produced two different documents depending
+                # on the machine, and the byte-for-byte golden could only ever
+                # match one of them.
+                files.extend(sorted(path.rglob(f"*.{ext}"), key=lambda q: q.as_posix()))
         else:
             print(f"warning: {p} not found", file=sys.stderr)
     if includes:
