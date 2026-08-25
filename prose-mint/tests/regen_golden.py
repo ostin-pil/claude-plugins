@@ -53,7 +53,7 @@ def regen_per_file() -> int:
             [str(SCANNER), "--stdin", "--label", rel],
             input=content,
             capture_output=True,
-            text=True,
+            text=True, encoding="utf-8",
         )
         if res.returncode not in (0, 1):
             print(f"!! scanner failed on {rel}: {res.stderr}", file=sys.stderr)
@@ -72,7 +72,7 @@ def regen_bulk() -> int:
             [str(BULK), *args],
             cwd=str(REPO),
             capture_output=True,
-            text=True,
+            text=True, encoding="utf-8",
         )
         dst = GOLDEN / "_bulk" / (key + ".txt")
         dst.parent.mkdir(parents=True, exist_ok=True)

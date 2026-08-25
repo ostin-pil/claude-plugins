@@ -28,7 +28,7 @@ PROSE_LINT = str(REPO / "bin" / "prose-mint")
 def check_structure() -> None:
     import yaml
 
-    action = yaml.safe_load((REPO / "action.yml").read_text())
+    action = yaml.safe_load((REPO / "action.yml").read_text(encoding="utf-8"))
     assert action["runs"]["using"] == "composite"
     assert set(action["inputs"]) == {"strict", "scan-pr-body", "python-version", "config"}
     steps_text = yaml.dump(action["runs"]["steps"])
@@ -43,9 +43,9 @@ def check_structure() -> None:
     def trigger(doc):
         return doc.get("on", doc.get(True))
 
-    example = yaml.safe_load((REPO / "examples" / "prose.yml").read_text())
+    example = yaml.safe_load((REPO / "examples" / "prose.yml").read_text(encoding="utf-8"))
     assert "pull_request" in trigger(example)
-    own = yaml.safe_load((REPO / ".github" / "workflows" / "prose.yml").read_text())
+    own = yaml.safe_load((REPO / ".github" / "workflows" / "prose.yml").read_text(encoding="utf-8"))
     uses = [s.get("uses") for s in own["jobs"]["prose"]["steps"]]
     assert "./" in uses, uses
     print("action structure OK")
@@ -53,7 +53,7 @@ def check_structure() -> None:
 
 def _git(cwd: Path, *args: str) -> None:
     subprocess.run(["git", *args], cwd=cwd, check=True,
-                    capture_output=True, text=True)
+                    capture_output=True, text=True, encoding="utf-8")
 
 
 def check_pipeline() -> None:
@@ -66,7 +66,7 @@ def check_pipeline() -> None:
         _git(repo, "add", "-A")
         _git(repo, "commit", "-qm", "base")
         base = subprocess.run(["git", "rev-parse", "HEAD"], cwd=repo,
-                              capture_output=True, text=True).stdout.strip()
+                              capture_output=True, text=True, encoding="utf-8").stdout.strip()
 
         # A change a consumer cares about, and one its config excludes.
         (repo / "README.md").write_text("# ok\n\nAn em dash — here is a tell.\n")
@@ -78,12 +78,12 @@ def check_pipeline() -> None:
 
         diff = subprocess.run(
             ["git", "diff", "--name-only", "--diff-filter=d", f"{base}...HEAD"],
-            cwd=repo, capture_output=True, text=True).stdout.split()
+            cwd=repo, capture_output=True, text=True, encoding="utf-8").stdout.split()
         changed = [f for f in diff if f.endswith(".md")]
         assert "README.md" in changed and "sessions/log.md" in changed
 
         warn = subprocess.run([sys.executable, PROSE_LINT, "bulk", *changed],
-                              cwd=repo, capture_output=True, text=True)
+                              cwd=repo, capture_output=True, text=True, encoding="utf-8")
         assert warn.returncode == 0, "warn-only must not fail the build"
         assert "README.md" in warn.stdout
         assert "sessions/log.md" not in warn.stdout, "config exclude must apply"
@@ -91,7 +91,7 @@ def check_pipeline() -> None:
 
         strict = subprocess.run(
             [sys.executable, PROSE_LINT, "bulk", "--strict", *changed],
-            cwd=repo, capture_output=True, text=True)
+            cwd=repo, capture_output=True, text=True, encoding="utf-8")
         assert strict.returncode == 1, "strict must fail on a hit"
     print("action scan pipeline OK (consumer-config scoping + strict exit)")
 

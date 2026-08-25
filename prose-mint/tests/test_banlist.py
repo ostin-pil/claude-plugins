@@ -88,7 +88,7 @@ def test_severity_warn_does_not_fail_strict(tmp_path):
     r = subprocess.run(
         [sys.executable, str(REPO / "bin" / "prose-mint"),
          "scan", "--file", str(doc), "--strict"],
-        capture_output=True, text=True,
+        capture_output=True, text=True, encoding="utf-8",
     )
     assert "[banlist]" in r.stdout and "severity: warn" in r.stdout
     assert r.returncode == 0, "warn severity must not fail --strict"
@@ -103,7 +103,7 @@ def test_severity_error_fails_strict(tmp_path):
     r = subprocess.run(
         [sys.executable, str(REPO / "bin" / "prose-mint"),
          "scan", "--file", str(doc), "--strict"],
-        capture_output=True, text=True,
+        capture_output=True, text=True, encoding="utf-8",
     )
     assert r.returncode == 1
 
@@ -115,7 +115,7 @@ def test_structural_strict_unchanged_with_banlist_off(tmp_path):
     r = subprocess.run(
         [sys.executable, str(REPO / "bin" / "prose-mint"),
          "scan", "--file", str(doc), "--strict"],
-        capture_output=True, text=True,
+        capture_output=True, text=True, encoding="utf-8",
     )
     assert r.returncode == 1  # em-dash is error-class, still fails strict
 
