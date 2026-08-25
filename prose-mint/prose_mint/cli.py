@@ -159,7 +159,39 @@ def build_parser() -> argparse.ArgumentParser:
     return p
 
 
+def _force_utf8_output() -> None:
+    """Emit UTF-8 whatever the platform's default encoding says.
+
+    Findings quote the offending line, so this tool's output contains whatever
+    the scanned document contains. On Windows a redirected stdout falls back to
+    the ANSI code page, and cp1252 cannot encode an ASCII-arrow tell, the robot
+    emoji in an AI-attribution footer, or any Cyrillic at all. Two of the eight
+    structural categories and every Russian document therefore killed the
+    process with UnicodeEncodeError, on exactly the input the scanner exists to
+    report.
+
+    It only failed when redirected, because a real Windows console takes a
+    different path in CPython. So an interactive run looked healthy while CI and
+    any `prose-mint ... | tee` died, which is the wrong way round for a tool
+    whose main venue is a pipeline.
+
+    This overrides PYTHONIOENCODING deliberately. The alternative to writing
+    UTF-8 here is not writing the finding at all.
+    """
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure is None:
+            # A test harness or embedder has swapped in a plain buffer; it owns
+            # its own encoding and this is not ours to change.
+            continue
+        try:
+            reconfigure(encoding="utf-8", errors="replace")
+        except (AttributeError, ValueError, OSError):
+            pass
+
+
 def main(argv: list[str] | None = None) -> int:
+    _force_utf8_output()
     _check_python()
     parser = build_parser()
     args = parser.parse_args(argv)
