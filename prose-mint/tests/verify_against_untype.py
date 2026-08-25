@@ -36,9 +36,9 @@ def main() -> int:
     paths = [d for d in ROOT_DOCS if (UNTYPE / d).is_file()] + TREES
 
     old = subprocess.run([str(OLD), *paths], cwd=str(UNTYPE),
-                          capture_output=True, text=True)
+                          capture_output=True, text=True, encoding="utf-8")
     new = subprocess.run([sys.executable, str(NEW), "bulk", *paths],
-                          cwd=str(UNTYPE), capture_output=True, text=True)
+                          cwd=str(UNTYPE), capture_output=True, text=True, encoding="utf-8")
 
     if old.stdout == new.stdout and old.returncode == new.returncode:
         lines = old.stdout.splitlines()

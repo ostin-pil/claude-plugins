@@ -106,7 +106,7 @@ def test_discovery_walks_up_from_target(tmp_path):
 
     cfg = load_config(start_path=doc)
     assert cfg.source.endswith(".prose-mint.toml")
-    a = analyze(doc.read_text(), config=cfg)
+    a = analyze(doc.read_text(encoding="utf-8"), config=cfg)
     assert a.total_hits == 0  # everything disabled by the discovered config
 
 
@@ -152,7 +152,7 @@ def test_explicit_config_wins_over_discovery(tmp_path):
 
     cfg = load_config(start_path=doc, explicit=explicit)
     assert cfg.source == str(explicit)
-    em = next(c for c in analyze(doc.read_text(), config=cfg).categories
+    em = next(c for c in analyze(doc.read_text(encoding="utf-8"), config=cfg).categories
               if c.name == "em-dash")
     assert em.reported is True
 
@@ -167,7 +167,7 @@ def test_bulk_respects_config_scope_exclude(tmp_path):
     )
     res = subprocess.run(
         [sys.executable, str(REPO / "bin" / "prose-mint"), "bulk", "."],
-        cwd=str(tmp_path), capture_output=True, text=True,
+        cwd=str(tmp_path), capture_output=True, text=True, encoding="utf-8",
     )
     assert "keep.md" in res.stdout
     assert "sessions/log.md" not in res.stdout

@@ -21,6 +21,7 @@ CORPUS = REPO / "tests" / "fixtures" / "corpus"
 GOLDEN = REPO / "tests" / "fixtures" / "golden"
 
 sys.path.insert(0, str(REPO))
+from prose_mint.bulk import collect_files  # noqa: E402
 from prose_mint.cli import main as cli_main  # noqa: E402
 
 
@@ -77,10 +78,15 @@ def test_bulk_matches_live_wrapper(key, args):
         [sys.executable, str(REPO / "bin" / "prose-mint"), "bulk", "--no-config", *args],
         cwd=str(REPO),
         capture_output=True,
-        text=True,
+        text=True, encoding="utf-8",
     )
     assert res.returncode == 0, res.stderr
-    assert res.stdout == expected, f"bulk drifted from source for variant {key}"
+    # The goldens were captured on POSIX and `bulk` prints native separators,
+    # which is right for the reader on Windows and wrong for a byte compare.
+    # Normalising here keeps the output native and the fixtures portable; the
+    # goldens contain no literal backslash, so the swap is lossless.
+    got = res.stdout.replace("\\", "/")
+    assert got == expected, f"bulk drifted from source for variant {key}"
 
 
 def test_strict_exit_code_on_hits():
@@ -88,7 +94,7 @@ def test_strict_exit_code_on_hits():
         [sys.executable, str(REPO / "bin" / "prose-mint"),
          "scan", "--file", str(CORPUS / "_edge" / "structural_all.md"),
          "--no-config", "--strict"],
-        capture_output=True, text=True,
+        capture_output=True, text=True, encoding="utf-8",
     )
     assert res.returncode == 1
 
@@ -98,6 +104,26 @@ def test_strict_exit_code_clean():
         [sys.executable, str(REPO / "bin" / "prose-mint"),
          "scan", "--file", str(CORPUS / "_edge" / "clean.md"),
          "--no-config", "--strict"],
-        capture_output=True, text=True,
+        capture_output=True, text=True, encoding="utf-8",
     )
     assert res.returncode == 0
+
+
+def test_walk_order_does_not_depend_on_the_platform(tmp_path):
+    """Case matters in the sort, on every platform.
+
+    `sorted()` over Path objects compares a case-folded key on Windows and raw
+    bytes on POSIX, so an uppercase filename lands on opposite sides of a
+    lowercase one depending on the machine. The walk order is the report's
+    order, so the same corpus produced two different documents and the golden
+    could only ever match one of them.
+    """
+    (tmp_path / "README.md").write_text("Plain.\n", encoding="utf-8")
+    (tmp_path / "meeting.md").write_text("Plain.\n", encoding="utf-8")
+
+    files = collect_files([str(tmp_path)], ["md"], [], [])
+    names = [f.name for f in files]
+
+    assert names == ["README.md", "meeting.md"], (
+        "expected ASCII order, where uppercase sorts first"
+    )
