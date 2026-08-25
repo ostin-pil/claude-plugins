@@ -39,6 +39,29 @@ seamless, robust (as praise), comprehensive (as praise), realm, landscape
 (figurative). Phrases: "It's important to note", "When it comes to", "At its
 core", "At the end of the day", "plays a crucial role in".
 
+## Judgment calls the scanner cannot make
+
+- **One connective doing all the work.** A single contrast pivot, usually
+  "rather than", reused as the default joint between clauses. Once is fine;
+  five times in a document means the relationship was defaulted to and never
+  chosen. Fix per instance: "instead of", a full stop, or drop the contrast
+  when both halves were true and unopposed.
+- **A reference nobody can resolve.** "Rule 5", "criterion 8", "the third
+  finding". Name it, quote the clause, or link it. A bare number is a lookup
+  the reader cannot perform.
+- **A principle restated in place of evidence.** A closing sentence that
+  asserts the paragraph's own claim as a general truth and adds nothing
+  checkable. Replace it with the failure it would cause, an example that
+  breaks, or a measurement.
+
+## Writing long prose
+
+Draft paragraph by paragraph against a one-line brief for each, then
+concatenate and read the whole for repeated connectives and duplicated claims.
+Drafting top to bottom makes each sentence reach for the one before it, and
+that reaching is what produces the tells above. Scan the merged result before
+publishing it.
+
 ## Positive guidance
 
 Lead with the conclusion. Vary sentence length. Use contractions. Drop the
