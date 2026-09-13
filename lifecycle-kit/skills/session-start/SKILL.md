@@ -82,7 +82,7 @@ The collision examples ("session-99") are documentation, not configuration.
    - Branches, local **and** remote: `git branch -a --list '*session-*' | grep -oE 'session-[0-9]+' | grep -oE '[0-9]+' | sort -n | tail -1` (run after the re-fetch above, so `origin/*` refs are current; step 1's fetch is too old to settle a collision).
    - Recent history: `git log --all --oneline | grep -oE 'session-[0-9]+' | grep -oE '[0-9]+' | sort -n | tail -1`.
 
-   With `N` chosen, confirm it is free before claiming it: `git branch -a --list "*session-$N-*"` must be empty and no `<log_dir>/*_session_${N}[._]*` may exist (the `[._]` matches both the suffixless `_session_${N}.md` and the suffixed `_session_${N}_<topic>.md`; a bare `_${N}_` glob silently misses the suffixless form). If either is non-empty, increment `N` by one and repeat this check until both come back empty, then claim that `N`. State the chosen `N` and that the pre-flight passed in the briefing.
+   With `N` chosen, confirm it is free before claiming it: `git branch -a --list "*session-$N-*"` must be empty and no `<log_dir>/*_session_${N}[._]*` may exist (the `[._]` matches both the suffixless `_session_${N}.md` and the suffixed `_session_${N}_<topic>.md`; a bare `_${N}_` glob silently misses the suffixless form). If either is non-empty, increment `N` by one and repeat this check until both come back empty, then take that `N` as the candidate. State it and that the pre-flight passed in the briefing — but the pre-flight is a read, and the claim happens later, at the create. See **The claim is the create** below.
 
    This skill is the **sole authority** that mints a session number. `N` is claimed by the branch name it creates (`branch_pattern`, `feature/session-<N>-<topic>` for Untype); from here on `/session-report` and `/session-end` read `N` from that branch name and never recompute it from log filenames. A session's identity is the pair `(N, <suffix>)`, not `N` alone: parallel workstreams off the same session may share `N` with distinct suffixes (`_audio`, `_api`), so the log filename, not the bare number, is the unique key.
 
@@ -92,12 +92,47 @@ The collision examples ("session-99") are documentation, not configuration.
    - **New worktree (isolated or parallel work)** — `git fetch <remote>` then `git worktree add <worktree_dir>/<worktree_pattern> -b <branch_pattern> <integration_ref>` (Untype: `git worktree add .claude/worktrees/session-<N>-<topic> -b feature/session-<N>-<topic> <integration_ref>`). Same one-PR lifecycle; `/session-end` phase 3 finalizes the worktree. If step 1 raised the shared-checkout collision signal, present this option first and mark it recommended; isolating from the other session's checkout is the whole point.
    - **Stay on the current branch** — proceed without switching. Only for a trivial one-commit fix that will not itself become a session needing its own PR.
 
+   **The claim is the create, not the computation.** Everything above is a
+   read, and the read goes stale the moment the question is put to the user:
+   the re-read happens *before* `AskUserQuestion` and the branch is created
+   *after* it, so `N` is trusted across a full human turn. That window is
+   minutes wide in practice, and it is where the second recorded collision
+   happened — two sessions in one repo both minted 42, the second re-reading
+   while the first had not yet created its branch, then creating its own
+   worktree minutes later against a number that was by then taken. Its
+   pre-flight passed, correctly, and was stale by the time it was acted on.
+   A better read cannot close this; only a later one can.
+
+   So re-assert `N` immediately before creating, and let the create itself be
+   the authority:
+
+   1. Re-run the two pre-flight checks against the candidate `N`
+      (`git branch -a --list "*session-$N-*"`, and the
+      `<log_dir>/*_session_${N}[._]*` glob). Non-empty: increment `N` and
+      repeat. This costs one command and closes the human-turn window.
+   2. Then create. **`git switch -c` and `git worktree add -b` both refuse an
+      existing branch**, and that refusal is the only check here that cannot
+      be stale, because creating the ref and testing for it are one atomic
+      operation. Treat an "already exists" failure as a collision rather than
+      an error: increment `N`, say so, and retry the create. Any other
+      failure stops and is reported.
+   3. Report the `N` you actually claimed, not the one you computed. If they
+      differ, say so plainly — it means another session is live in this repo
+      right now, which the user needs to know for reasons beyond the number.
+
+   This is `workflow_rule`'s assert-then-reconcile applied to the one step
+   that was still assuming. Minting `N` from a read and then creating on the
+   assumption that the read still holds is the same shape as trusting what a
+   provider CLI did as a side effect: the fix is not to read more carefully
+   but to let the operation that actually changes the world report what it
+   found.
+
    Report the new branch (or worktree path). If `git status` is dirty (step 3 flagged it), do NOT switch or spawn — print a warning that uncommitted work would follow the branch and ask the user to handle it first. Branching off `origin/main` is what removes the stale-base gotcha; do not substitute the local `main` ref, which can carry stray commits.
 
 ## Constraints
 
 - Repo content is read-only: no Write, no Edit, no commits, no file creation in the working tree.
-- Allowed git mutations: `git fetch` (always safe); `git switch -c <new-branch> <integration_ref>`; `git worktree add <path> -b <new-branch> <integration_ref>`. All only when the user accepts step 7. No `git switch` to an existing branch — that mutates HEAD silently. No `git push`, no `git reset`, no `git merge`.
+- Allowed git mutations: `git fetch` (always safe); `git switch -c <new-branch> <integration_ref>`; `git worktree add <path> -b <new-branch> <integration_ref>`. All only when the user accepts step 7. A create that fails because the branch already exists may be retried at the next `N` (step 7, **The claim is the create**) — that is one retry per collision, not a loop to sit in. No `git switch` to an existing branch — that mutates HEAD silently. No `git push`, no `git reset`, no `git merge`.
 - Always create the session branch from `origin/main`, never from the current working tree or the local `main` ref.
 - Keep the briefing to ~30 lines — summarize, don't paste.
 - If the latest session is several days stale and `git log` shows substantial activity since, say so explicitly so the user knows the "what's next" list may be outdated.
