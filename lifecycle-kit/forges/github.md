@@ -56,5 +56,19 @@ esac
   That abort is not a merge failure — the remote merge already landed. Phase 4
   owns the local reconcile and re-verifies it, so never retry `pr_merge` on that
   signal; re-merging a merged PR errors.
+- **A merged branch that survives on the remote has two possible causes, and
+  only one of them is the abort above.** The other is the repository setting
+  `delete_branch_on_merge` being off, in which case GitHub never deletes the
+  branch and phase 4 step 5 (`remote_branch_delete`) is not recovering from a
+  flaky side effect but doing the whole job on every merge, silently. One
+  adopting repo ran that way for three months and five merged branches
+  accumulated before anyone looked. The setting is worth checking once, at
+  adoption, and turning on:
+  ```bash
+  gh api repos/{owner}/{repo} --jq .delete_branch_on_merge      # true | false
+  gh api repos/{owner}/{repo} -X PATCH -F delete_branch_on_merge=true
+  ```
+  Phase 4 step 5 stays regardless; with the setting on it goes back to being
+  the rare recovery it was written as.
 - The authoritative merge signal is `pr_state` returning `MERGED`, never an
   exit code.
