@@ -42,6 +42,52 @@ is not, and a bare `git branch --show-current` in the wrong tree is exactly
 the session-85 failure. This resolution is re-derivable and refuses to
 guess.
 
+Evidence is taken strongest first. An explicit argument outranks what
+this conversation did, and what this conversation did outranks anything
+the filesystem can say. The filesystem can list every open session
+branch, but it has no way to tell which of them belongs to this session.
+The conversation can.
+
+0. **Explicit target, then in-thread provenance.** Work out a claimed
+   branch `$CLAIMED` from the first source that yields one:
+   - The non-flag text in `$ARGUMENTS`, if it names a branch or worktree
+     path.
+   - Otherwise, a branch **this conversation created**. That means a
+     `git switch -c <branch>` or `git worktree add ... -b <branch>` that
+     this agent ran and saw succeed, typically `/session-start` step 7,
+     or, after context compaction, a summary that records the branch as
+     this session's. A branch name that only appears in prose, in a log
+     or in `git branch` output is not provenance. Neither is a branch
+     this conversation merely switched to or committed on.
+
+   If there is no `$CLAIMED`, go on to step 1. If there is, verify it
+   against the repository before trusting it, because a conversation's
+   memory is also a claim about the past:
+   - `git rev-parse --verify --quiet "refs/heads/$CLAIMED"` must succeed.
+     If the branch is gone, stop and report it: it most likely merged and
+     was deleted, or it was renamed. Do not fall through to enumeration
+     after that; the provenance was real and its answer is "that session
+     has ended", not "pick another".
+   - Find its tree in `git worktree list --porcelain`, from the `worktree`
+     line above `branch refs/heads/$CLAIMED`. `$WT` is that path (a linked
+     worktree, or the primary for branch-only mode) and `$SESSION_BRANCH`
+     is `$CLAIMED`. If no tree has it checked out, stop and report it.
+     Finalizing needs the session's tree, and checking the branch out is a
+     HEAD move this skill does not make.
+   - If the agent is also inside a linked worktree (step 1's test) and that
+     worktree's branch is not `$CLAIMED`, the two strongest signals
+     disagree. Stop and ask; do not pick either one.
+
+   When the claim verifies, it settles the question: skip steps 1 and 2,
+   and note the source in the phase plan (`Session: <branch> (created in
+   this conversation)` or `(from argument)`). Other `feature/*` worktrees
+   are parallel sessions, not candidates, so their existence alone is not
+   a reason to stop. This is the common case under parallel work: a Bash
+   tool whose working directory resets to the primary checkout between
+   calls leaves the agent in the primary with several `feature/*`
+   worktrees around, and without this step the skill aborted and asked
+   every time.
+
 1. If `git rev-parse --git-dir` contains `/worktrees/`, the agent is
    already inside the session's linked worktree: `$WT` is
    `git rev-parse --show-toplevel`, `$SESSION_BRANCH` is
@@ -57,6 +103,8 @@ guess.
      live). Stop and ask the user to re-run `/session-end` with the
      session's branch as an argument (it is passed through as the finalize
      target). Never auto-pick: finalizing the wrong tree is session 85.
+     Only a conversation with no provenance gets here, since step 0
+     settles every case where this one created the branch.
    - Zero candidates: no session branch (research/discussion only). `$WT`
      is the primary; phases 3 and 4 fall to the docs-only path.
 
