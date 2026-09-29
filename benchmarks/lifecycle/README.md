@@ -41,6 +41,7 @@ scenarios/<name>/assert.sh "$REPO"
 | `stale-read` | session-start | a session number minted after a concurrent claim lands mid-run avoids the collision, **and** the re-read that guarantees it actually happened (git mock + shim-trace assertion) | no |
 | `ambiguous-finalize` | finalize-worktree | two candidates, no target: refuse, push and merge nothing | no |
 | `finalize-clean` | finalize-worktree | full flow: merge lands, local main ff-only (ISS-W3), branch+worktree swept, one merge call; `partial` mode adds the assert-then-reconcile incident | mock |
+| `trailer-hook` | session-end | under `forge: none` and a real `commit-msg` hook, the log commit and the local merge follow `commit_convention` and carry `commit_trailers`; `legacy` mode matches pre-0.3.3 output exactly; `refuse` mode leaves a hook-refused merge in place for the user | no |
 | `finalize-already-merged` | finalize-worktree | re-entry on a PR already `MERGED`: skip the merge entirely (zero `gh pr merge` calls), reconcile local main + branch + worktree, delete the lingering remote branch via `gh api` | mock |
 
 ## The gh mock
