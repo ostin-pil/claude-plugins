@@ -11,7 +11,7 @@ maintain one. Commands below use the kit's `<key>` placeholders (`<integration_r
 - Commit after every logical change (fix, feature, refactor, docs update).
 - Do not batch unrelated changes into one commit.
 - Do not wait to be asked; commit as soon as the change is complete and builds.
-- Follow the project commit convention (`commit_convention`).
+- Follow the project commit convention (`commit_convention`) and trailers (`commit_trailers`).
 - A change spanning several files but forming one logical unit is one commit.
 - Never commit debug artifacts, secrets, or temporary test code.
 

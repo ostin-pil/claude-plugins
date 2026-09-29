@@ -285,15 +285,33 @@ and never onto a branch whose PR already merged.
    `docs/session-{n}-log` for Untype) and commit the log there for a small
    standalone docs PR. Sanctioned exception, not a parallel default.
 
-3. **Stage and commit only the session log, in `$WT`:**
+3. **Stage and commit only the session log, in `$WT`**, with the message
+   built from the manifest. The manifest template's *Commit messages*
+   section defines both keys used here.
    ```bash
    git -C "$WT" add "$LOG_FILE"
-   git -C "$WT" commit -m "docs(sessions): add session <N> log for <short topic>"
+   git -C "$WT" commit -m "<subject>"                  # commit_trailers: none
+   git -C "$WT" commit -m "<subject>" -m "<trailers>"  # otherwise
    ```
-   Follow `commit_convention` (`prefix(topic): short description`; see
-   `CLAUDE.md` §Commits). `commit_trailers` is `none` (no `Co-Authored-By`).
-   Keep the title within `subject_max` (72) chars. `add` for a new log,
-   `update` for an appended one. `$LOG_BRANCH` is `$SESSION_BRANCH` (or the
+   The subject fills `commit_convention` with type `docs`, topic `sessions`,
+   and the description `add session <N> log for <short topic>` (`update` in
+   place of `add` for an appended log). Keep it within `subject_max`. What
+   that yields depends on the project. Under the convention
+   `prefix(topic): short description` it is
+   `docs(sessions): add session <N> log for <short topic>`; under a
+   convention with no prefix it is `add session <N> log for <short topic>`.
+   Both are examples of the pattern at work. Read the convention from the
+   manifest every time and never assume either one.
+
+   `<trailers>` is `commit_trailers` resolved: one line per ` + `-separated
+   piece, `<url>` and `<model>` filled in, all lines in that one `-m`. With
+   `commit_trailers: none` use the first form, subject only. If a
+   placeholder cannot be resolved, stop and ask for the value; never commit
+   the log without the trailer. If a `commit-msg` hook refuses the commit,
+   the log stays staged and nothing else has moved: report the hook's
+   output and stop. Never pass `--no-verify`.
+
+   `$LOG_BRANCH` is `$SESSION_BRANCH` (or the
    `docs_log_branch` name from the fallback). Treat it as
    **re-derivable**, not a remembered string: it is the branch that
    contains this commit, `git -C "$WT" branch --contains <commit-sha>`.
@@ -370,7 +388,7 @@ Print a short summary:
 ```
 ✓ build / test gate
 ✓ sessions/2026-04-14_session_25.md updated
-✓ committed <sha> — docs(sessions): ...
+✓ committed <sha> — <log commit subject>
 ✓ finalize-worktree: PR #<n> merged   (or: skipped — no open session branch)
 ✓ cleanup-worktrees: N removed         (or: skipped — no worktrees)
 ```
@@ -380,7 +398,7 @@ For skipped phases, use `—` instead of `✓` or `✗`, with the reason:
 ```
 — build / test gate (skipped, no code changes)
 ✓ sessions/2026-04-14_session_25.md updated
-✓ committed <sha> — docs(sessions): ...
+✓ committed <sha> — <log commit subject>
 — finalize-worktree (skipped, no open session branch)
 — cleanup-worktrees (skipped, no worktrees)
 ```
