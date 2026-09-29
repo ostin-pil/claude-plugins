@@ -21,6 +21,11 @@ worktree.
 
 ### Phase 3, replaced
 
+0. **Re-entry.** If `pr_state "$BRANCH"` (below) reads `MERGED`, the merge
+   already landed, for example one completed by hand after step 5. Skip to
+   phase 4. If `git -C "$MAIN" rev-parse -q --verify MERGE_HEAD` prints a SHA,
+   the primary checkout is mid-merge: report it and stop, and do not start
+   another merge on top of it.
 1. **No push.** Skip phase 3 step 1 entirely; there is nowhere to push.
 2. **No PR.** Skip steps 2 and 3. The prose gate, if `prose_gate` is set, runs
    against the session log instead of a PR body — it is the only prose artifact
@@ -59,12 +64,49 @@ worktree.
    `<local_main>` under a session that may be mid-work, so surface it at the
    merge gate in step 3 and let the human decide.
 
-   Then:
+   Then merge. The subject is `Merge $BRANCH` under any `commit_convention`.
+   The trailers come from `commit_trailers`, resolved as the manifest
+   template's *Commit messages* section describes, and follow as one more
+   `-m` holding every trailer line, newline-separated:
    ```bash
-   git -C "$MAIN" merge --no-ff "$BRANCH" -m "Merge $BRANCH"
+   git -C "$MAIN" merge --no-ff "$BRANCH" -m "Merge $BRANCH"                  # commit_trailers: none
+   git -C "$MAIN" merge --no-ff "$BRANCH" -m "Merge $BRANCH" -m "<trailers>"  # otherwise
    ```
-   `--no-ff` is not optional here. It is what keeps the session boundary
-   visible in a history that has no PR to record it.
+   If a placeholder in `commit_trailers` cannot be resolved, stop and ask
+   before merging; never merge without the trailer. `--no-ff` is not optional
+   here. It is what keeps the session boundary visible in a history that has
+   no PR to record it.
+5. **If a hook refuses the merge message.** A `commit-msg` hook runs on a merge
+   commit too. When it refuses, git prints
+   `Not committing merge; use 'git commit' to complete the merge.` and leaves
+   `$MAIN` mid-merge: `MERGE_HEAD` is set, the merged tree is staged, and
+   `<local_main>` has not moved. Confirm the refusal was about the message and
+   nothing else:
+
+   ```bash
+   git -C "$MAIN" rev-parse -q --verify MERGE_HEAD     # prints a SHA: mid-merge
+   git -C "$MAIN" diff --name-only --diff-filter=U     # empty: no conflicts
+   ```
+
+   When both hold, the content merged cleanly and only the commit is missing.
+   Report that plainly: the primary checkout is mid-merge, here is the hook's
+   output, and this command completes the merge:
+
+   ```bash
+   git -C "$MAIN" commit -m "Merge $BRANCH" -m "<trailers>"
+   ```
+
+   `<trailers>` is what the hook asked for. Normally that is `commit_trailers`
+   resolved. If the hook refused the manifest's own trailers, the manifest and
+   the hook disagree; say so and name the line the hook wants. Run the command
+   only on the user's go-ahead, then continue from step 0, which finds the
+   branch merged and moves on to phase 4.
+
+   Two rules from `finalize-worktree` still hold here. Never pass
+   `--no-verify` to get past the hook, and never run `git merge --abort` on
+   your own; the user decides between completing and aborting. If
+   `MERGE_HEAD` is not set, or there are conflicted paths, this was not a
+   message refusal: report it and stop, as for any failed merge.
 
 ### Phase 4, adjusted
 
@@ -87,7 +129,7 @@ true
 if git -C "$MAIN" merge-base --is-ancestor "$N" <local_main> 2>/dev/null
   then echo MERGED; else echo OPEN; fi
 
-# pr_merge $BRANCH merge   -> the phase 3 step 4 sequence above, gate included.
+# pr_merge $BRANCH merge   -> the phase 3 steps 4 and 5 above, gate included.
 
 # pr_find_merged $BRANCH -> "<branch>" | empty
 git -C "$MAIN" merge-base --is-ancestor "$BRANCH" <local_main> 2>/dev/null &&
