@@ -75,6 +75,22 @@ case "$forge" in
     ;;
 esac
 
+# commit_trailers: none, or one or more "Key: value" lines joined by " + ". A
+# malformed value would otherwise surface as a commit a commit-msg hook refuses,
+# which under forge: none strands the primary checkout mid-merge.
+# A quoted value is taken whole (a trailer may carry a '#', e.g. "Refs: #12");
+# an unquoted one loses its trailing comment.
+raw=$(grep -E "^commit_trailers:" "$MANIFEST" | head -1 | tr -d '\r' | sed -E 's/^commit_trailers:[[:space:]]*//')
+case "$raw" in
+  \"*) trailers=$(printf '%s' "$raw" | sed -E 's/^"([^"]*)".*$/\1/') ;;
+  *)   trailers=$(printf '%s' "$raw" | sed -E 's/[[:space:]]+#.*$//; s/[[:space:]]+$//') ;;
+esac
+if [ -n "$trailers" ] && [ "$trailers" != none ]; then
+  bad=$(printf '%s\n' "$trailers" | awk -F ' [+] ' '{ for (i = 1; i <= NF; i++) print $i }' |
+        grep -vE '^[A-Za-z][A-Za-z0-9-]*: [^[:space:]]' | head -1 | sed 's/^$/(empty)/')
+  [ -z "$bad" ] || add "lifecycle-kit: commit_trailers piece '$bad' is not a 'Key: value' trailer line. Use none, or trailer lines joined by ' + ' (see Commit messages in $TEMPLATE)."
+fi
+
 # requires_remote (default true) needs a real remote configured. forge: none
 # has its own supported no-remote lifecycle, so it never warrants this warning.
 if [ "$forge" != none ] && ! grep -qE "^requires_remote:[[:space:]]*false" "$MANIFEST"; then
