@@ -4,7 +4,7 @@ description: Brief the user on where the project left off and suggest the next s
 allowed-tools: Bash Read Glob Grep AskUserQuestion
 ---
 
-Produce a concise in-chat briefing for starting a new work session. Read-only on repo content (no Write/Edit), but may run `git fetch`, `git switch -c`, and `git worktree add` so the session opens on a clean per-session branch born off `origin/main`.
+Produce a concise in-chat briefing for starting a new work session. Read-only on repo content (no Write/Edit), but may run `git fetch`, `git switch -c`, and `git worktree add` so the session opens on a clean per-session branch born off `origin/main`, and runs the project's `claim_command`, if it names one, in the new checkout.
 
 Counterpart to `/session-end`, which finalizes a session. This is the
 "where am I?" command; `/session-end` is the "wrap it up" command.
@@ -23,7 +23,7 @@ Read `.claude/lifecycle-manifest.md` first (resolve via
 `$(git rev-parse --show-toplevel)/.claude/lifecycle-manifest.md`). Where a
 step names a manifest key in `code font` (`log_glob`, `log_dir`,
 `log_pattern`, `log_index`, `log_archive`, `branch_pattern`, `worktree_dir`,
-`worktree_pattern`, `issues_file`, `plan_doc`), use that key's value.
+`worktree_pattern`, `issues_file`, `plan_doc`, `claim_command`), use that key's value.
 Command bodies write these as `<key>` substitution placeholders
 (`<integration_ref>`, `<local_main>`, `<remote>`); replace each with the
 manifest value before running. The surrounding detection prose still names
@@ -127,12 +127,26 @@ The collision examples ("session-99") are documentation, not configuration.
    but to let the operation that actually changes the world report what it
    found.
 
+   **Then the path claim, if the project has one.** If `claim_command` is
+   set and not `none`, run it once, verbatim, from inside the checkout just
+   created (`cd` into the worktree; in the branch-only form, the checkout you
+   switched). Run it after the create has succeeded and `N` is final, and
+   before anything else in that checkout. Skip it for **Stay on the current
+   branch**. It claims files, not the number, and its failure is not a
+   collision: on a non-zero exit, show its output verbatim and stop there.
+   Do not retry it, do not change its arguments, do not mint another `N`, and
+   do not remove the branch or worktree. The session exists without a claim,
+   and what to do next (claim fewer paths, wait for the other session, ask
+   its holder) is the user's call, usually spelled out in the command's own
+   output. On success, include what it printed in the report.
+
    Report the new branch (or worktree path). If `git status` is dirty (step 3 flagged it), do NOT switch or spawn — print a warning that uncommitted work would follow the branch and ask the user to handle it first. Branching off `origin/main` is what removes the stale-base gotcha; do not substitute the local `main` ref, which can carry stray commits.
 
 ## Constraints
 
 - Repo content is read-only: no Write, no Edit, no commits, no file creation in the working tree.
 - Allowed git mutations: `git fetch` (always safe); `git switch -c <new-branch> <integration_ref>`; `git worktree add <path> -b <new-branch> <integration_ref>`. All only when the user accepts step 7. A create that fails because the branch already exists may be retried at the next `N` (step 7, **The claim is the create**) — that is one retry per collision, not a loop to sit in. No `git switch` to an existing branch — that mutates HEAD silently. No `git push`, no `git reset`, no `git merge`.
+- The one project command this skill runs is `claim_command`, once, in the new session's checkout (step 7). It is the project's own, and the skill writes nothing itself.
 - Always create the session branch from `origin/main`, never from the current working tree or the local `main` ref.
 - Keep the briefing to ~30 lines — summarize, don't paste.
 - If the latest session is several days stale and `git log` shows substantial activity since, say so explicitly so the user knows the "what's next" list may be outdated.

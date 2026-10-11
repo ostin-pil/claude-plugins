@@ -15,7 +15,8 @@ projects; change them only if your conventions differ. A project on Forgejo or
 Gitea sets `forge: forgejo`; a repo with no remote by design sets `forge: none`
 and gets the local-merge lifecycle described in `forges/none.md`. The build/test gate and
 the product name are the values you must set. Optional knobs accept `none`
-(`prose_gate`, `code_reviewer`, `issues_file`, `plan_doc`, `subpkg_guard`); the
+(`prose_gate`, `code_reviewer`, `issues_file`, `plan_doc`, `subpkg_guard`,
+`claim_command`); the
 skill that reads each one skips its step. See `examples/untype-manifest.md` for a
 filled, real-world manifest.
 
@@ -73,6 +74,36 @@ reads only the last paragraph of a message as trailers, so every trailer but the
 last would stop being one. With `commit_trailers: none` there is no second `-m`
 and the message is the subject alone.
 
+## Path claims
+
+Worktrees keep parallel sessions from sharing a HEAD; they do not keep two
+sessions out of the same file. A project that enforces that, by having each
+session claim the paths it will edit, names the command in `claim_command`.
+
+`claim_command` is `none` or a shell command. `/session-start` runs it once,
+verbatim, with the new session's checkout (the worktree, or the primary checkout
+after `git switch -c`) as its working directory. It runs right after the branch
+is created and its session number is final, and before anything else happens in
+that checkout. It is not run when the user chooses to stay on the current branch.
+There are no placeholders: the command is in the new checkout, so it can read
+the branch name from git itself.
+
+A path claim is not the session number. The number is claimed by creating the
+branch, and a collision there is retried at the next number. A path claim that
+fails (exit status other than 0, usually because another live session holds one
+of the paths) is reported with the command's own output and left for the user.
+The skill does not retry it, does not pick another number, and does not remove
+the branch or worktree it just created. The session exists without a claim
+until the user decides what to do.
+
+The kit has no release step. Make a claim lapse on its own when its branch is
+merged or deleted, so `/session-end` and `/cleanup-worktrees` need nothing for
+it. One design that works: one file per branch in the common git dir
+(`git rev-parse --git-common-dir`), which every worktree shares and no commit
+carries; a claim is live while its branch exists and is not yet merged into the
+integration branch; and a `pre-commit` hook refuses a commit that stages a path
+outside the branch's own claim or inside another live one.
+
 ```yaml
 # product
 product_name: <YourProduct>
@@ -99,6 +130,7 @@ worktree_dir: .claude/worktrees
 worktree_pattern: "session-{n}-{topic}"
 worktree_ignore: .git/info/exclude   # machine-local ignore, not committed
 orphan_branch_globs: ["feature/session-*", "worktree-agent-*", "fix/*"]
+claim_command: none                  # optional; see "Path claims" above. e.g. sh .githooks/claim.sh --thread
 
 # session logs (defaults assume log_dir = sessions)
 log_dir: sessions
