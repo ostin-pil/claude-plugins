@@ -33,7 +33,7 @@ Six skills, all invocable as slash commands:
 
 | Skill | Does |
 | --- | --- |
-| `session-start` | Briefs where the project left off and opens a clean per-session branch off the integration ref |
+| `session-start` | Briefs where the project left off, opens a clean per-session branch off the integration ref, and runs the project's path claim (`claim_command`) in it |
 | `session-report` | Writes or updates today's session log |
 | `session-end` | Build/test gate, commits the log, finalizes the session PR, sweeps worktrees |
 | `finalize-worktree` | Lands a feature-branch session as one merge-commit PR, then reconciles local state |
