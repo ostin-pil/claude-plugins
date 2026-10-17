@@ -66,3 +66,9 @@ A GitHub remote is required for the finalize lifecycle (lifecycle-kit is
 remote-only by design). A no-remote repo can still run `report`, `knowledge-audit`,
 `session-archive`, and `issues`, plus the read-only half of session-start and
 session-report.
+
+On GitHub, check once that the repository deletes merged branches
+(`gh api repos/{owner}/{repo} --jq .delete_branch_on_merge` should print
+`true`; `-X PATCH -F delete_branch_on_merge=true` turns it on). The finalize
+lifecycle reconciles a surviving remote branch either way, but with the setting
+off it does so on every single merge and nothing tells you.

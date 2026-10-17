@@ -6,6 +6,12 @@
 # The action lives at ./prose-mint (it is the prose-mint plugin's package
 # root), so this dogfoods the action from the same checkout that ships it: a
 # change to action.yml is gated by that same action.yml on the PR.
+#
+# `on: pull_request` with no `types:` means opened, synchronize and reopened,
+# so editing a PR body does NOT re-run this and a stale failure stays on the
+# PR. Re-run the job by hand rather than pushing an empty commit: the body scan
+# fetches title and body live with `gh pr view`, not from the event payload, so
+# a re-run sees the edit.
 name: prose
 on:
   pull_request:
