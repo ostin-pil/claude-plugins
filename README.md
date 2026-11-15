@@ -19,6 +19,25 @@ install what you want, skip the rest.
 
 New to all three? [`ADOPTING.md`](./ADOPTING.md) is the end-to-end setup flow for a repo.
 
+## Mods
+
+Four small Claude Code mods live under [`mods/`](./mods). Each is a hooks module that draws a
+row above the prompt or adds a status-line entry, and none needs a manifest. Install any of
+them on its own.
+
+| Mod | What it shows |
+| --- | --- |
+| [`context-effort`](./mods/context-effort) | How full the context window is, and the reasoning effort the model is running at |
+| [`plan-meter`](./mods/plan-meter) | The subscription's 5-hour and weekly usage, with warnings near the limits and a per-model ledger (`/meter`) |
+| [`agent-count`](./mods/agent-count) | How many sub-agents actually ran, nested ones included, as a line for a session log (`/agent-count`) |
+| [`session-band`](./mods/session-band) | The live parallel sessions in a repo run on `feature/session-<n>-<thread>-<what>` worktrees, with warnings when two share a thread or `main` has moved |
+
+```
+/plugin install context-effort --marketplace ostin-pil/claude-plugins
+```
+
+The same line installs the others by name. With the marketplace already added, `/plugin install context-effort@ostin-pil-plugins` does it too.
+
 ## Install (in a consuming project)
 
 Add the marketplace once, then install any plugin from it.
@@ -62,6 +81,11 @@ knowledge-kit/
   bin/                              # knowledge-audit + session-archive scripts (on PATH when enabled)
   templates/                        # knowledge skeleton, prose-style rule, git hooks
   manifest-keys.md                  # manifest block to append in a consumer
+  README.md
+mods/{agent-count,context-effort,plan-meter,session-band}/
+  .claude-plugin/plugin.json
+  hooks/hooks.json + register.tsx   # the hooks module
+  types/index.d.ts                  # the mod's state contract
   README.md
 ADOPTING.md                         # end-to-end repo setup across all three plugins
 ```

@@ -1,0 +1,11 @@
+{
+  "name": "session-band",
+  "version": "0.1.0",
+  "description": "Shows which feature/session-<n>-<thread>-<what> sessions are live in this repo, which one this is, and warns when main has moved under the branch or the main checkout is not clean.",
+  "author": {
+    "name": "Costa"
+  },
+  "homepage": "https://github.com/ostin-pil/claude-plugins#mods",
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}

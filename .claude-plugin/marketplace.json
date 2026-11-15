@@ -4,7 +4,7 @@
   "owner": {
     "name": "Costa"
   },
-  "description": "Claude Code plugins for a solo or small-team dev workflow, driven by a shared per-project manifest: session lifecycle (lifecycle-kit), knowledge base and issue tracking (knowledge-kit), and a deterministic AI-prose linter (prose-mint).",
+  "description": "Claude Code plugins for a solo or small-team dev workflow, driven by a shared per-project manifest: session lifecycle (lifecycle-kit), knowledge base and issue tracking (knowledge-kit), and a deterministic AI-prose linter (prose-mint), plus four mods: rows above the prompt and session counters (agent-count, context-effort, plan-meter, session-band).",
   "plugins": [
     {
       "name": "lifecycle-kit",
@@ -32,6 +32,42 @@
       "homepage": "https://github.com/ostin-pil/claude-plugins#knowledge-kit",
       "category": "workflow",
       "keywords": ["knowledge", "issues", "audit", "archive", "sessions", "reuse"]
+    },
+    {
+      "name": "agent-count",
+      "description": "Counts every sub-agent that actually ran in a session, nested ones included, with type, model and tokens, as a line ready for a session log (/agent-count).",
+      "version": "0.1.0",
+      "source": "./mods/agent-count",
+      "homepage": "https://github.com/ostin-pil/claude-plugins#mods",
+      "category": "workflow",
+      "keywords": ["agents", "subagents", "sessions", "mod"]
+    },
+    {
+      "name": "context-effort",
+      "description": "Shows how full the context window is and the reasoning effort the model is running at, in one row above the prompt.",
+      "version": "0.1.0",
+      "source": "./mods/context-effort",
+      "homepage": "https://github.com/ostin-pil/claude-plugins#mods",
+      "category": "workflow",
+      "keywords": ["context", "effort", "tokens", "mod"]
+    },
+    {
+      "name": "plan-meter",
+      "description": "Shows the subscription's 5-hour and weekly usage above the prompt, warns near the limits, and keeps a ledger of what each model and labelled run spent (/meter).",
+      "version": "0.1.0",
+      "source": "./mods/plan-meter",
+      "homepage": "https://github.com/ostin-pil/claude-plugins#mods",
+      "category": "workflow",
+      "keywords": ["usage", "rate-limits", "plan", "mod"]
+    },
+    {
+      "name": "session-band",
+      "description": "For repos run as parallel sessions in worktrees on feature/session-<n>-<thread>-<what>: shows the live sessions above the prompt and warns when two share a thread, main has moved, or the main checkout is dirty.",
+      "version": "0.1.0",
+      "source": "./mods/session-band",
+      "homepage": "https://github.com/ostin-pil/claude-plugins#mods",
+      "category": "workflow",
+      "keywords": ["sessions", "worktrees", "lifecycle", "mod"]
     }
   ]
 }

@@ -1,0 +1,11 @@
+{
+  "name": "plan-meter",
+  "version": "0.1.0",
+  "description": "Shows the plan's 5-hour and weekly usage above the prompt and keeps a ledger of how much of each window every model and labelled run spent.",
+  "author": {
+    "name": "Costa"
+  },
+  "homepage": "https://github.com/ostin-pil/claude-plugins#mods",
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}
