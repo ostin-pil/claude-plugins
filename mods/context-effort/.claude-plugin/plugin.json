@@ -1,0 +1,11 @@
+{
+  "name": "context-effort",
+  "version": "0.1.0",
+  "description": "Shows how full the context window is and the reasoning effort the model is running at, in one row above the prompt.",
+  "author": {
+    "name": "Costa"
+  },
+  "homepage": "https://github.com/ostin-pil/claude-plugins#mods",
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}

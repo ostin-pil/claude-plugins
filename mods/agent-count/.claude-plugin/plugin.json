@@ -1,0 +1,11 @@
+{
+  "name": "agent-count",
+  "version": "0.1.0",
+  "description": "Counts every sub-agent that actually ran in a session, nested ones included, with type, model and tokens, ready to paste into a session log.",
+  "author": {
+    "name": "Costa"
+  },
+  "homepage": "https://github.com/ostin-pil/claude-plugins#mods",
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}
