@@ -1,5 +1,6 @@
 # Test gate for the marketplace. Runs the prose-mint Python suite across the
-# supported interpreter range and shellcheck over the bundled shell scripts.
+# supported interpreter range, motion-kit's probe tests, and shellcheck over the
+# bundled shell scripts.
 # The prose gate (structural-tell linting of the docs) is a separate workflow,
 # prose.yml.
 name: tests
@@ -26,6 +27,19 @@ jobs:
         # does not leak into them. Machine-only tests (test_source_drift,
         # verify_against_untype) skip when the Untype checkout is absent.
         run: python -m pytest prose-mint/tests -q
+
+  motion-kit:
+    # The motion-path probe and the contact sheet, on synthetic motion with known answers.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pytest, Pillow and NumPy
+        run: pip install pytest pillow numpy
+      - name: Run the motion-kit suite
+        run: python -m pytest motion-kit/tests -q
 
   shellcheck:
     runs-on: ubuntu-latest

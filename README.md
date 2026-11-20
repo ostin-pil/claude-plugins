@@ -3,11 +3,12 @@
 A Claude Code plugin marketplace, hosted as a monorepo. One repo, one place to
 add, one CI, shared dev tooling, and atomic changes across plugins that overlap.
 
-**What you get in 30 seconds:** three installable plugins that cover the parts of a
+**What you get in 30 seconds:** four installable plugins that cover the parts of a
 working session Claude Code leaves to you. Gated session logs and PR finalize
 (`lifecycle-kit`), a linter for the structural tells of AI-flavored prose
-(`prose-mint`), and knowledge-base upkeep (`knowledge-kit`). Add the marketplace once,
-install what you want, skip the rest.
+(`prose-mint`), knowledge-base upkeep (`knowledge-kit`), and character
+animation craft for games (`motion-kit`). Add the marketplace once, install what
+you want, skip the rest.
 
 ## Plugins
 
@@ -16,8 +17,9 @@ install what you want, skip the rest.
 | [`lifecycle-kit`](./lifecycle-kit) | v0.1 | Session lifecycle and reporting skills on a per-project manifest: build/test-gated PR finalize, safe-under-ambiguity, session logs, and status reports (the parts built-in worktrees leave out) |
 | [`prose-mint`](./prose-mint) | v0.1 (absorbed from `ostin-pil/ProseMint`, history preserved) | Structural-tells linter for AI-flavored prose; ships the `prose-check` skill, a `/prose-check` command, and an MCP server. The plugin is `prose-mint/plugin`; the Python tool and tests sit alongside it |
 | [`knowledge-kit`](./knowledge-kit) | v0.1 | Knowledge-base skills on the same manifest: `knowledge-audit`, `issues`, `session-archive`. Ships a knowledge-skeleton template and the two git-hook templates |
+| [`motion-kit`](./motion-kit) | v0.1 | Character animation craft for games: the `motion-craft` skill (principles as games bend them, walk and arm-swing numbers, stepped and puppet motion, pose sheets, a judging rubric), an `animator` agent, a blind `motion-judge` agent, and a motion-path probe with a Godot bone-path recorder |
 
-New to all three? [`ADOPTING.md`](./ADOPTING.md) is the end-to-end setup flow for a repo.
+New to the three workflow plugins? [`ADOPTING.md`](./ADOPTING.md) is the end-to-end setup flow for a repo.
 
 ## Install (in a consuming project)
 
@@ -28,6 +30,7 @@ Add the marketplace once, then install any plugin from it.
 /plugin install lifecycle-kit@ostin-pil-plugins
 /plugin install prose-mint@ostin-pil-plugins
 /plugin install knowledge-kit@ostin-pil-plugins
+/plugin install motion-kit@ostin-pil-plugins
 ```
 
 The marketplace id is the `name` field in `.claude-plugin/marketplace.json`

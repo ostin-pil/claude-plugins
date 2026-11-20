@@ -40,10 +40,11 @@ log_glob: "sessions/[0-9]*_session*.md"
 log_presence_regex: '^sessions/[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}_session.*\.md$'
 
 # build / test gate — run in order, abort on the first failure
-code_globs: ["prose-mint/**/*.py", "prose-mint/bin/*", "**/*.sh", "knowledge-kit/bin/*"]
+code_globs: ["prose-mint/**/*.py", "prose-mint/bin/*", "**/*.sh", "knowledge-kit/bin/*", "motion-kit/**/*.py", "motion-kit/**/*.gd"]
 build_commands: none                 # no compile step (Python + shell repo)
 test_commands:
   - uv run --with pytest --with ./prose-mint python -m pytest prose-mint/tests
+  - uv run --with pytest --with pillow --with numpy python -m pytest motion-kit/tests
   - shellcheck lifecycle-kit/hooks/*.sh knowledge-kit/bin/*.sh
 
 # merge
