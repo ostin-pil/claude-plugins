@@ -4,7 +4,7 @@
   "owner": {
     "name": "Costa"
   },
-  "description": "Claude Code plugins for a solo or small-team dev workflow, driven by a shared per-project manifest: session lifecycle (lifecycle-kit), knowledge base and issue tracking (knowledge-kit), and a deterministic AI-prose linter (prose-mint).",
+  "description": "Claude Code plugins for a solo or small-team dev workflow, driven by a shared per-project manifest: session lifecycle (lifecycle-kit), knowledge base and issue tracking (knowledge-kit), a deterministic AI-prose linter (prose-mint), and character animation craft for games (motion-kit).",
   "plugins": [
     {
       "name": "lifecycle-kit",
@@ -32,6 +32,15 @@
       "homepage": "https://github.com/ostin-pil/claude-plugins#knowledge-kit",
       "category": "workflow",
       "keywords": ["knowledge", "issues", "audit", "archive", "sessions", "reuse"]
+    },
+    {
+      "name": "motion-kit",
+      "description": "Character animation craft for games: a motion-craft skill (principles as games use them, walk and arm-swing numbers, stepped and puppet motion, pose sheets, a judging rubric), an animator agent, a blind motion-judge agent, and a motion-path probe with a Godot bone-path recorder.",
+      "version": "0.1.0",
+      "source": "./motion-kit",
+      "homepage": "https://github.com/ostin-pil/claude-plugins#motion-kit",
+      "category": "development",
+      "keywords": ["animation", "game-animation", "walk-cycle", "keyframe", "godot", "motion", "review"]
     }
   ]
 }

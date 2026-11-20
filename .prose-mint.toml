@@ -20,6 +20,7 @@ include = [
   "ADOPTING.md",
   "lifecycle-kit/README.md",
   "knowledge-kit/README.md",
+  "motion-kit/README.md",
 ]
 
 [structural]
