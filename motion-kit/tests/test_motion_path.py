@@ -116,3 +116,34 @@ def test_relative_to_takes_out_the_body_s_bob(tmp_path, capsys):
     assert json.loads(raw.read_text(encoding="utf-8"))["points"]["Hand"]["bulge"] > 0.1
     assert json.loads(relative.read_text(encoding="utf-8"))["points"]["Hand"]["bulge"] < 0.01
 
+
+def test_the_loop_is_taken_for_every_cycle_and_says_which_way_round():
+    m = mp.measure(ellipse(), FPS)
+    assert len(m["loops"]) == 4
+    assert m["loop_one_way"]
+    # A thin path whose loop flips from cycle to cycle is a line wobbling.
+    wobble = [(x, 0.3 * math.sin(2 * math.pi * i / CYCLE) * (1 if (i // CYCLE) % 2 else -1)) for i, (x, _) in enumerate(ellipse(b=0.0))]
+    w = mp.measure(wobble, FPS)
+    assert not w["loop_one_way"]
+    assert "both ways round" in mp.summary(w)
+
+
+def test_the_reference_is_left_out_of_the_drawn_paths(tmp_path, monkeypatch):
+    pytest.importorskip("PIL")
+    drawn = {}
+    real = mp.draw
+
+    def spy(projected, measures, out, flip_y, title, reference=None):
+        drawn["reference"] = reference
+        real(projected, measures, out, flip_y, title, reference)
+
+    monkeypatch.setattr(mp, "draw", spy)
+    far = [(500.0 + x, 300.0 + y) for x, y in sine_line()]
+    hand = [(c[0] + e[0], c[1] + e[1]) for c, e in zip(far, ellipse())]
+    data = {"fps": FPS, "space": "screen", "points": {"Chest": [list(p) for p in far], "Hand": [list(p) for p in hand]}}
+    source = tmp_path / "paths.json"
+    source.write_text(json.dumps(data), encoding="utf-8")
+    out = tmp_path / "paths.png"
+    assert mp.main([str(source), "--relative-to", "Chest", "--out", str(out)]) == 0
+    assert drawn["reference"] == "Chest"
+    assert out.stat().st_size > 1000

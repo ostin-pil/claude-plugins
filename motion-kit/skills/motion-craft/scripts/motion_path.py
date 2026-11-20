@@ -25,7 +25,9 @@ For each point it reports, in the chosen plane:
   bulge: how far the path bows off the straight line between its extremes,
       as a share of that line's length (0 is a straight back-and-forth)
   loop: the area a cycle encloses over the main range times the cross range
-      (0 means the part retraces one line; overlap and lag open a loop)
+      (0 means the part retraces one line; overlap and lag open a loop), taken
+      for every whole cycle: the median, the range, and whether every cycle goes
+      round the same way (a thin path that flips is a line wobbling, not a loop)
   sharpest corner: the largest turn between successive moves that is not a
       reversal (a corner in mid-path reads mechanical)
   ease: speed near the extremes over speed through the middle (below 1 slows
@@ -35,7 +37,8 @@ main direction, from the cross-correlation over one cycle. On a stepped
 character the lag comes in whole drawn poses (2 samples on twos at 60 fps).
 With --relative-to NAME every other point is measured relative to NAME (the
 chest or hips), so a limb's own arc shows without the body's bob, which can
-otherwise put corners into every path.
+otherwise put corners into every path. NAME itself is left out of the drawn
+paths, which it would otherwise squeeze into a corner, and keeps its row.
 
 Pure Python apart from Pillow, which only the drawing needs.
 """
@@ -161,18 +164,27 @@ def bulge(points, centre, direction) -> float:
     return furthest / chord
 
 
-def loop_openness(points: list[tuple[float, float]], centre, direction) -> float:
-    """Shoelace area of the closed path over (main range x cross range); 0 for a retraced line."""
+def loop_openness(points: list[tuple[float, float]], centre, direction, signed: bool = False) -> float:
+    """Shoelace area of the closed path over (main range x cross range); 0 for a retraced line.
+    Signed, its sign says which way round the path goes."""
     if len(points) < 3:
         return 0.0
     area = 0.0
     for (x0, y0), (x1, y1) in zip(points, points[1:] + points[:1]):
         area += x0 * y1 - x1 * y0
-    area = abs(area) / 2.0
+    area = area / 2.0 if signed else abs(area) / 2.0
     a = along(points, centre, direction)
     c = across(points, centre, direction)
     box = (max(a) - min(a)) * (max(c) - min(c))
     return area / box if box > EPS else 0.0
+
+
+def cycle_loops(points: list[tuple[float, float]], cycle: int | None, centre, direction) -> list[float]:
+    """The signed loop openness of each whole cycle in the recording, in order."""
+    if not cycle:
+        return [loop_openness(distinct(points), centre, direction, signed=True)]
+    return [loop_openness(distinct(points[k:k + cycle]), centre, direction, signed=True)
+            for k in range(0, len(points) - cycle + 1, cycle)]
 
 
 def sharpest_corner(poses: list[tuple[float, float]], centre, direction) -> float:
@@ -245,6 +257,8 @@ def measure(points: list[tuple[float, float]], fps: float) -> dict:
     cycle_poses = distinct(one_cycle)
     rev = reversals(along(poses, centre, direction))
     cycles = len(points) / cycle if cycle else None
+    loops = cycle_loops(points, cycle, centre, direction)
+    sizes = sorted(abs(v) for v in loops)
     return {
         "samples": len(points),
         "distinct_poses": len(poses),
@@ -257,7 +271,9 @@ def measure(points: list[tuple[float, float]], fps: float) -> dict:
         "poses_per_cycle": len(cycle_poses) if cycle else None,
         "reversals_per_cycle": rev / cycles if cycles else rev,
         "bulge": bulge(one_cycle, centre, direction),
-        "loop": loop_openness(cycle_poses if cycle else poses, centre, direction),
+        "loop": sizes[len(sizes) // 2],
+        "loops": loops,
+        "loop_one_way": all(v > 0 for v in loops) or all(v < 0 for v in loops),
         "sharpest_corner_deg": sharpest_corner(poses, centre, direction),
         "ease": ease(poses, centre, direction),
         "_along": a,
@@ -269,7 +285,10 @@ def measure(points: list[tuple[float, float]], fps: float) -> dict:
 COLOURS = [(230, 90, 60), (60, 150, 230), (90, 190, 90), (220, 180, 40), (180, 90, 200), (60, 200, 200)]
 
 
-def draw(projected: dict, measures: dict, out: str, flip_y: bool, title: str) -> None:
+def draw(projected: dict, measures: dict, out: str, flip_y: bool, title: str, reference: str | None = None) -> None:
+    """The paths at one scale on the left, each point's motion against time on the right. The
+    reference of --relative-to stays where it is, so it's left out of the paths, where it
+    would set the scale; it keeps its row on the right."""
     from PIL import Image, ImageDraw
 
     width, height, pad = 1400, 760, 40
@@ -278,8 +297,9 @@ def draw(projected: dict, measures: dict, out: str, flip_y: bool, title: str) ->
     pen.text((pad, 10), title, fill=(230, 230, 230))
     # The paths, at one scale, in a square on the left.
     side = height - 2 * pad - 20
-    xs = [p[0] for pts in projected.values() for p in pts]
-    ys = [p[1] for pts in projected.values() for p in pts]
+    paths = {name: pts for name, pts in projected.items() if name != reference} or projected
+    xs = [p[0] for pts in paths.values() for p in pts]
+    ys = [p[1] for pts in paths.values() for p in pts]
     span = max(max(xs) - min(xs), max(ys) - min(ys), EPS)
     ox, oy = min(xs), min(ys)
 
@@ -291,6 +311,8 @@ def draw(projected: dict, measures: dict, out: str, flip_y: bool, title: str) ->
 
     pen.rectangle([pad, pad + 20, pad + side, pad + 20 + side], outline=(70, 70, 80))
     for k, (name, pts) in enumerate(projected.items()):
+        if name not in paths:
+            continue
         colour = COLOURS[k % len(COLOURS)]
         line = [at(p) for p in pts]
         if len(line) > 1:
@@ -331,7 +353,12 @@ def summary(m: dict) -> str:
     if m["cycle_samples"]:
         parts.append("cycle %d (%.2f s, %s poses)" % (m["cycle_samples"], m["cycle_seconds"], m["poses_per_cycle"]))
     parts.append("bulge %.2f" % m["bulge"])
-    parts.append("loop %.2f" % m["loop"])
+    if len(m["loops"]) > 1:
+        sizes = [abs(v) for v in m["loops"]]
+        parts.append("loop %.2f (%.2f to %.2f over %d cycles, %s)" % (
+            m["loop"], min(sizes), max(sizes), len(sizes), "one way round" if m["loop_one_way"] else "both ways round"))
+    else:
+        parts.append("loop %.2f" % m["loop"])
     parts.append("corner %.0f deg" % m["sharpest_corner_deg"])
     if m["ease"] is not None:
         parts.append("ease %.2f" % m["ease"])
@@ -382,7 +409,8 @@ def main(argv: list[str] | None = None) -> int:
         print("lag %s: %s trails %s by %d samples (%.3f s%s)" % (
             pair, second, first, k, k / fps, ", %.2f of a cycle" % (k / cycle) if cycle else ""))
     if args.out:
-        draw(projected, measures, args.out, data["space"] != "screen", "%s  (%s plane, %g fps)" % (args.paths, plane, fps))
+        draw(projected, measures, args.out, data["space"] != "screen", "%s  (%s plane, %g fps)" % (args.paths, plane, fps),
+             args.relative_to)
     if args.json:
         clean = {name: {k: v for k, v in m.items() if not k.startswith("_")} for name, m in measures.items()}
         with open(args.json, "w", encoding="utf-8") as handle:
