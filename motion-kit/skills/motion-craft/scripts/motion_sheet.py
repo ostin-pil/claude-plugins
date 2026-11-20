@@ -8,6 +8,10 @@ The contact sheet shows `count` frames, `every` frames apart from `start`, each
 labelled with its frame number and time, `columns` to a row, each scaled to
 `width` pixels. The onion skin lays the same frames over one another, the
 earliest faintest, so a moving part's path and spacing show in one image.
+It takes the still background as the per-pixel median of the frames, so it
+wants a still camera: behind a camera that follows the figure, the room
+smears and the figure barely moves. Record a still-camera take for it, or
+read only the figure.
 `crop` cuts each frame to a region first (the figure, close).
 
 Video decoding needs PyAV; any format FFmpeg reads works. Frames already saved
