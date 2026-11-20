@@ -1,0 +1,11 @@
+{
+  "name": "motion-kit",
+  "description": "Character animation craft for games: a motion-craft skill (the twelve principles as games use them, walk and arm-swing numbers, stepped and puppet motion, the pose-sheet method, a judging rubric), an animator agent that plans motion as a pose sheet, a motion-judge agent that reviews recorded motion blind, and a motion-path probe (reel contact sheets, bone-path plots with arc, spacing and lag measures, a Godot bone-path recorder).",
+  "version": "0.1.0",
+  "author": {
+    "name": "Costa"
+  },
+  "homepage": "https://github.com/ostin-pil/claude-plugins#motion-kit",
+  "repository": "https://github.com/ostin-pil/claude-plugins",
+  "keywords": ["animation", "game-animation", "walk-cycle", "keyframe", "godot", "motion", "review"]
+}
