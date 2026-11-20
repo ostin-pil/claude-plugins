@@ -1,7 +1,8 @@
 """Measure and draw the paths of moving parts: arcs, spacing, reversals, lag.
 
     uv run --with pillow python motion_path.py paths.json [--out paths.png]
-        [--plane xy|zy|xz] [--lag A:B ...] [--from N] [--to N] [--json report.json]
+        [--plane xy|zy|xz] [--lag A:B ...] [--relative-to NAME] [--from N] [--to N]
+        [--json report.json]
 
 The input is a JSON object:
 
@@ -29,8 +30,12 @@ For each point it reports, in the chosen plane:
       reversal (a corner in mid-path reads mechanical)
   ease: speed near the extremes over speed through the middle (below 1 slows
       into the extremes, about 1 is even spacing)
-With --lag A:B it reports how many samples B's motion trails A's along each
-one's main direction, from the cross-correlation over one cycle.
+With --lag A:B it reports how many samples B's motion trails A's along A's
+main direction, from the cross-correlation over one cycle. On a stepped
+character the lag comes in whole drawn poses (2 samples on twos at 60 fps).
+With --relative-to NAME every other point is measured relative to NAME (the
+chest or hips), so a limb's own arc shows without the body's bob, which can
+otherwise put corners into every path.
 
 Pure Python apart from Pillow, which only the drawing needs.
 """
@@ -341,6 +346,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", help="PNG to draw the paths into")
     parser.add_argument("--plane", choices=sorted(PLANES), help="plane to measure in (default: the file's, else xy)")
     parser.add_argument("--lag", action="append", default=[], metavar="A:B", help="report how far B trails A")
+    parser.add_argument("--relative-to", help="measure every other point relative to this one")
     parser.add_argument("--from", dest="start", type=int, default=0)
     parser.add_argument("--to", dest="end", type=int)
     parser.add_argument("--json", help="write the measures here too")
@@ -350,6 +356,13 @@ def main(argv: list[str] | None = None) -> int:
     plane = args.plane or data.get("plane", "xy")
     fps = float(data["fps"])
     projected = {name: project(samples, plane)[args.start:args.end] for name, samples in data["points"].items()}
+    if args.relative_to:
+        if args.relative_to not in projected:
+            print("relative to %s: no such point" % args.relative_to, file=sys.stderr)
+            return 2
+        ref = projected[args.relative_to]
+        projected = {name: pts if name == args.relative_to else [(p[0] - r[0], p[1] - r[1]) for p, r in zip(pts, ref)]
+                     for name, pts in projected.items()}
     measures = {name: measure(pts, fps) for name, pts in projected.items() if len(pts) >= 3}
     for name, m in measures.items():
         print("%-14s %s, range %.4g along, %.4g across, reversals %.1f per cycle" % (

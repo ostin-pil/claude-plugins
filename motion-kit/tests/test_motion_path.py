@@ -102,3 +102,17 @@ def test_the_command_line_reports_and_draws(tmp_path, capsys):
     written = json.loads(report.read_text(encoding="utf-8"))
     assert written["lags"]["Shoulder:Hand"] == 2
     assert "Hand trails Shoulder by 2 samples" in capsys.readouterr().out
+
+
+def test_relative_to_takes_out_the_body_s_bob(tmp_path, capsys):
+    bob = [(0.0, 3.0 * math.sin(2 * math.pi * i / 15)) for i in range(N)]
+    hand = [(s[0] + b[0], s[1] + b[1]) for s, b in zip(sine_line(), bob)]
+    data = {"fps": FPS, "space": "world", "points": {"Chest": [list(p) for p in bob], "Hand": [list(p) for p in hand]}}
+    source = tmp_path / "paths.json"
+    source.write_text(json.dumps(data), encoding="utf-8")
+    raw, relative = tmp_path / "raw.json", tmp_path / "relative.json"
+    assert mp.main([str(source), "--json", str(raw)]) == 0
+    assert mp.main([str(source), "--relative-to", "Chest", "--json", str(relative)]) == 0
+    assert json.loads(raw.read_text(encoding="utf-8"))["points"]["Hand"]["bulge"] > 0.1
+    assert json.loads(relative.read_text(encoding="utf-8"))["points"]["Hand"]["bulge"] < 0.01
+
